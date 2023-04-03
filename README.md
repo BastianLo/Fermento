@@ -1,3 +1,3 @@
 # Fermento
 
-Management platform for fermentation
+Management platform for fermentation.
