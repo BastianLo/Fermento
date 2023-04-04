@@ -1,0 +1,23 @@
+#: templates/base.html:68
+msgid "recipeManagerSidebarTitle"
+msgstr "Rezept Manager"
+
+#: templates/base.html:71
+msgid "recipeSidebarTitle"
+msgstr "Rezepte"
+
+#: templates/base.html:72
+msgid "recipeVariationSidebarTitle"
+msgstr "Rezept-Variationen"
+
+#: templates/base.html:74
+msgid "batchSidebarTitle"
+msgstr "Chargen"
+
+#: templates/base.html:76
+msgid "batchAllSidebarTitle"
+msgstr "Alle"
+
+#: templates/base.html:77
+msgid "batchCalenderSidebarTitle"
+msgstr "Kalender"

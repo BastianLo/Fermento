@@ -1,38 +1,93 @@
 {% load static %}
+{% load lineage %}
+{% load i18n %}
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Fermentio</title>
-        
-        <link rel="stylesheet" type="text/css" href="{% static 'halfmoon/css/halfmoon.min.css' %}">
-        <script type="text/javascript" src="{% static 'halfmoon/js/halfmoon.js' %}"></script>
 
-    </head>
-    <body>
-        <div 
-    class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom" 
-    data-sidebar-type="overlayed-sm-and-down">
-    <!-- Sticky alerts (toasts), empty container -->
-    <div class="sticky-alerts"></div>
-    <!-- Navbar -->
-    <nav class="navbar">
-      ...
-    </nav>
-    <!-- Sidebar overlay -->
-    <div class="sidebar-overlay" onclick="halfmoon.toggleSidebar()"></div>
-    <!-- Sidebar -->
-    <div class="sidebar">
-      ...
+<head>
+    <title>Fermentio</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'halfmoon/css/halfmoon.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <script type="text/javascript" src="{% static 'halfmoon/js/halfmoon.js' %}"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/fermentation.png' %}">
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta name="viewport" content="width=device-width" />
+</head>
+
+<body data-dm-shortcut-enabled="true" data-set-preferred-mode-onload="true">
+    <script type="text/javascript" src="{% static 'halfmoon/js/halfmoon.js' %}"></script>
+    <div class="page-wrapper with-navbar with-sidebar with-navbar-fixed-bottom"
+        data-sidebar-type="overlayed-sm-and-down">
+        <!-- Sticky alerts (toasts), empty container -->
+        <div class="sticky-alerts"></div>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <!-- Menu sidebar toggler -->
+            <div class="navbar-content">
+                <button class="btn btn-action" type="button" onclick="halfmoon.toggleSidebar()">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </button>
+            </div>
+            <!-- Logo -->
+            <a href="#" class="navbar-brand">
+                <img src="{% static 'img/fermentation.png' %}" alt="...">
+                Fermentio
+            </a>
+
+            <!-- Dark mode toggler -->
+            <div class="navbar-content ml-auto">
+                <button class="btn btn-action mr-5" type="button" onclick="halfmoon.toggleDarkMode()">
+                    <i class="fa fa-moon-o" aria-hidden="true"></i>
+                    <span class="sr-only">Toggle dark mode</span>
+                </button>
+                <!-- Language changer -->
+                <form class="navbar-content" action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                    <input name="next" type="hidden" value="{{ redirect_to }}">
+                    <select class="form-control form-control-sm" name="language" onchange="this.form.submit()">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                {{ language.name_local }} ({{ language.code }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+        </nav>
+        <!-- Sidebar overlay -->
+        <div class="sidebar-overlay" onclick="halfmoon.toggleSidebar()"></div>
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h5 class="sidebar-title">{% trans "recipeManagerSidebarTitle" %}</h5>
+            <div class="sidebar-divider"></div>
+            <a href="/recipe_manager"
+                class="sidebar-link {% ancestor '/recipe_manager/' %}">{% trans "recipeSidebarTitle" %}</a>
+            <a href="/abc" class="sidebar-link {% ancestor '/abc/' %}">{% trans "recipeVariationSidebarTitle" %}</a>
+            <br />
+            <h5 class="sidebar-title">{% trans "batchSidebarTitle" %}</h5>
+            <div class="sidebar-divider"></div>
+            <a href="/def" class="sidebar-link {% ancestor '/def/' %}">{% trans "batchAllSidebarTitle" %}</a>
+            <a href="/abc" class="sidebar-link {% ancestor '/ghi/' %}">{% trans "batchCalenderSidebarTitle" %}</a>
+            <br />
+        </div>
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+            {% block content %}
+            {% endblock %}
+        </div>
+        <!-- Navbar fixed bottom -->
+        <nav class="navbar navbar-fixed-bottom">
+            ...
+        </nav>
     </div>
-    <!-- Content wrapper -->
-    <div class="content-wrapper">
-      ...
-    </div>
-    <!-- Navbar fixed bottom -->
-    <nav class="navbar navbar-fixed-bottom">
-      ...
-    </nav>
-  </div>
-          
-    </body>
+
+</body>
+
 </html>

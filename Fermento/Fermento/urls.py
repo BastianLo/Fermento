@@ -16,9 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.i18n import set_language
 
 
 urlpatterns = [
     path("recipe_manager/", include("recipe_manager.urls")),
     path("admin/", admin.site.urls),
+
+    path('set-language/', set_language, name='set_language'),
 ]

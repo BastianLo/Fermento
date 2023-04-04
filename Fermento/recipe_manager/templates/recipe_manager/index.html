@@ -1,5 +1,9 @@
+{% extends "base.html" %}
+
+
+{% block content %}
 <h1>
-    Hallo
+    Recipes
 </h1>
 {% if recipes %}
     <ul>
@@ -10,3 +14,4 @@
 {% else %}
     <p>No recipes are available.</p>
 {% endif %}
+{% endblock %}
