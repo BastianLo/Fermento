@@ -3,7 +3,7 @@
  <img width=200px height=200px src="https://cdn-icons-png.flaticon.com/512/6542/6542849.png" alt="Project logo"></a>
 </p>
 
-<h3 align="center">Project Title</h3>
+<h3 align="center">Fermentio</h3>
 
 <div align="center">
 
