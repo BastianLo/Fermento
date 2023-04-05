@@ -1,0 +1,20 @@
+#: registration/login.html:17
+msgid "loginError"
+msgstr "Beim Anmelden ist ein Fehler aufgetreten"
+
+#: registration/login.html:23
+msgid "username"
+msgstr "Username"
+
+#: registration/login.html:27
+msgid "password"
+msgstr "Password"
+
+#: registration/login.html:30
+#, fuzzy
+#| msgid "loginError"
+msgid "login"
+msgstr "Login"
+
+#~ msgid "loginButtonLabel"
+#~ msgstr "Login"

@@ -15,13 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, reverse_lazy
 from django.views.i18n import set_language
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    #Temporary until homepage exists
+    path("", RedirectView.as_view(url='/recipe_manager')),
+    
     path("recipe_manager/", include("recipe_manager.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),  # new
     path("admin/", admin.site.urls),
-
-    path('set-language/', set_language, name='set_language'),
+    path('set-language/', set_language, name='set_language'),   
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

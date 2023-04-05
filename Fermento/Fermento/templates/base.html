@@ -6,6 +6,8 @@
 
 <head>
     <title>Fermentio</title>
+    {% block header %}
+    {% endblock %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'halfmoon/css/halfmoon.min.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -34,7 +36,7 @@
                 </button>
             </div>
             <!-- Logo -->
-            <a href="#" class="navbar-brand">
+            <a href="/" class="navbar-brand">
                 <img src="{% static 'img/fermentation.png' %}" alt="...">
                 Fermentio
             </a>

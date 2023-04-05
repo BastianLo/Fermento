@@ -1,11 +1,50 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block content %}
-<h1>
-    {{ recipe.name }}
-</h1>
-<p>
-    {{recipe.description}}
-</p>
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{% static 'custom/css/image_slider.css' %}">
+<script type="text/javascript" src="{% static 'custom/js/image_slider.js' %}"></script>
 {% endblock %}
 
+{% block content %}
+<div class="container-fluid">
+
+    <div class="row row-eq-spacing-lg">
+        <div class="col-lg-4">
+            <a href="{{ recipe.image.url }}">
+                <img class="img-fluid rounded" style="overflow: hidden;" src="{{ recipe.image.url }}" />
+            </a>
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <h1>
+                    {{ recipe.name }}
+                </h1>
+                <p>
+                    {{recipe.description}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row row-eq-spacing-lg">
+        <div class="col-lg-4">
+            <div class="card">
+                <h2 class="card-title">Ingredients</h2>
+                <ul class="list-group">
+                    {% for ingredient in ingredients %}
+                    <li class="list-group-item">
+                        <span class="font-weight-bold">{{ingredient.amount|floatformat}}</span>
+                        <span>{{ingredient.unit}}</span>
+                        <span class="font-weight-bold">{{ ingredient.related_ingredient.name }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
