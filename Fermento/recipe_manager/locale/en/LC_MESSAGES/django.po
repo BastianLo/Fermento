@@ -1,0 +1,16 @@
+#: templates/recipe_manager/recipe.html:35
+msgid "difficulty"
+msgstr "Difficulty"
+
+#: templates/recipe_manager/recipe.html:49
+#: templates/recipe_manager/recipe.html:108
+msgid "preparation"
+msgstr "Preparation"
+
+#: templates/recipe_manager/recipe.html:63
+msgid "total"
+msgstr "Gesamt"
+
+#: templates/recipe_manager/recipe.html:94
+msgid "Ingredients"
+msgstr "Ingredients"

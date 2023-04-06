@@ -163,3 +163,4 @@ cython_debug/
 #own ignores
 **/.DS_Store
 media/
+staticfiles

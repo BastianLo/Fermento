@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
+{% load i18n %}
+
 
 {% block header %}
 <link rel="stylesheet" type="text/css" href="{% static 'custom/css/image_slider.css' %}">
@@ -8,7 +10,67 @@
 
 {% block content %}
 <div class="container-fluid">
-
+    <div class="row row-eq-spacing-lg">
+        <div class="col-lg-12">
+            <div class="card">
+                <h1 class="text-center">
+                    {{ recipe.name }}
+                </h1>
+                <div class="row flex-nowrap">
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                {% if recipe.difficulty == "easy" %}
+                                <img width="32px" height="32px" src="{% static 'img/speedometer_easy.png' %}" alt="...">
+                                {% elif recipe.difficulty == "medium" %}
+                                <img width="32px" height="32px" src="{% static 'img/speedometer_medium.png' %}" alt="...">
+                                {% elif recipe.difficulty == "hard" %}
+                                <img width="32px" height="32px" src="{% static 'img/speedometer_hard.png' %}" alt="...">
+                                {% else %}
+                                <img width="32px" height="32px" src="{% static 'img/speedometer_easy.png' %}" alt="...">
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-10">
+                                <div>
+                                    <b>{% trans "difficulty" %}</b>
+                                    <br />
+                                    <i><span>{{ recipe.difficulty }}</span></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <img width="32px" height="32px" src="{% static 'img/hourglass.png' %}" alt="...">
+                            </div>
+                            <div class="col-lg-10">
+                                <div>
+                                    <b>{% trans "preparation" %}</b>
+                                    <br />
+                                    <i><span>{{ recipe.preparation_duration }}</span></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <img width="32px" height="32px" src="{% static 'img/schedule.png' %}" alt="...">
+                            </div>
+                            <div class="col-lg-10">
+                                <div>
+                                    <b>{% trans "total" %}</b>
+                                    <br />
+                                    <i><span>{{ recipe.total_duration }}</span></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row row-eq-spacing-lg">
         <div class="col-lg-4">
             <a href="{{ recipe.image.url }}">
@@ -29,7 +91,7 @@
     <div class="row row-eq-spacing-lg">
         <div class="col-lg-4">
             <div class="card">
-                <h2 class="card-title">Ingredients</h2>
+                <h2>{% trans "Ingredients" %}</h2>
                 <ul class="list-group">
                     {% for ingredient in ingredients %}
                     <li class="list-group-item">
@@ -39,6 +101,16 @@
                     </li>
                     {% endfor %}
                 </ul>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <h2>{% trans "preparation" %}</h2>
+                <ol class="list-group">
+                    {% for step in process_steps %}
+                    <li class="list-group-item">{{ step.text }}</li>
+                    {% endfor %}
+                </ol>
             </div>
         </div>
     </div>
