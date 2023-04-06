@@ -1,0 +1,12 @@
+version: '3.3'
+services:
+    fermento:
+        container_name: fermento
+        environment:
+            - LISTEN_PORT=123123
+            - USERNAME=${USERNAME}
+            - PASSWORD=${PASSWORD}
+            - EMAIL=${EMAIL}
+        ports:
+            - '6734:6734'
+        image: 'fermento:v1'

@@ -28,5 +28,4 @@ RUN mkdir static
 RUN python Fermento/manage.py collectstatic --no-input
 RUN python Fermento/manage.py migrate
 EXPOSE 5000
-#CMD ["gunicorn","--bind", ":5000", "Fermento.wsgi"]
-CMD ["python", "Fermento/manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["./boot.sh"]
