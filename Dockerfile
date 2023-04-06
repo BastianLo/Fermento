@@ -5,11 +5,11 @@ FROM python:3.9.7-buster
 ENV PYTHONUNBUFFERED 1
 
 # Set working directory
-RUN mkdir core
+RUN mkdir Fermento
 # set the working directory
-COPY . /core/
+COPY . /Fermento/
 # coppy commands 
-WORKDIR /core
+WORKDIR /Fermento
 
 # update docker-iamage packages
 #RUN apt-get update && \
@@ -25,7 +25,8 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 # create static directory
 RUN mkdir static
-# RUN python manage.py collectstatic --no-input
+RUN python Fermento/manage.py collectstatic --no-input
+RUN python Fermento/manage.py migrate
 EXPOSE 5000
 #CMD ["gunicorn","--bind", ":5000", "Fermento.wsgi"]
 CMD ["python", "Fermento/manage.py", "runserver", "0.0.0.0:8000"]
