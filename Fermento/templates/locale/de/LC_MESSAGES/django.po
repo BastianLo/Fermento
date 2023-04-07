@@ -1,16 +1,16 @@
-#: registration/login.html:17
+#: templates/registration/login.html:17
 msgid "loginError"
 msgstr "Beim Anmelden ist ein Fehler aufgetreten"
 
-#: registration/login.html:23
+#: templates/registration/login.html:23
 msgid "username"
 msgstr "Username"
 
-#: registration/login.html:27
+#: templates/registration/login.html:27
 msgid "password"
 msgstr "Password"
 
-#: registration/login.html:30
+#: templates/registration/login.html:30
 #, fuzzy
 #| msgid "loginError"
 msgid "login"
