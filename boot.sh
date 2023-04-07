@@ -14,6 +14,7 @@ else:
     print('User "{}" exists already, not created'.format("$username"))
 EOF
 }
+service nginx start
 
 create-superuser ${USERNAME} ${EMAIL} ${PASSWORD}
 cd Fermento

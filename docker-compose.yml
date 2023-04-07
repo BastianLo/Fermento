@@ -9,5 +9,5 @@ services:
             - EMAIL=${EMAIL}
             - DEBUG=False
         ports:
-            - '6734:6734'
-        image: 'fermento:v1'
+            - '6733:6733'
+        image: 'fermento:localdev'
