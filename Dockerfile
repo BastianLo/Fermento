@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Install Nginx web server
 RUN apt-get update && \
-    apt-get install -y nginx && \
+    apt-get install -y nginx gettext && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a directory for the Django project

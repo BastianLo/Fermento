@@ -17,6 +17,7 @@ EOF
 service nginx start
 
 create-superuser ${USERNAME} ${EMAIL} ${PASSWORD}
+django-admin compilemessages > /dev/null 2>&1
 cd Fermento
 echo 'Starting application'
 gunicorn --bind :6734 Fermento.wsgi > /dev/null 2>&1

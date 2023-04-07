@@ -126,6 +126,12 @@ USE_TZ = True
 
 LANGUAGES = [    ('en', 'English'),    ('de', 'Deutsch')]
 
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'Fermento', 'locale'),
+    os.path.join(BASE_DIR, 'recipe_manager', 'locale'),
+    os.path.join(BASE_DIR, 'templates', 'locale'),
+)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
