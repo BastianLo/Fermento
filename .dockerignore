@@ -3,5 +3,4 @@ venv
 domain_class_structure.drawio
 README.md
 .env
-Fermento/media
-Fermento/db.sqlite3
+Fermento/data/*
