@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-07 22:01+0000\n"
+"POT-Creation-Date: 2023-04-07 22:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,23 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: recipe_manager/templates/recipe_manager/recipe.html:35
+
+#: recipe_manager/templates/recipe_manager/recipe.html:40
 msgid "difficulty"
 msgstr "Schwierigkeit"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:49
-#: recipe_manager/templates/recipe_manager/recipe.html:108
+#: recipe_manager/templates/recipe_manager/recipe.html:54
+#: recipe_manager/templates/recipe_manager/recipe.html:103
 msgid "preparation"
 msgstr "Vorbereitung"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:63
+#: recipe_manager/templates/recipe_manager/recipe.html:68
 msgid "total"
 msgstr "Gesamt"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:83
-msgid "description"
-msgstr "Beschreibung"
-
-#: recipe_manager/templates/recipe_manager/recipe.html:94
+#: recipe_manager/templates/recipe_manager/recipe.html:89
 msgid "Ingredients"
 msgstr "Zutaten"
+
+#~ msgid "description"
+#~ msgstr "Beschreibung"
