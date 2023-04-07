@@ -7,6 +7,7 @@ services:
             - USERNAME=${USERNAME}
             - PASSWORD=${PASSWORD}
             - EMAIL=${EMAIL}
+            - DEBUG=False
         ports:
             - '6734:6734'
         image: 'fermento:v1'

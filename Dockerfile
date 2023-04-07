@@ -1,31 +1,40 @@
-# base image
+# Use the Python 3.9.7-buster image as the base image
 FROM python:3.9.7-buster
 
-# options
+# Set environment variables
 ENV PYTHONUNBUFFERED 1
 
-# Set working directory
+# Install Nginx web server
+RUN apt-get update && \
+    apt-get install -y nginx && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create a directory for the Django project
 RUN mkdir Fermento
-# set the working directory
+
+# Copy the entire current directory to the /Fermento directory in the container
 COPY . /Fermento/
-# coppy commands 
+
+# Set the working directory to /Fermento
 WORKDIR /Fermento
 
-# update docker-iamage packages
-#RUN apt-get update && \
-#    apt-get upgrade -y && \
-#    apt-get install -y netcat-openbsd gcc && \
-#    apt-get clean
-
-# update pip 
+# Upgrade pip
 RUN pip install --upgrade pip
-# install psycopg for connect to pgsql
-#RUN pip install psycopg2-binary
-# install python packages 
+
+# Install Python packages listed in requirements.txt
 RUN pip install -r requirements.txt
-# create static directory
+
+# Create a directory for static files
 RUN mkdir static
-RUN python Fermento/manage.py collectstatic --no-input
-RUN python Fermento/manage.py migrate
-EXPOSE 5000
+
+# Collect static files and run migrations
+RUN python Fermento/manage.py collectstatic --noinput && python Fermento/manage.py migrate
+
+# Copy the Nginx configuration file to the container's /etc/nginx/sites-available directory
+COPY nginx.conf /etc/nginx/sites-available/default
+
+# Expose port 6734 for the container
+EXPOSE 6734
+
+# Run the boot.sh script when the container starts
 ENTRYPOINT ["./boot.sh"]
