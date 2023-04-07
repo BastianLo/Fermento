@@ -27,9 +27,6 @@ RUN pip install -r requirements.txt
 # Create a directory for static files
 RUN mkdir static
 
-# Collect static files and run migrations
-RUN python Fermento/manage.py collectstatic --noinput && python Fermento/manage.py migrate
-
 # Copy the Nginx configuration file to the container's /etc/nginx/sites-available directory
 COPY nginx.conf /etc/nginx/sites-available/default
 

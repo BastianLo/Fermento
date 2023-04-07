@@ -16,6 +16,9 @@ EOF
 }
 service nginx start
 
+# Collect static files and run migrations
+python Fermento/manage.py collectstatic --noinput && python Fermento/manage.py migrate
+
 create-superuser ${USERNAME} ${EMAIL} ${PASSWORD}
 django-admin compilemessages > /dev/null 2>&1
 cd Fermento
