@@ -1,5 +1,6 @@
 #!/bin/sh
-pip freeze > ../requirements.txt
+pip freeze > requirements.txt
+cd Fermento
 cd Fermento
 django-admin makemessages -a
 cd ..
