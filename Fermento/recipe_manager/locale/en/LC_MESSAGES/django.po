@@ -9,7 +9,7 @@ msgstr "Preparation"
 
 #: templates/recipe_manager/recipe.html:63
 msgid "total"
-msgstr "Gesamt"
+msgstr "Total"
 
 #: templates/recipe_manager/recipe.html:94
 msgid "Ingredients"
