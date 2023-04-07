@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'Fermento.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / "data" / 'db.sqlite3',
     }
 }
 
@@ -138,16 +138,17 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'data' / 'media'
 
 MEDIA_URL = '/media/'
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:6733',
-    'http://127.0.0.1:6733',
+    #'http://localhost:6733',
+    #'http://127.0.0.1:6733',
+    os.getenv('APP_DOMAIN') if os.getenv('APP_DOMAIN') else 'http://127.0.0.1:6733',
 ]
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:6733',
-    'http://127.0.0.1:6733',
-
+    #'http://localhost:6733',
+    #'http://127.0.0.1:6733',
+    os.getenv('APP_DOMAIN') if os.getenv('APP_DOMAIN') else 'http://127.0.0.1:6733',
 ]

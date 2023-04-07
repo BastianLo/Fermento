@@ -17,7 +17,6 @@ def index(request):
 
 @login_required(login_url='/accounts/login/')
 def recipe_by_id(request, recipe_id):
-    print(request.session.keys())
     uid = request.session['_auth_user_id']
     selected_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
     ingredients = recipe_ingredient.objects.filter(owner=uid, related_recipe=selected_recipe)
@@ -32,7 +31,6 @@ def recipe_by_id(request, recipe_id):
         "ingredients": ingredients,
         "process_steps":process_steps,
     }
-    print(context)
     return HttpResponse(template.render(context, request))
 
 def not_found(request, e):
