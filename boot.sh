@@ -18,5 +18,6 @@ service nginx start
 
 create-superuser ${USERNAME} ${EMAIL} ${PASSWORD}
 cd Fermento
-gunicorn --bind :6734 Fermento.wsgi
+echo 'Starting application'
+gunicorn --bind :6734 Fermento.wsgi > /dev/null 2>&1
 #python3 Fermento/manage.py runserver 0.0.0.0:8000
