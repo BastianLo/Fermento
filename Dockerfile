@@ -33,11 +33,6 @@ RUN python Fermento/manage.py collectstatic --noinput && python Fermento/manage.
 # Copy the Nginx configuration file to the container's /etc/nginx/sites-available directory
 COPY nginx.conf /etc/nginx/sites-available/default
 
-RUN mkdir -p /run && \
-    touch /run/gunicorn.socket && \
-    chown www-data:www-data /run && \
-    chown www-data:www-data /run/gunicorn.socket
-
 # Expose port 6733 for the container
 EXPOSE 6733
 
