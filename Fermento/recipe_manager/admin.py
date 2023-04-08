@@ -5,6 +5,5 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(recipe)
-admin.site.register(ingredient)
 admin.site.register(recipe_ingredient)
 admin.site.register(process_step)
