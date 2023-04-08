@@ -84,16 +84,21 @@
 
         </div>
     </div>
-    <div class="row row-eq-spacing-lg">
-        <div class="col-lg-4">
-            <div class="card">
+    <div class="card">
+        <div class="row row-eq-spacing-lg border-bottom">
+            <div class="col-lg-12">
+                <h1 class="text-center">{% trans "preparation" %}</h1>
+            </div>
+        </div>
+        <div class="row row-eq-spacing-lg">
+            <div class="col-lg-4 separation-border">
                 <h2>{% trans "Ingredients" %}</h2>
                 {% if ingredients %}
                 <ul class="list-group">
                     {% for ingredient in ingredients %}
                     <div class="custom-checkbox mb-5">
-                        <input type="checkbox" id="checkbox-{{ ingredient.id }}" value="">
-                        <label for="checkbox-{{ ingredient.id }}">
+                        <input type="checkbox" id="checkbox-ingredient-{{ ingredient.id }}" value="">
+                        <label for="checkbox-ingredient-{{ ingredient.id }}">
                             <span class="font-weight-bold">{{ingredient.amount|floatformat}}</span>
                             <span>{{ingredient.unit}}</span>
                             <span class="font-weight-bold">{{ ingredient.name }}</span></label>
@@ -104,14 +109,18 @@
                 <b>{% trans "noIngredients" %}</b>
                 {% endif %}
             </div>
-        </div>
-        <div class="col-lg-8">
-            <div class="card">
-                <h2>{% trans "preparation" %}</h2>
+            <div class="col-lg-8">
+                <h2>{% trans "process_steps" %}</h2>
                 {% if process_steps %}
-                <ol class="list-group">
+                <ol>
                     {% for step in process_steps %}
-                    <li class="list-group-item">{{ step.text }}</li>
+                    <div class="custom-checkbox mb-5">
+                        <input type="checkbox" id="checkbox-step-{{ step.id }}" value="">
+                        <label for="checkbox-step-{{ step.id }}">
+                            <li>{{ step.text }}</li>
+                        </label>
+                    </div>
+                    <br />
                     {% endfor %}
                 </ol>
                 {% else %}

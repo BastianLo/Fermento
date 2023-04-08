@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-08 10:25+0000\n"
+"POT-Creation-Date: 2023-04-08 13:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,28 +18,32 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:41
+#: templates/recipe_manager/recipe.html:41
 msgid "difficulty"
 msgstr "Schwierigkeit"
 
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:55
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:110
+#: templates/recipe_manager/recipe.html:55
+#: templates/recipe_manager/recipe.html:90
 msgid "preparation"
 msgstr "Vorbereitung"
 
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:69
+#: templates/recipe_manager/recipe.html:69
 msgid "total"
 msgstr "Gesamt"
 
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:90
+#: templates/recipe_manager/recipe.html:95
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:104
+#: templates/recipe_manager/recipe.html:109
 msgid "noIngredients"
 msgstr "Es wurden noch keine Zutaten hinzugefügt!"
 
-#: Fermento/recipe_manager/templates/recipe_manager/recipe.html:118
+#: templates/recipe_manager/recipe.html:114
+msgid "process_steps"
+msgstr "Arbeitsschritte"
+
+#: templates/recipe_manager/recipe.html:123
 msgid "noProcessSteps"
 msgstr "Es wurden noch keine Arbeitsschritte hinzugefügt!"
 
