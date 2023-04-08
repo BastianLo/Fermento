@@ -88,6 +88,7 @@
         <div class="col-lg-4">
             <div class="card">
                 <h2>{% trans "Ingredients" %}</h2>
+                {% if ingredients %}
                 <ul class="list-group">
                     {% for ingredient in ingredients %}
                     <div class="custom-checkbox mb-5">
@@ -99,16 +100,23 @@
                     </div>
                     {% endfor %}
                 </ul>
+                {% else %}
+                <b>{% trans "noIngredients" %}</b>
+                {% endif %}
             </div>
         </div>
         <div class="col-lg-8">
             <div class="card">
                 <h2>{% trans "preparation" %}</h2>
+                {% if process_steps %}
                 <ol class="list-group">
                     {% for step in process_steps %}
                     <li class="list-group-item">{{ step.text }}</li>
                     {% endfor %}
                 </ol>
+                {% else %}
+                <b>{% trans "noProcessSteps" %}</b>
+                {% endif %}
             </div>
         </div>
     </div>
