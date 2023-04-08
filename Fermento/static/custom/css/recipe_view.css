@@ -1,0 +1,8 @@
+.card-body div b {
+    display: flex;
+    align-items: center;
+}
+
+.card-body div b img {
+    margin-right: 10px;
+}
