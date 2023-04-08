@@ -19,8 +19,6 @@ def index(request):
 def recipe_by_id(request, recipe_id):
     uid = request.session['_auth_user_id']
     selected_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
-    ingredients = recipe_ingredient.objects.filter(owner=uid, related_recipe=selected_recipe)
-    process_steps = process_step.objects.filter(owner=uid, related_recipe=selected_recipe)
     if selected_recipe:
         template = loader.get_template("recipe_manager/recipe.html")
     else:
@@ -28,8 +26,6 @@ def recipe_by_id(request, recipe_id):
         raise Http404("Recipe does not exist")
     context = {
         "recipe": selected_recipe,
-        "ingredients": ingredients,
-        "process_steps":process_steps,
     }
     return HttpResponse(template.render(context, request))
 

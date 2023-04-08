@@ -84,18 +84,19 @@
 
         </div>
     </div>
+    {% for process in recipe.get_processes%}
     <div class="card">
         <div class="row row-eq-spacing-lg border-bottom">
             <div class="col-lg-12">
-                <h1 class="text-center">{% trans "preparation" %}</h1>
+                <h1 class="text-center">{{ process.name }}</h1>
             </div>
         </div>
         <div class="row row-eq-spacing-lg">
             <div class="col-lg-4 separation-border">
                 <h2>{% trans "Ingredients" %}</h2>
-                {% if ingredients %}
+                {% if process.get_ingredients %}
                 <ul class="list-group">
-                    {% for ingredient in ingredients %}
+                    {% for ingredient in process.get_ingredients %}
                     <div class="custom-checkbox mb-5">
                         <input type="checkbox" id="checkbox-ingredient-{{ ingredient.id }}" value="">
                         <label for="checkbox-ingredient-{{ ingredient.id }}">
@@ -111,9 +112,9 @@
             </div>
             <div class="col-lg-8">
                 <h2>{% trans "process_steps" %}</h2>
-                {% if process_steps %}
+                {% if process.get_process_steps %}
                 <ol>
-                    {% for step in process_steps %}
+                    {% for step in process.get_process_steps %}
                     <div class="custom-checkbox mb-5">
                         <input type="checkbox" id="checkbox-step-{{ step.id }}" value="">
                         <label for="checkbox-step-{{ step.id }}">
@@ -129,6 +130,7 @@
             </div>
         </div>
     </div>
+    {% endfor%}
 </div>
 </div>
 </div>
