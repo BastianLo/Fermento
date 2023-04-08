@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-08 13:48+0200\n"
+"POT-Creation-Date: 2023-04-08 15:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,6 @@ msgid "difficulty"
 msgstr "Schwierigkeit"
 
 #: templates/recipe_manager/recipe.html:55
-#: templates/recipe_manager/recipe.html:90
 msgid "preparation"
 msgstr "Vorbereitung"
 
@@ -31,21 +30,21 @@ msgstr "Vorbereitung"
 msgid "total"
 msgstr "Gesamt"
 
-#: templates/recipe_manager/recipe.html:95
+#: templates/recipe_manager/recipe.html:96
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: templates/recipe_manager/recipe.html:109
+#: templates/recipe_manager/recipe.html:110
 msgid "noIngredients"
-msgstr "Es wurden noch keine Zutaten hinzugefügt!"
+msgstr "Dieser Prozess benötigt keine Zutaten!"
 
 #: templates/recipe_manager/recipe.html:114
 msgid "process_steps"
 msgstr "Arbeitsschritte"
 
-#: templates/recipe_manager/recipe.html:123
+#: templates/recipe_manager/recipe.html:128
 msgid "noProcessSteps"
-msgstr "Es wurden noch keine Arbeitsschritte hinzugefügt!"
+msgstr "Dieser Prozess benötigt keine Arbeitsschritte!"
 
 #~ msgid "description"
 #~ msgstr "Beschreibung"
