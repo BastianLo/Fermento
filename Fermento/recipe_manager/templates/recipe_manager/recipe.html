@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
-
+{% load datetime %}
 
 {% block header %}
 <link rel="stylesheet" type="text/css" href="{% static 'custom/css/recipe_view.css' %}">
@@ -45,6 +45,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--
                     <div class="col-lg-4">
                         <div class="row">
                             <div class="col-lg-2">
@@ -59,6 +60,7 @@
                             </div>
                         </div>
                     </div>
+                    -->
                     <div class="col-lg-4">
                         <div class="row">
                             <div class="col-lg-2">
@@ -68,7 +70,7 @@
                                 <div>
                                     <b>{% trans "total" %}</b>
                                     <br />
-                                    <i><span>{{ recipe.total_duration }}</span></i>
+                                    <i><span>{{ recipe.get_total_work_duration|duration }}</span></i>
                                 </div>
                             </div>
                         </div>
@@ -132,8 +134,5 @@
     </div>
     {% endfor%}
 </div>
-</div>
-</div>
-
 
 {% endblock %}
