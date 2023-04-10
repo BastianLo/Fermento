@@ -18,12 +18,10 @@ pipeline {
         stage('Deploy Image') {
             steps {
                 script {
-                    sh ''
-                    '  docker login --username=$DOCKERHUB_COMMON_CREDS_USE --password=$DOCKERHUB_COMMON_CREDS_PSW
-                    docker tag fermento: $BUILD_ID bastianlo / fermento: $BUILD_ID
-                    docker tag fermento: $BUILD_ID bastianlo / fermento: latest
-                    docker push bastianlo / fermento ''
-                    '
+                    sh 'docker login --username=$DOCKERHUB_COMMON_CREDS_USE --password=$DOCKERHUB_COMMON_CREDS_PSW'
+                    sh 'docker tag fermento: $BUILD_ID bastianlo / fermento: $BUILD_ID'
+                    sh 'docker tag fermento: $BUILD_ID bastianlo / fermento: latest'
+                    sh 'docker push bastianlo / fermento '''
                 }
             }
         }
