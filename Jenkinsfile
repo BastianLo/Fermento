@@ -5,7 +5,7 @@ pipeline {
         timestamps()
     }
     environment {
-        DOCKERHOB_COMMON_CREDS = credentials('jenkins-dokcerhub-common-creds')
+        DOCKERHOB_COMMON_CREDS = credentials('jenkins-dockerhub-common-creds')
     }
     stages {
         stage('Building image') {
