@@ -1,0 +1,166 @@
+function addIngredient(processNum) {
+    // Find the number of existing ingredients
+    var numIngredients = document.querySelectorAll('.ingredient').length;
+    var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
+
+    // Create a new ingredient element
+    var newIngredient = document.createElement('div');
+
+    // Add the HTML for the new ingredient
+    newIngredient.innerHTML = `
+        <li style="list-style-position: outside;" draggable="true" ondragover="dragOver(event)" ondragstart="dragStart(event)">
+            <div class="ingredient row">
+                <div class="col-lg-4">
+                    <label for="ingredient-name-${processNum}-${numIngredients}">Name</label>
+                    <input type="text" class="form-control" id="ingredient-name-${processNum}-${numIngredients}" name="ingredient-name-${processNum}-${numIngredients}">
+                </div>
+                <div class="col-lg-4">
+                    <label for="ingredient-amount-${processNum}-${numIngredients}">Amount</label>
+                    <input type="number" class="form-control" id="ingredient-amount-${processNum}-${numIngredients}" name="ingredient-amount-${processNum}-${numIngredients}">
+                </div>
+                <div class="col-lg-4">
+                    <label for="ingredient-unit-${processNum}-${numIngredients}">Unit</label>
+                    <input type="text" class="form-control" id="ingredient-unit-${processNum}-${numIngredients}" name="ingredient-unit-${processNum}-${numIngredients}">
+                </div>
+            </div>
+        </li>
+    `;
+
+    // Append the new ingredient to the ingredients container
+    var ingredientsContainer = document.getElementById(`process-ingredients-${processNum}`);
+    ingredientsContainer.appendChild(newIngredient);
+}
+
+function addProcess() {
+    // Find the number of existing processes
+    var numProcesses = document.querySelectorAll('.process').length;
+
+    // Create a new process element
+    var newProcess = document.createElement('div');
+    newProcess.className = 'process';
+
+    // Add the HTML for the new process
+    newProcess.innerHTML = `
+    <div class="card">
+        <label for="process-name-${numProcesses}">Name</label>
+        <input type="text" class="form-control" id="process-name-${numProcesses}" name="process-name-${numProcesses}">
+
+        <h3>Process Steps</h3>
+
+        <div class="form-group" id="process-steps-${numProcesses}">
+            <div class="process-step">
+                <label for="process-step-text-${numProcesses}-0">Text</label>
+                <textarea class="form-control" id="process-step-text-${numProcesses}-0" name="process-step-text-${numProcesses}-0"></textarea>
+            </div>
+        </div>
+        <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">Add Process Step</button>
+
+        <h3>Ingredients</h3>
+
+        <ol>
+            <div class="form-group" id="process-ingredients-${numProcesses}">
+                
+            </div>
+        </ol>
+        <button class="btn btn-secondary" type="button" onclick="addIngredient(${numProcesses})">Add Ingredient</button>
+    </div>
+    `;
+
+    // Append the new process to the processes container
+    var processesContainer = document.getElementById('processes');
+    processesContainer.appendChild(newProcess);
+}
+
+function addProcessStep(processNum) {
+    // Find the number of existing process steps for this process
+    var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
+
+    // Create a new process step element
+    var newProcessStep = document.createElement('div');
+    newProcessStep.className = 'process-step';
+
+    // Add the HTML for the new process step
+    newProcessStep.innerHTML = `
+        <label for="process-step-text-${processNum}-${numProcessSteps}">Text</label>
+        <textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}"></textarea>
+    `;
+
+    // Append the new process step to the process steps container for this process
+    var processStepsContainer = document.getElementById(`process-steps-${processNum}`);
+    processStepsContainer.appendChild(newProcessStep);
+}
+
+function createRecipe() {
+    console.log("test")
+    const form = document.getElementById("create-recipe-form");
+    const formData = new FormData(form);
+
+    const processes = [];
+
+    // get all processes
+    const processElements = document.querySelectorAll(".process");
+    for (let i = 0; i < processElements.length; i++) {
+        const processName = processElements[i].querySelector(
+            'input[name^="process-name"]'
+        ).value;
+
+        const processSteps = [];
+        const processStepElements = processElements[i].querySelectorAll(
+            '.process-step textarea[name^="process-step-text"]'
+        );
+        for (let j = 0; j < processStepElements.length; j++) {
+            const processStepText = processStepElements[j].value;
+            processSteps.push({
+                text: processStepText
+            });
+        }
+
+        const processIngredients = [];
+        const processIngredientElements = document.querySelectorAll(".ingredient");
+        console.log(processIngredientElements)
+        for (let i = 0; i < processIngredientElements.length; i++) {
+            const ingredientName = processIngredientElements[i].querySelector(
+                'input[name^="ingredient-name"]'
+            ).value;
+            const ingredientAmount = processIngredientElements[i].querySelector(
+                'input[name^="ingredient-amount"]'
+            ).value;
+            const ingredientUnit = processIngredientElements[i].querySelector(
+                'input[name^="ingredient-unit"]'
+            ).value;
+    
+            processIngredients.push({
+                name: ingredientName,
+                amount: ingredientAmount,
+                unit: ingredientUnit,
+            });
+        }
+
+        processes.push({
+            name: processName,
+            steps: processSteps,
+            ingredients: processIngredients
+        });
+    }
+
+    // add ingredients and processes to formData
+    formData.append("ingredients", JSON.stringify(ingredients));
+    formData.append("processes", JSON.stringify(processes));
+
+    console.log(formData)
+    // send form data to server
+    fetch("/create_recipe/", {
+            method: "POST",
+            body: formData,
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            alert("Recipe created successfully!");
+            form.reset();
+        })
+        .catch((error) => {
+            console.error(error);
+            alert("Error creating recipe!");
+        });
+}

@@ -30,5 +30,13 @@ def recipe_by_id(request, recipe_id):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/accounts/login/')
+def recipe_create(request):
+    uid = request.session['_auth_user_id']
+    template = loader.get_template("recipe_manager/components/create_recipe.html")
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
+
 def not_found(request, e):
     return render(request, "recipe_manager/recipe_notfound_error.html")

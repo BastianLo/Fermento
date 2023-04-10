@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 
     'lineage',
     'widget_tweaks',
+    'easy_thumbnails',
+    'image_cropping',
 ]
 
 MIDDLEWARE = [
@@ -161,7 +163,10 @@ CORS_ORIGIN_WHITELIST = [
     #'http://127.0.0.1:6733',
     os.getenv('APP_DOMAIN') if os.getenv('APP_DOMAIN') else 'http://127.0.0.1:6733',
 ]
-
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
 
 
 ### Configuration values ###

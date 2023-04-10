@@ -1,17 +1,44 @@
 {% extends "base.html" %}
-
+{% load cropping %}
+{% load static %}
+{% load i18n %}
 
 {% block content %}
 <h1>
     Recipes
 </h1>
+<button class="btn btn-primary" onclick="location.href='recipe/create'" type="button">
+    {% trans "createRecipe" %}
+</button>
 {% if recipes %}
-    <ul>
+<ul>
     {% for recipe in recipes %}
-        <li><a href="/recipe_manager/{{ recipe.id }}/">{{ recipe.name }}</a></li>
+    <li><a href="recipe/{{ recipe.id }}/">{{ recipe.name }}</a></li>
+    <div class="w-400 mw-full">
+        <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+        <div class="card p-0">
+            <!-- p-0 = padding: 0 -->
+            <a class="img-fluid rounded-top" href="{{ recipe.image.url }}">
+                <img class="img-fluid rounded" style="overflow: hidden;" src="{% cropped_thumbnail recipe "cropping" %}" />
+            </a>
+            <!-- Nested content container inside card -->
+            <div class="content">
+                <h2 class="content-title">
+                    Title of the article
+                </h2>
+                <p class="text-muted">
+                    Subtitle that hooks the reader and prompts them to click on the read more button.
+                </p>
+                <div class="text-right">
+                    <!-- text-right = text-align: right -->
+                    <a href="#" class="btn">Read more</a>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-    </ul>
+</ul>
 {% else %}
-    <p>No recipes are available.</p>
+<p>No recipes are available.</p>
 {% endif %}
 {% endblock %}

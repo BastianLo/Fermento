@@ -1,0 +1,51 @@
+html,
+body {
+  height: 100%;
+  font-family: sans-serif;
+}
+
+body {
+  cursor: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/106114/cursor.png")
+      32 32,
+    auto;
+  background: rgb(238, 238, 238);
+  overflow: hidden;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 400px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, -50%);
+}
+
+.list-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 90px;
+  width: 100%;
+}
+
+.item-content {
+  height: 100%;
+  border: 0px solid rgba(123, 123, 123, 0.498039);
+  border-radius: 4px;
+  color: rgb(153, 153, 153);
+  line-height: 90px;
+  padding-left: 32px;
+  font-size: 24px;
+  font-weight: 400;
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 2px 0px;
+}

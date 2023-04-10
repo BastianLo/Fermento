@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+<script type="text/javascript" src="{% static 'custom/js/create_recipe.js' %}"></script>
+<script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
+
+{% endblock%}
+
+
+{% block content %}
+<h1 style="text-align: center">Create New Recipe</h1>
+<div class="card">
+    <h2>Informations</h2>
+    <form id="create-recipe-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+    
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description"></textarea>
+        </div>
+    
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" class="form-control-file" id="image" name="image">
+        </div>
+    
+        <div class="form-group">
+            <label for="difficulty">Difficulty</label>
+            <select class="form-control" id="difficulty" name="difficulty">
+                <option value="undefined">Undefined</option>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+    
+</div>
+
+    <h2 style="text-align: center">Processes</h2>
+
+    <div class="form-group" id="processes">
+        
+    </div>
+
+    <button class="btn btn-secondary" type="button" onclick="addProcess()">Add Process</button>
+
+    <button type="button" onclick="createRecipe()" class="btn btn-primary">Create Recipe</button>
+</form>
+{% endblock %}

@@ -2,6 +2,7 @@ from django.db import models
 from datetime import timedelta
 from django.db.models import Sum
 import math
+from image_cropping import ImageRatioField, ImageCropField
 
 # Create your models here.
 
@@ -16,7 +17,8 @@ class recipe(models.Model):
     owner = models.ForeignKey('auth.User', related_name='recipe_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    image = models.ImageField(upload_to='images/')
+    image = ImageCropField(upload_to='images/')
+    cropping = ImageRatioField('image', '600x400')
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
 
     def get_total_work_duration(self):
