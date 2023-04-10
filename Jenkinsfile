@@ -19,9 +19,9 @@ pipeline {
             steps {
                 script {
                     sh 'docker login --username=$DOCKERHUB_COMMON_CREDS_USR --password=$DOCKERHUB_COMMON_CREDS_PSW'
-                    sh 'docker tag fermento: $BUILD_ID bastianlo / fermento: $BUILD_ID'
-                    sh 'docker tag fermento: $BUILD_ID bastianlo / fermento: latest'
-                    sh 'docker push bastianlo / fermento '''
+                    sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:$BUILD_ID'
+                    sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
+                    sh 'docker push bastianlo/fermento'
                 }
             }
         }
