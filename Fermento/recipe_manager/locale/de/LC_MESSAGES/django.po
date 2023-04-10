@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-08 15:35+0200\n"
+"POT-Creation-Date: 2023-04-10 01:08+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,29 +22,63 @@ msgstr ""
 msgid "difficulty"
 msgstr "Schwierigkeit"
 
-#: templates/recipe_manager/recipe.html:55
+#: templates/recipe_manager/recipe.html:56
 msgid "preparation"
 msgstr "Vorbereitung"
 
-#: templates/recipe_manager/recipe.html:69
+#: templates/recipe_manager/recipe.html:71
 msgid "total"
 msgstr "Gesamt"
 
-#: templates/recipe_manager/recipe.html:96
+#: templates/recipe_manager/recipe.html:116
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: templates/recipe_manager/recipe.html:110
+#: templates/recipe_manager/recipe.html:130
 msgid "noIngredients"
 msgstr "Dieser Prozess benötigt keine Zutaten!"
 
-#: templates/recipe_manager/recipe.html:114
+#: templates/recipe_manager/recipe.html:135
+msgid "Timeschedule"
+msgstr "Zeitplan"
+
+#: templates/recipe_manager/recipe.html:141
+msgid "nonRecurring"
+msgstr "Einmalig"
+
+#: templates/recipe_manager/recipe.html:143
+msgid "repetitive"
+msgstr "Wiederholend"
+
+#: templates/recipe_manager/recipe.html:146
+msgid "Executions"
+msgstr "Ausführungen"
+
+#: templates/recipe_manager/recipe.html:154
+msgid "onceAfter"
+msgstr "Einmal nach"
+
+#: templates/recipe_manager/recipe.html:158
+msgid "immediately"
+msgstr "Sofort"
+
+#: templates/recipe_manager/recipe.html:162
+msgid "startAfter"
+msgstr "Start"
+
+#: templates/recipe_manager/recipe.html:166
+msgid "FrequencyEvery"
+msgstr "Frequenz"
+
+#: templates/recipe_manager/recipe.html:170
+msgid "end"
+msgstr "Ende"
+
+#: templates/recipe_manager/recipe.html:181
 msgid "process_steps"
 msgstr "Arbeitsschritte"
 
-#: templates/recipe_manager/recipe.html:128
+#: templates/recipe_manager/recipe.html:195
 msgid "noProcessSteps"
 msgstr "Dieser Prozess benötigt keine Arbeitsschritte!"
 
-#~ msgid "description"
-#~ msgstr "Beschreibung"

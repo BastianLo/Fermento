@@ -161,3 +161,10 @@ CORS_ORIGIN_WHITELIST = [
     #'http://127.0.0.1:6733',
     os.getenv('APP_DOMAIN') if os.getenv('APP_DOMAIN') else 'http://127.0.0.1:6733',
 ]
+
+
+
+### Configuration values ###
+SHOW_EMPTY_PROCESS_CATEGORIES = False
+
+### End ###

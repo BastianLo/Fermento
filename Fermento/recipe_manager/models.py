@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import timedelta
 from django.db.models import Sum
+import math
 
 # Create your models here.
 
@@ -38,9 +39,6 @@ class process(models.Model):
     wait_duration = models.DurationField(default=timedelta(minutes=0))
     related_recipe = models.ForeignKey(recipe, on_delete=models.CASCADE)
 
-    #True, if this process only gets executed once and is not repeated
-    executed_once = models.BooleanField()
-
     def get_ingredients(self):
         return recipe_ingredient.objects.filter(related_process=self)
     def get_process_steps(self):
@@ -53,12 +51,19 @@ class process(models.Model):
 
 class process_schedule(models.Model):
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
+    #True, if this process only gets executed once and is not repeated
+    executed_once = models.BooleanField()
     #Time from batch start, when the schedule starts
     start_time = models.DurationField(default=timedelta(minutes=0))
     #Time from batch start, when the schedule ends
     end_time = models.DurationField(default=timedelta(minutes=0))
     #How often the process gets triggered
     wait_time = models.DurationField(default=timedelta(minutes=0))
+
+    def get_total_execution_count(self):
+        if self.executed_once:
+            return 1
+        return math.floor((self.end_time - self.start_time)/self.wait_time)
 
 class recipe_ingredient(models.Model):
     id = models.AutoField(primary_key=True)

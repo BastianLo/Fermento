@@ -5,7 +5,7 @@ from django.http import HttpResponse, Http404
 from django.template import loader
 from .models import *
 from django.contrib.auth.decorators import login_required
-
+from django.conf import settings
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -26,6 +26,7 @@ def recipe_by_id(request, recipe_id):
         raise Http404("Recipe does not exist")
     context = {
         "recipe": selected_recipe,
+        "show_empty_process_categories": settings.SHOW_EMPTY_PROCESS_CATEGORIES,
     }
     return HttpResponse(template.render(context, request))
 

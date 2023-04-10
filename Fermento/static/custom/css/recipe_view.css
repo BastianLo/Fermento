@@ -9,27 +9,6 @@
         border-right: 1px solid rgba(255, 255, 255, 0.25);
     }
 }
-
-ol,
-li {
-    margin: 0;
-    padding: 0;
-}
-
 ol {
-    counter-reset: list;
-    display: table;
-}
-
-li {
-    list-style: none;
-    counter-increment: list;
-    display: table-row;
-}
-
-li::before {
-    content: counter(list) ".";
-    display: table-cell;
-    text-align: right;
-    padding-right: 1em;
-}
+    list-style-position: outside;
+  }

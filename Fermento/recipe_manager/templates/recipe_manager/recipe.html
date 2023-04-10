@@ -89,28 +89,93 @@
     {% for process in recipe.get_processes%}
     <div class="card">
         <div class="row row-eq-spacing-lg border-bottom">
-            <div class="col-lg-12">
+            <div class="col-lg-2">
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <img width="32px" height="32px" src="{% static 'img/hourglass.png' %}" alt="...">
+                        </div>
+                        <div class="col-lg-6">
+                            <div>
+                                <i><span>{{ process.work_duration|duration }}</span></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
                 <h1 class="text-center">{{ process.name }}</h1>
+            </div>
+            <div class="col-lg-2">
             </div>
         </div>
         <div class="row row-eq-spacing-lg">
             <div class="col-lg-4 separation-border">
-                <h2>{% trans "Ingredients" %}</h2>
-                {% if process.get_ingredients %}
-                <ul class="list-group">
-                    {% for ingredient in process.get_ingredients %}
-                    <div class="custom-checkbox mb-5">
-                        <input type="checkbox" id="checkbox-ingredient-{{ ingredient.id }}" value="">
-                        <label for="checkbox-ingredient-{{ ingredient.id }}">
-                            <span class="font-weight-bold">{{ingredient.amount|floatformat}}</span>
-                            <span>{{ingredient.unit}}</span>
-                            <span class="font-weight-bold">{{ ingredient.name }}</span></label>
-                    </div>
-                    {% endfor %}
-                </ul>
-                {% else %}
-                <b>{% trans "noIngredients" %}</b>
+                {% if process.get_ingredients or show_empty_process_categories %}
+                <div class="border-bottom">
+                    <h2>{% trans "Ingredients" %}</h2>
+                    {% if process.get_ingredients %}
+                    <ul class="list-group">
+                        {% for ingredient in process.get_ingredients %}
+                        <div class="custom-checkbox mb-5">
+                            <input type="checkbox" id="checkbox-ingredient-{{ ingredient.id }}" value="">
+                            <label for="checkbox-ingredient-{{ ingredient.id }}">
+                                <span class="font-weight-bold">{{ingredient.amount|floatformat}}</span>
+                                <span>{{ingredient.unit}}</span>
+                                <span class="font-weight-bold">{{ ingredient.name }}</span></label>
+                        </div>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <b>{% trans "noIngredients" %}</b>
+                    {% endif %}
+                </div>
                 {% endif %}
+                <div>
+                    <h2>{% trans "Timeschedule" %}</h2>
+                    {% for schedule in process.get_process_schedule %}
+                    <details class="collapse-panel w-400 mw-full">
+                        <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+                        <summary class="collapse-header">
+                            {% if schedule.executed_once %}
+                            <strong>{% trans "nonRecurring" %}</strong>
+                            {% else %}
+                            <strong>{% trans "repetitive" %}</strong>
+                            {% endif %}
+                            <br />
+                            <span class="text-muted">{% trans "Executions" %}:
+                                {{schedule.get_total_execution_count}}</span>
+                        </summary>
+                        <div class="collapse-content">
+                            <ul>
+                                {% if schedule.executed_once %}
+                                {% if schedule.start_time %}
+                                <li>
+                                    <span>{% trans "onceAfter" %}</span>
+                                    <span class="font-weight-bold">{{schedule.start_time|duration}}</span>
+                                </li>
+                                {% else %}
+                                <li>{% trans "immediately" %}</li>
+                                {% endif %}
+                                {% else %}
+                                <li>
+                                    <span>{% trans "startAfter" %}: </span>
+                                    <span class="font-weight-bold">{{schedule.start_time|duration}}</span>
+                                </li>
+                                <li>
+                                    <span>{% trans "FrequencyEvery" %}: </span>
+                                    <span class="font-weight-bold">{{ schedule.wait_time|duration }}</span>
+                                </li>
+                                <li>
+                                    <span>{% trans "end" %}: </span>
+                                    <span class="font-weight-bold">{{schedule.end_time|duration}}</span>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </details>
+                    {% endfor %}
+                </div>
             </div>
             <div class="col-lg-8">
                 <h2>{% trans "process_steps" %}</h2>
