@@ -165,3 +165,4 @@ cython_debug/
 media/
 staticfiles
 dev_container_data/
+.idea/

@@ -1,22 +1,22 @@
-var _el;
+let shadow;
 
-function dragOver(e) {
-    if (isBefore(_el, e.target))
-        e.target.parentNode.insertBefore(_el, e.target);
+function dragit(event) {
+    shadow = event.target.parentNode;
+}
+
+function dragover(e) {
+    let children = Array.from(e.target.parentNode.parentNode.children);
+    if (children.indexOf(e.target.parentNode) > children.indexOf(shadow))
+        e.target.parentNode.after(shadow);
     else
-        e.target.parentNode.insertBefore(_el, e.target.nextSibling);
+        e.target.parentNode.before(shadow);
 }
 
-function dragStart(e) {
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", null); // Thanks to bqlou for their comment.
-    _el = e.target;
-}
+let tdElements = document.querySelectorAll("tbody td:last-child");
 
-function isBefore(el1, el2) {
-    if (el2.parentNode === el1.parentNode)
-        for (var cur = el1.previousSibling; cur && cur.nodeType !== 9; cur = cur.previousSibling)
-            if (cur === el2)
-                return true;
-    return false;
+for (let td of tdElements) {
+    td.setAttribute("draggable", true);
+    td.addEventListener("dragstart", dragit);
+    td.addEventListener("dragover", dragover);
+    td.style.cursor = "pointer";
 }

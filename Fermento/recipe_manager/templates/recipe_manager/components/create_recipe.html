@@ -2,10 +2,13 @@
 {% load static %}
 
 {% block header %}
-<script type="text/javascript" src="{% static 'custom/js/create_recipe.js' %}"></script>
 <script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
+<script type="text/javascript" src="{% static 'custom/js/create_recipe.js' %}"></script>
 
-{% endblock%}
+<link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
+
+
+{% endblock %}
 
 
 {% block content %}
@@ -39,17 +42,20 @@
                 <option value="hard">Hard</option>
             </select>
         </div>
-    
+
+    </form>
 </div>
+<div>
 
     <h2 style="text-align: center">Processes</h2>
 
     <div class="form-group" id="processes">
-        
+
     </div>
 
     <button class="btn btn-secondary" type="button" onclick="addProcess()">Add Process</button>
 
-    <button type="button" onclick="createRecipe()" class="btn btn-primary">Create Recipe</button>
-</form>
+</div>
+<button type="button" onclick="createRecipe()" class="btn btn-primary">Create Recipe</button>
+
 {% endblock %}

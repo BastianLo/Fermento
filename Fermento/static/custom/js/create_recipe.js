@@ -4,26 +4,17 @@ function addIngredient(processNum) {
     var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
 
     // Create a new ingredient element
-    var newIngredient = document.createElement('div');
+    var newIngredient = document.createElement('tr');
+    //newIngredient.setAttribute("draggable", "true")
+    //newIngredient.setAttribute("ondragstart", "dragit(event)")
+    //newIngredient.setAttribute("ondragover", "dragover(event)")
 
     // Add the HTML for the new ingredient
     newIngredient.innerHTML = `
-        <li style="list-style-position: outside;" draggable="true" ondragover="dragOver(event)" ondragstart="dragStart(event)">
-            <div class="ingredient row">
-                <div class="col-lg-4">
-                    <label for="ingredient-name-${processNum}-${numIngredients}">Name</label>
-                    <input type="text" class="form-control" id="ingredient-name-${processNum}-${numIngredients}" name="ingredient-name-${processNum}-${numIngredients}">
-                </div>
-                <div class="col-lg-4">
-                    <label for="ingredient-amount-${processNum}-${numIngredients}">Amount</label>
-                    <input type="number" class="form-control" id="ingredient-amount-${processNum}-${numIngredients}" name="ingredient-amount-${processNum}-${numIngredients}">
-                </div>
-                <div class="col-lg-4">
-                    <label for="ingredient-unit-${processNum}-${numIngredients}">Unit</label>
-                    <input type="text" class="form-control" id="ingredient-unit-${processNum}-${numIngredients}" name="ingredient-unit-${processNum}-${numIngredients}">
-                </div>
-            </div>
-        </li>
+    <th><input type="text" class="form-control" id="ingredient-name-${processNum}-${numIngredients}" name="ingredient-name-${processNum}-${numIngredients}"></input></th>
+    <th><input type="number" class="form-control" id="ingredient-amount-${processNum}-${numIngredients}" name="ingredient-amount-${processNum}-${numIngredients}"></input></th>
+    <th><input type="text" class="form-control" id="ingredient-unit-${processNum}-${numIngredients}" name="ingredient-unit-${processNum}-${numIngredients}"></input></th>
+    <td draggable="true"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
     `;
 
     // Append the new ingredient to the ingredients container
@@ -56,7 +47,17 @@ function addProcess() {
         <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">Add Process Step</button>
 
         <h3>Ingredients</h3>
-
+        <table class="table sortable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody id="process-ingredients-${numProcesses}">
+            </tbody>
+        </table>
         <ol>
             <div class="form-group" id="process-ingredients-${numProcesses}">
                 
@@ -128,7 +129,7 @@ function createRecipe() {
             const ingredientUnit = processIngredientElements[i].querySelector(
                 'input[name^="ingredient-unit"]'
             ).value;
-    
+
             processIngredients.push({
                 name: ingredientName,
                 amount: ingredientAmount,
