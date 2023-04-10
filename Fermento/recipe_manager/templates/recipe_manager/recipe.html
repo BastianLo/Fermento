@@ -90,18 +90,6 @@
     <div class="card">
         <div class="row row-eq-spacing-lg border-bottom">
             <div class="col-lg-2">
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <img width="32px" height="32px" src="{% static 'img/hourglass.png' %}" alt="...">
-                        </div>
-                        <div class="col-lg-6">
-                            <div>
-                                <i><span>{{ process.work_duration|duration }}</span></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="col-lg-8">
                 <h1 class="text-center">{{ process.name }}</h1>
@@ -123,6 +111,24 @@
                                 <span class="font-weight-bold">{{ingredient.amount|floatformat}}</span>
                                 <span>{{ingredient.unit}}</span>
                                 <span class="font-weight-bold">{{ ingredient.name }}</span></label>
+                        </div>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <b>{% trans "noIngredients" %}</b>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% if process.get_utensils or show_empty_process_categories %}
+                <div class="border-bottom">
+                    <h2>{% trans "Utensils" %}</h2>
+                    {% if process.get_utensils %}
+                    <ul class="list-group">
+                        {% for utensil in process.get_utensils %}
+                        <div class="custom-checkbox mb-5">
+                            <input type="checkbox" id="checkbox-utensil-{{ utensil.id }}" value="">
+                            <label for="checkbox-utensil-{{ utensil.id }}">
+                                <span>{{ utensil.name }}</span></label>
                         </div>
                         {% endfor %}
                     </ul>

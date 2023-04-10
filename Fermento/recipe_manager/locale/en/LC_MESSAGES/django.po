@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-10 01:08+0200\n"
+"POT-Creation-Date: 2023-04-10 09:05+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,54 +30,59 @@ msgstr "Preparation"
 msgid "total"
 msgstr "Total"
 
-#: templates/recipe_manager/recipe.html:116
+#: templates/recipe_manager/recipe.html:104
 msgid "Ingredients"
 msgstr "Ingredients"
 
-#: templates/recipe_manager/recipe.html:130
+#: templates/recipe_manager/recipe.html:118
+#: templates/recipe_manager/recipe.html:136
 msgid "noIngredients"
 msgstr "This process requires no ingredients!"
 
-#: templates/recipe_manager/recipe.html:135
+#: templates/recipe_manager/recipe.html:124
+msgid "Utensils"
+msgstr "Utensils"
+
+#: templates/recipe_manager/recipe.html:141
 msgid "Timeschedule"
 msgstr "Schedule"
 
-#: templates/recipe_manager/recipe.html:141
+#: templates/recipe_manager/recipe.html:147
 msgid "nonRecurring"
 msgstr "Non-Recurring"
 
-#: templates/recipe_manager/recipe.html:143
+#: templates/recipe_manager/recipe.html:149
 msgid "repetitive"
 msgstr "Repetitive"
 
-#: templates/recipe_manager/recipe.html:146
+#: templates/recipe_manager/recipe.html:152
 msgid "Executions"
 msgstr "Executions"
 
-#: templates/recipe_manager/recipe.html:154
+#: templates/recipe_manager/recipe.html:160
 msgid "onceAfter"
 msgstr "Once after"
 
-#: templates/recipe_manager/recipe.html:158
+#: templates/recipe_manager/recipe.html:164
 msgid "immediately"
 msgstr "Immediately"
 
-#: templates/recipe_manager/recipe.html:162
+#: templates/recipe_manager/recipe.html:168
 msgid "startAfter"
 msgstr "Start"
 
-#: templates/recipe_manager/recipe.html:166
+#: templates/recipe_manager/recipe.html:172
 msgid "FrequencyEvery"
 msgstr "Frequency"
 
-#: templates/recipe_manager/recipe.html:170
+#: templates/recipe_manager/recipe.html:176
 msgid "end"
 msgstr "End"
 
-#: templates/recipe_manager/recipe.html:181
+#: templates/recipe_manager/recipe.html:187
 msgid "process_steps"
 msgstr "Process steps"
 
-#: templates/recipe_manager/recipe.html:195
+#: templates/recipe_manager/recipe.html:201
 msgid "noProcessSteps"
 msgstr "This process requires no work steps!"

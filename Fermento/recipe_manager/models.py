@@ -29,7 +29,7 @@ class recipe(models.Model):
         return process.objects.filter(related_recipe=self)
     
     def __str__(self):
-        return  f"recipe_{self.id}_{self.name}"
+        return  f"Recipe_{self.id}_{self.name}"
 
 class process(models.Model):
     id = models.AutoField(primary_key=True)
@@ -41,15 +41,18 @@ class process(models.Model):
 
     def get_ingredients(self):
         return recipe_ingredient.objects.filter(related_process=self)
+    def get_utensils(self):
+        return utensils.objects.filter(related_process=self)
     def get_process_steps(self):
         return process_step.objects.filter(related_process=self)
     def get_process_schedule(self):
         return process_schedule.objects.filter(related_process=self)
 
     def __str__(self) -> str:
-        return f"{self.id}_{self.name}_{self.related_recipe}"
+        return f"Process_{self.id}_{self.name}_{self.related_recipe}"
 
 class process_schedule(models.Model):
+    id = models.AutoField(primary_key=True)
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     #True, if this process only gets executed once and is not repeated
     executed_once = models.BooleanField()
@@ -64,6 +67,9 @@ class process_schedule(models.Model):
         if self.executed_once:
             return 1
         return math.floor((self.end_time - self.start_time)/self.wait_time)
+    
+    def __str__(self):
+        return  f"ProcessSchedule{self.id}"
 
 class recipe_ingredient(models.Model):
     id = models.AutoField(primary_key=True)
@@ -74,7 +80,7 @@ class recipe_ingredient(models.Model):
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
 
     def __str__(self):
-        return  f"{self.id}_{self.amount}_{self.unit}_{self.name}"
+        return  f"RecipeIngredient_{self.id}_{self.amount}_{self.unit}_{self.name}"
 
 class process_step(models.Model):
     id = models.AutoField(primary_key=True)
@@ -82,5 +88,14 @@ class process_step(models.Model):
     index = models.IntegerField()
     text = models.CharField(max_length=1000)
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
+
     def __str__(self) -> str:
-        return f"{self.id}_{self.index}_{self.related_process}"
+        return f"ProcessStep_{self.id}_{self.index}_{self.related_process}"
+    
+class utensils(models.Model):
+    id = models.AutoField(primary_key=True)
+    related_process = models.ForeignKey(process, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    def __str__(self) -> str:
+        return f"Utensil_{self.id}"
