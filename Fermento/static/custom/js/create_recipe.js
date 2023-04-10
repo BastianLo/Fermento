@@ -50,11 +50,12 @@ function addProcess() {
                     <th>Description</th>
                 </tr>
             </thead>
-            <tbody id="process-steps-${numProcesses}">
+            <tbody class="process-step-body" id="process-steps-${numProcesses}">
             </tbody>
         </table>
+        <br/>
         <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">Add Process Step</button>
-
+        <br/><br/><br/>
         <h3>Ingredients</h3>
         <table class="table sortable">
             <thead>
@@ -67,11 +68,7 @@ function addProcess() {
             <tbody id="process-ingredients-${numProcesses}">
             </tbody>
         </table>
-        <ol>
-            <div class="form-group" id="process-ingredients-${numProcesses}">
-                
-            </div>
-        </ol>
+        <br/>
         <button class="btn btn-secondary" type="button" onclick="addIngredient(${numProcesses})">Add Ingredient</button>
     </div>
     `;
@@ -91,9 +88,9 @@ function addProcessStep(processNum) {
 
     // Add the HTML for the new process step
     newProcessStep.innerHTML = `
-        <td>1</td>
+        <td>${numProcessSteps +1}</td>
         <td><textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}"></textarea></td>
-        <td draggable="true"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
+        <td draggable="true" class="dragicon"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
 `;
 
     // Append the new process step to the process steps container for this process
