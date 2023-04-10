@@ -38,12 +38,21 @@ function addProcess() {
 
         <h3>Process Steps</h3>
 
-        <div class="form-group" id="process-steps-${numProcesses}">
-            <div class="process-step">
-                <label for="process-step-text-${numProcesses}-0">Text</label>
-                <textarea class="form-control" id="process-step-text-${numProcesses}-0" name="process-step-text-${numProcesses}-0"></textarea>
-            </div>
-        </div>
+        <table id="process-steps-${numProcesses}" class="table sortable">
+
+            <colgroup>
+                <col span="1" style="width: 5%;">
+                <col span="1" style="width: 90%;">
+                <col span="1" style="width: 5%;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody id="process-steps-${numProcesses}">
+            </tbody>
+        </table>
         <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">Add Process Step</button>
 
         <h3>Ingredients</h3>
@@ -77,14 +86,15 @@ function addProcessStep(processNum) {
     var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
 
     // Create a new process step element
-    var newProcessStep = document.createElement('div');
+    var newProcessStep = document.createElement('tr');
     newProcessStep.className = 'process-step';
 
     // Add the HTML for the new process step
     newProcessStep.innerHTML = `
-        <label for="process-step-text-${processNum}-${numProcessSteps}">Text</label>
-        <textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}"></textarea>
-    `;
+        <td>1</td>
+        <td><textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}"></textarea></td>
+        <td draggable="true"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
+`;
 
     // Append the new process step to the process steps container for this process
     var processStepsContainer = document.getElementById(`process-steps-${processNum}`);
