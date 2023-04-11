@@ -23,6 +23,7 @@ function addIngredient(processNum) {
 }
 
 function addProcess() {
+    console.log(gettext('Welcome to my site.'))
     // Find the number of existing processes
     var numProcesses = document.querySelectorAll('.process').length;
 

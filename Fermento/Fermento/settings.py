@@ -135,6 +135,7 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'Fermento', 'locale'),
     os.path.join(BASE_DIR, 'recipe_manager', 'locale'),
     os.path.join(BASE_DIR, 'templates', 'locale'),
+    os.path.join(BASE_DIR, 'static', 'custom', 'js', 'locale'),
 )
 
 # Static files (CSS, JavaScript, Images)
