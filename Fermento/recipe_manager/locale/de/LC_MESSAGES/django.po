@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-10 09:05+0200\n"
+"POT-Creation-Date: 2023-04-11 08:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,43 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: templates/recipe_manager/components/create_recipe.html:16
+msgid "createNewRecipe"
+msgstr "Erstelle neues Rezept"
+
+#: templates/recipe_manager/components/create_recipe.html:18
+msgid "basicInformations"
+msgstr "Basis-Informationen"
+
+#: templates/recipe_manager/components/create_recipe.html:23
+msgid "Name"
+msgstr "Name"
+
+#: templates/recipe_manager/components/create_recipe.html:28
+msgid "description"
+msgstr "Beschreibung"
+
+#: templates/recipe_manager/components/create_recipe.html:33
+msgid "Image"
+msgstr "Bild"
+
+#: templates/recipe_manager/components/create_recipe.html:38
 #: templates/recipe_manager/recipe.html:41
 msgid "difficulty"
 msgstr "Schwierigkeit"
+
+#: templates/recipe_manager/components/create_recipe.html:51
+msgid "Processes"
+msgstr "Prozesse"
+
+#: templates/recipe_manager/components/create_recipe.html:57
+msgid "AddProcess"
+msgstr "Process hinzufügen"
+
+#: templates/recipe_manager/components/create_recipe.html:60
+#: templates/recipe_manager/index.html:11
+msgid "createRecipe"
+msgstr "Rezept erstellen"
 
 #: templates/recipe_manager/recipe.html:56
 msgid "preparation"
@@ -86,3 +120,8 @@ msgstr "Arbeitsschritte"
 #: templates/recipe_manager/recipe.html:201
 msgid "noProcessSteps"
 msgstr "Dieser Prozess benötigt keine Arbeitsschritte!"
+
+#, fuzzy
+#~| msgid "difficulty"
+#~ msgid "Difficulty"
+#~ msgstr "Schwierigkeit"

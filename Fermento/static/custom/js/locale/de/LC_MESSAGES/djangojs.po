@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 08:22+0200\n"
+"POT-Creation-Date: 2023-04-11 13:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,40 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-#: custom/js/create_recipe.js:26
-msgid "Welcome to my site."
-msgstr "Wilkommen"
+
+#: custom/js/create_recipe.js:21 custom/js/create_recipe.js:75
+#: custom/js/create_recipe.js:97
+msgid "delete"
+msgstr "Löschen"
+
+#: custom/js/create_recipe.js:40 custom/js/create_recipe.js:64
+msgid "name"
+msgstr "Name"
+
+#: custom/js/create_recipe.js:43
+msgid "processSteps"
+msgstr "Prozess-Schritte"
+
+#: custom/js/create_recipe.js:49
+msgid "description"
+msgstr "Beschreibung"
+
+#: custom/js/create_recipe.js:58
+msgid "addProcessStep"
+msgstr "Prozess-Schritt hinzufügen"
+
+#: custom/js/create_recipe.js:60
+msgid "ingredients"
+msgstr "Zutaten"
+
+#: custom/js/create_recipe.js:65
+msgid "amount"
+msgstr "Menge"
+
+#: custom/js/create_recipe.js:66
+msgid "unit"
+msgstr "Einheit"
+
+#: custom/js/create_recipe.js:73
+msgid "addIngredient"
+msgstr "Zutat hinzufügen"

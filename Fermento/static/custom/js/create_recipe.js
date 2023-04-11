@@ -1,3 +1,9 @@
+function delete_parent(e) {
+    var t = e.parentNode.parentNode.parentNode
+    e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
+    refreshOrder(t)
+}
+
 function addIngredient(processNum) {
     // Find the number of existing ingredients
     var numIngredients = document.querySelectorAll('.ingredient').length;
@@ -5,9 +11,7 @@ function addIngredient(processNum) {
 
     // Create a new ingredient element
     var newIngredient = document.createElement('tr');
-    //newIngredient.setAttribute("draggable", "true")
-    //newIngredient.setAttribute("ondragstart", "dragit(event)")
-    //newIngredient.setAttribute("ondragover", "dragover(event)")
+    newIngredient.classList.add("ingredient")
 
     // Add the HTML for the new ingredient
     newIngredient.innerHTML = `
@@ -15,6 +19,7 @@ function addIngredient(processNum) {
     <th><input type="number" class="form-control" id="ingredient-amount-${processNum}-${numIngredients}" name="ingredient-amount-${processNum}-${numIngredients}"></input></th>
     <th><input type="text" class="form-control" id="ingredient-unit-${processNum}-${numIngredients}" name="ingredient-unit-${processNum}-${numIngredients}"></input></th>
     <td draggable="true"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
+    <td><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></td>
     `;
 
     // Append the new ingredient to the ingredients container
@@ -23,7 +28,6 @@ function addIngredient(processNum) {
 }
 
 function addProcess() {
-    console.log(gettext('Welcome to my site.'))
     // Find the number of existing processes
     var numProcesses = document.querySelectorAll('.process').length;
 
@@ -34,44 +38,43 @@ function addProcess() {
     // Add the HTML for the new process
     newProcess.innerHTML = `
     <div class="card">
-        <label for="process-name-${numProcesses}">Name</label>
+        <label for="process-name-${numProcesses}">${gettext("name")}</label>
         <input type="text" class="form-control" id="process-name-${numProcesses}" name="process-name-${numProcesses}">
 
-        <h3>Process Steps</h3>
+        <h3>${gettext("processSteps")}</h3>
 
-        <table id="process-steps-${numProcesses}" class="table sortable">
-
-            <colgroup>
-                <col span="1" style="width: 5%;">
-                <col span="1" style="width: 90%;">
-                <col span="1" style="width: 5%;">
-            </colgroup>
+        <table class="table sortable">
             <thead>
                 <tr>
-                    <th>Description</th>
+                    <th></th>
+                    <th style="width:90%">${gettext("description")}</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody class="process-step-body" id="process-steps-${numProcesses}">
             </tbody>
         </table>
         <br/>
-        <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">Add Process Step</button>
+        <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">${gettext("addProcessStep")}</button>
         <br/><br/><br/>
-        <h3>Ingredients</h3>
+        <h3>${gettext("ingredients")}</h3>
         <table class="table sortable">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
-                    <th>Unit</th>
+                    <th>${gettext("name")}</th>
+                    <th>${gettext("amount")}</th>
+                    <th>${gettext("unit")}</th>
                 </tr>
             </thead>
             <tbody id="process-ingredients-${numProcesses}">
             </tbody>
         </table>
         <br/>
-        <button class="btn btn-secondary" type="button" onclick="addIngredient(${numProcesses})">Add Ingredient</button>
-    </div>
+        <button class="btn btn-secondary" type="button" onclick="addIngredient(${numProcesses})">${gettext("addIngredient")}</button>
+        <br/><br/><br/><br/>
+        <button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button>
+        </div>
     `;
 
     // Append the new process to the processes container
@@ -92,7 +95,8 @@ function addProcessStep(processNum) {
         <td>${numProcessSteps +1}</td>
         <td><textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}"></textarea></td>
         <td draggable="true" class="dragicon"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
-`;
+        <td><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></td>
+        `;
 
     // Append the new process step to the process steps container for this process
     var processStepsContainer = document.getElementById(`process-steps-${processNum}`);
@@ -152,13 +156,12 @@ function createRecipe() {
         });
     }
 
-    // add ingredients and processes to formData
-    formData.append("ingredients", JSON.stringify(ingredients));
+    // add processes to formData
     formData.append("processes", JSON.stringify(processes));
 
     console.log(formData)
     // send form data to server
-    fetch("/create_recipe/", {
+    fetch("", {
             method: "POST",
             body: formData,
         })

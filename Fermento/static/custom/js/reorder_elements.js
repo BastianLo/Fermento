@@ -11,14 +11,17 @@ function dragover(e) {
     else
         e.target.parentNode.before(shadow);
 
-    let tableBody = e.target.parentNode.parentNode
+    refreshOrder(e.target)
+}
+
+function refreshOrder(e){
+    let tableBody = e.parentNode.parentNode
     // Get all the rows in the table body
     const rows = tableBody.querySelectorAll('tr.process-step');
     // Loop through all the rows and update their first column with the new index
     rows.forEach((row, index) => {
         // Get the first column cell of the row
         const firstCol = row.querySelector('td:first-child');
-        console.log(firstCol)
         // Update the text content of the first column with the new index
         firstCol.textContent = index + 1;
     });

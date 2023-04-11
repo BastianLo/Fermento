@@ -22,8 +22,10 @@ class recipe(models.Model):
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
 
     def get_total_work_duration(self):
-        return process.objects.filter(related_recipe=self).aggregate(Sum("work_duration"))["work_duration__sum"]
-    
+        if len(process.objects.filter(related_recipe=self)) > 0:
+            return process.objects.filter(related_recipe=self).aggregate(Sum("work_duration"))["work_duration__sum"]
+        else:
+            return timedelta(minutes=0)
     def get_total_wait_duration(self):
         return process.objects.filter(related_recipe=self).aggregate(Sum("wait_duration"))["wait_duration"]
     

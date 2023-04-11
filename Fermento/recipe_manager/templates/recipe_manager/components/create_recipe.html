@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load i18n %}
 
 {% block header %}
 <script src="{% url 'javascript-catalog' %}"></script>
@@ -13,29 +14,29 @@
 
 
 {% block content %}
-<h1 style="text-align: center">Create New Recipe</h1>
+<h1 style="text-align: center">{% trans "createNewRecipe" %}</h1>
 <div class="card">
-    <h2>Basic Informations</h2>
+    <h2>{% trans "basicInformations" %}</h2>
     <form id="create-recipe-form" method="post" enctype="multipart/form-data">
         {% csrf_token %}
     
         <div class="form-group">
-            <label for="name">Name</label>
+            <label for="name">{% trans "Name" %}</label>
             <input type="text" class="form-control" id="name" name="name">
         </div>
     
         <div class="form-group">
-            <label for="description">Description</label>
+            <label for="description">{% trans "description" %}</label>
             <textarea class="form-control" id="description" name="description"></textarea>
         </div>
     
         <div class="form-group">
-            <label for="image">Image</label>
+            <!--<label for="image">{% trans "Image" %}</label> -->
             <input type="file" class="form-control-file" id="image" name="image">
         </div>
     
         <div class="form-group">
-            <label for="difficulty">Difficulty</label>
+            <label for="difficulty">{% trans "difficulty" %}</label>
             <select class="form-control" id="difficulty" name="difficulty">
                 <option value="undefined">Undefined</option>
                 <option value="easy">Easy</option>
@@ -48,15 +49,16 @@
 </div>
 <div>
 
-    <h2 style="text-align: center">Processes</h2>
+    <h2 style="text-align: center">{% trans "Processes" %}</h2>
 
     <div class="form-group" id="processes">
 
     </div>
 
-    <button class="btn btn-secondary" type="button" onclick="addProcess()">Add Process</button>
+    <button class="btn btn-secondary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
 
 </div>
-<button type="button" onclick="createRecipe()" class="btn btn-primary">Create Recipe</button>
+<br/>
+<button type="button" onclick="createRecipe()" class="btn btn-primary">{% trans "createRecipe" %}</button>
 
 {% endblock %}
