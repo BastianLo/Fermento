@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
-from .models import *
+from .models import recipe, process, process_schedule, process_step, utensils, recipe_ingredient, timedelta
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import JsonResponse
@@ -23,7 +23,6 @@ def recipe_by_id(request, recipe_id):
     if selected_recipe:
         template = loader.get_template("recipe_manager/recipe.html")
     else:
-        template = loader.get_template("recipe_manager/recipe_notfound_error.html")
         raise Http404("Recipe does not exist")
     context = {
         "recipe": selected_recipe,
@@ -45,7 +44,6 @@ def recipe_create(request):
         return recipe_create_post(request)
 
 def recipe_create_get(request):
-    uid = request.session['_auth_user_id']
     template = loader.get_template("recipe_manager/components/create_recipe.html")
     context = {
     }
@@ -107,17 +105,18 @@ def recipe_create_post(request):
 
 
 def not_found(request, e):
+    print(e)
     return render(request, "recipe_manager/recipe_notfound_error.html")
 
 
-def _input_to_deltatime(inputString):
+def _input_to_deltatime(input_string):
     total_minutes = 0
-    if len(inputString.split(" ")) > 1:
-        days = inputString.split(" ")[0]
-        time = inputString.split(" ")[1]
+    if len(input_string.split(" ")) > 1:
+        days = input_string.split(" ")[0]
+        time = input_string.split(" ")[1]
         total_minutes += (int(days) * 24 * 60)
     else:
-        time = inputString.split(" ")[0]
+        time = input_string.split(" ")[0]
     hours = int(time.split(":")[0])
     minutes = int(time.split(":")[1])
     total_minutes += hours * 60

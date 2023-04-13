@@ -6,6 +6,7 @@ from image_cropping import ImageRatioField, ImageCropField
 
 # Create your models here.
 
+USER_FOREIGN_KEY = "auth.User"
 class recipe(models.Model):
     class recipe_difficulty(models.TextChoices):
         undefined = 'undefined'
@@ -14,7 +15,7 @@ class recipe(models.Model):
         hard = 'hard'
 
     id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey('auth.User', related_name='recipe_user', on_delete=models.CASCADE)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='recipe_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
     image = ImageCropField(upload_to='images/')
@@ -37,7 +38,7 @@ class recipe(models.Model):
 
 class process(models.Model):
     id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey('auth.User', related_name='process_user', on_delete=models.CASCADE)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='process_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     work_duration = models.DurationField(default=timedelta(minutes=0))
     wait_duration = models.DurationField(default=timedelta(minutes=0))
@@ -79,7 +80,7 @@ class process_schedule(models.Model):
 
 class recipe_ingredient(models.Model):
     id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey('auth.User', related_name='recipe_ingredient_user', on_delete=models.CASCADE)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='recipe_ingredient_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     amount = models.DecimalField(decimal_places=1, max_digits=7)
     unit = models.CharField(max_length=20)
@@ -90,7 +91,7 @@ class recipe_ingredient(models.Model):
 
 class process_step(models.Model):
     id = models.AutoField(primary_key=True)
-    owner = models.ForeignKey('auth.User', related_name='process_step_user', on_delete=models.CASCADE)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='process_step_user', on_delete=models.CASCADE)
     index = models.IntegerField()
     text = models.CharField(max_length=1000)
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
