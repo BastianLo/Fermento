@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 20:55+0200\n"
+"POT-Creation-Date: 2023-04-13 21:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,10 +51,18 @@ msgstr "Prozesse"
 msgid "AddProcess"
 msgstr "Process hinzufügen"
 
-#: templates/recipe_manager/components/create_recipe.html:62
+#: templates/recipe_manager/components/create_recipe.html:66
 #: templates/recipe_manager/index.html:11
 msgid "createRecipe"
 msgstr "Rezept erstellen"
+
+#: templates/recipe_manager/components/create_recipe.html:67
+msgid "discardChanges"
+msgstr "Änderungen verwerfen"
+
+#: templates/recipe_manager/components/create_recipe.html:67
+msgid "cancel"
+msgstr "Abbrechen"
 
 #: templates/recipe_manager/recipe.html:56
 msgid "preparation"

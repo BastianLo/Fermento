@@ -55,11 +55,15 @@
 
     </div>
 
-    <button class="btn btn-secondary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
+    <button class="btn btn-primary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
 
 </div>
 <br />
-<button type="button" onclick="createRecipe()" class="btn btn-primary">{% trans "createRecipe" %}</button>
 
 {% endblock %}
 
+{% block footer %}
+<button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "createRecipe" %}</button>
+<a href="../" class="btn btn-danger" onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
+
+{% endblock footer %}

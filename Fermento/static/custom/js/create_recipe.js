@@ -98,7 +98,7 @@ function addProcess() {
             </tbody>
         </table>
         <br/>
-        <button class="btn btn-secondary" type="button" onclick="addProcessStep(${numProcesses})">${gettext("addProcessStep")}</button>
+        <button class="btn btn-primary" type="button" onclick="addProcessStep(${numProcesses})">${gettext("addProcessStep")}</button>
         <br/><br/><br/>
         <h3>${gettext("ingredients")}</h3>
         <table class="table sortable">
@@ -113,7 +113,7 @@ function addProcess() {
             </tbody>
         </table>
         <br/>
-        <button class="btn btn-secondary" type="button" onclick="addIngredient(${numProcesses})">${gettext("addIngredient")}</button>
+        <button class="btn btn-primary" type="button" onclick="addIngredient(${numProcesses})">${gettext("addIngredient")}</button>
         <br/><br/><br/>
 
         <h3>${gettext("utils")}</h3>
@@ -127,7 +127,7 @@ function addProcess() {
             </tbody>
         </table>
         <br/>
-        <button class="btn btn-secondary" type="button" onclick="addUtil(${numProcesses})">${gettext("addUtil")}</button>
+        <button class="btn btn-primary" type="button" onclick="addUtil(${numProcesses})">${gettext("addUtil")}</button>
         <br/><br/><br/>
 
         <h3>${gettext("schedules")}</h3>
@@ -139,7 +139,6 @@ function addProcess() {
                         <th>${gettext("startTime")}</th>
                         <th>${gettext("frequency")}</th>
                         <th>${gettext("endTime")}</th>
-                        <th>${gettext("endTime")}</th>
                     </tr>
                 </thead>
                 <tbody id="process-schedule-${numProcesses}">
@@ -147,7 +146,7 @@ function addProcess() {
             </table>
         </div>
         <br/>
-        <button class="btn btn-secondary" type="button" onclick="addSchedule(${numProcesses})">${gettext("addSchedule")}</button>
+        <button class="btn btn-primary" type="button" onclick="addSchedule(${numProcesses})">${gettext("addSchedule")}</button>
 
         <br/><br/><br/><br/>
         <button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button>
