@@ -62,6 +62,8 @@ def recipe_create_post(request):
 
     processes = json.loads(request.POST.dict()["processes"])
     for p in processes:
+        print(p["utils"])
+        print(p["ingredients"])
         new_process = process()
         new_process.owner = o
         new_process.name = p["name"]
@@ -71,7 +73,7 @@ def recipe_create_post(request):
             new_ingredient = recipe_ingredient()
             new_ingredient.name = i["name"]
             new_ingredient.amount = i["amount"]
-            new_ingredient.unit = i["amount"]
+            new_ingredient.unit = i["unit"]
             new_ingredient.owner = o
             new_ingredient.related_process = new_process
             new_ingredient.save()
@@ -82,9 +84,34 @@ def recipe_create_post(request):
             new_step.index = count
             new_step.related_process = new_process
             new_step.save()
+        for s in p["schedules"]:
+            new_schedule = process_schedule()
+            new_schedule.related_process = new_process
+            new_schedule.executed_once = s["runOnce"]
+            new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
+            new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))
+            new_schedule.end_time = timedelta(minutes=_input_to_deltatime(s["end"]))
+            new_schedule.save()
     
-    return JsonResponse({'status':'success'})
+    return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
 
 
 def not_found(request, e):
     return render(request, "recipe_manager/recipe_notfound_error.html")
+
+
+def _input_to_deltatime(inputString):
+    total_minutes = 0
+    if len(inputString.split(" ")) > 1:
+        days = inputString.split(" ")[0]
+        time = inputString.split(" ")[1]
+        total_minutes += (int(days) * 24 * 60)
+    else:
+        time = inputString.split(" ")[0]
+    hours = int(time.split(":")[0])
+    minutes = int(time.split(":")[1])
+    total_minutes += hours * 60
+    total_minutes += minutes
+    return total_minutes
+
+    

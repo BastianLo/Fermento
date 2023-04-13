@@ -70,6 +70,8 @@ class process_schedule(models.Model):
     def get_total_execution_count(self):
         if self.executed_once:
             return 1
+        if not self.end_time:
+            return "∞"
         return math.floor((self.end_time - self.start_time)/self.wait_time)
     
     def __str__(self):

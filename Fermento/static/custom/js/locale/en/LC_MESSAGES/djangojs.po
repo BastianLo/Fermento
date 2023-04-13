@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-11 13:21+0200\n"
+"POT-Creation-Date: 2023-04-13 15:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,39 +18,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: custom/js/create_recipe.js:21 custom/js/create_recipe.js:75
-#: custom/js/create_recipe.js:97
+#: custom/js/create_recipe.js:22 custom/js/create_recipe.js:44
+#: custom/js/create_recipe.js:119 custom/js/create_recipe.js:141
 msgid "delete"
 msgstr "Delete"
 
-#: custom/js/create_recipe.js:40 custom/js/create_recipe.js:64
+#: custom/js/create_recipe.js:63 custom/js/create_recipe.js:87
 msgid "name"
 msgstr "Name"
 
-#: custom/js/create_recipe.js:43
+#: custom/js/create_recipe.js:66
 msgid "processSteps"
 msgstr "Process Steps"
 
-#: custom/js/create_recipe.js:49
+#: custom/js/create_recipe.js:72
 msgid "description"
 msgstr "Description"
 
-#: custom/js/create_recipe.js:58
+#: custom/js/create_recipe.js:81
 msgid "addProcessStep"
 msgstr "Add process step"
 
-#: custom/js/create_recipe.js:60
+#: custom/js/create_recipe.js:83
 msgid "ingredients"
 msgstr "Ingredients"
 
-#: custom/js/create_recipe.js:65
+#: custom/js/create_recipe.js:88
 msgid "amount"
 msgstr "Amount"
 
-#: custom/js/create_recipe.js:66
+#: custom/js/create_recipe.js:89
 msgid "unit"
 msgstr "Unit"
 
-#: custom/js/create_recipe.js:73
+#: custom/js/create_recipe.js:96
 msgid "addIngredient"
 msgstr "Add Ingredient"
+
+#: custom/js/create_recipe.js:99
+msgid "schedules"
+msgstr "Schedules"
+
+#: custom/js/create_recipe.js:104
+msgid "runOnce"
+msgstr "Run once"
+
+#: custom/js/create_recipe.js:105
+msgid "startTime"
+msgstr "Start time"
+
+#: custom/js/create_recipe.js:106
+msgid "frequency"
+msgstr "Frequency"
+
+#: custom/js/create_recipe.js:107 custom/js/create_recipe.js:108
+msgid "endTime"
+msgstr "End time"
+
+#: custom/js/create_recipe.js:116
+msgid "addSchedule"
+msgstr "Add Schedule"
