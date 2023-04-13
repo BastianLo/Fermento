@@ -1,6 +1,4 @@
-from django.shortcuts import render
-
-# Create your views here.
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 from django.template import loader
 from .models import *
@@ -32,6 +30,12 @@ def recipe_by_id(request, recipe_id):
         "show_empty_process_categories": settings.SHOW_EMPTY_PROCESS_CATEGORIES,
     }
     return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/accounts/login/')
+def delete_recipe_by_id(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    recipe.objects.filter(id=recipe_id, owner=uid).first().delete()
+    return redirect(index)
 
 @login_required(login_url='/accounts/login/')
 def recipe_create(request):

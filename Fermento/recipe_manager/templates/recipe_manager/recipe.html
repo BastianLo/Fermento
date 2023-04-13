@@ -207,3 +207,8 @@
 </div>
 
 {% endblock %}
+
+{% block footer %}
+<button class="btn btn-primary mr-10" type="button" onclick="location.href='edit'">{% trans "editRecipe" %}</button>
+<a href="delete" class="btn btn-danger" onclick="return confirm('{% trans "deleteConfirmation" %}')">{% trans "deleteRecipe" %}</a>
+{% endblock %}
