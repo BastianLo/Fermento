@@ -3,9 +3,11 @@
 {% load i18n %}
 
 {% block header %}
+{% block edit_block %}
+{% endblock edit_block %}
 <script src="{% url 'javascript-catalog' %}"></script>
 <script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
-<script type="text/javascript" src="{% static 'custom/js/create_recipe.js' %}"></script>
+<script type="text/javascript" defer src="{% static 'custom/js/create_recipe.js' %}"></script>
 
 <link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
 

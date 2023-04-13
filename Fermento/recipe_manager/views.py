@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.core import serializers
 import json
-
 @login_required(login_url='/accounts/login/')
 def index(request):
     recipes = recipe.objects.filter(owner=request.session['_auth_user_id'])
@@ -35,6 +35,17 @@ def delete_recipe_by_id(request, recipe_id):
     uid = request.session['_auth_user_id']
     recipe.objects.filter(id=recipe_id, owner=uid).first().delete()
     return redirect(index)
+
+@login_required(login_url='/accounts/login/')
+def edit_recipe_by_id(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    selected_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
+    template = loader.get_template("recipe_manager/components/edit_recipe.html")
+    context = {
+        "recipe": selected_recipe,
+        "recipe_json": serializers.serialize('json', [ selected_recipe, ])
+    }
+    return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/accounts/login/')
 def recipe_create(request):

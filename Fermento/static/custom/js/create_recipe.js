@@ -1,3 +1,13 @@
+
+initialize_edit_fields()
+
+function initialize_edit_fields(){
+    document.getElementById(`name`).value = edit_recipe[0]["fields"]["name"]
+    document.getElementById(`description`).value = edit_recipe[0]["fields"]["description"]
+    document.getElementById(`difficulty`).value = edit_recipe[0]["fields"]["difficulty"]
+}
+
+
 function delete_parent(e) {
     var t = e.parentNode.parentNode.parentNode
     e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);

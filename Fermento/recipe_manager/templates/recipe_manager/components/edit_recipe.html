@@ -1,0 +1,10 @@
+{% extends 'recipe_manager/components/create_recipe.html' %}
+{% load static %}
+{% load i18n %}
+
+
+{% block edit_block %}
+<script>
+    var edit_recipe = {{recipe_json|safe}}
+</script>
+{% endblock edit_block %}
