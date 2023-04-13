@@ -72,8 +72,6 @@ The Application is now correctly installed and can be run
 python3 Fermento/Fermento/manage.py runserver
 ```
 
-End with an example of getting some data out of the system or using it for a little demo.
-
 ## 🔧 Running the tests <a name = "tests"></a>
 WIP
 
