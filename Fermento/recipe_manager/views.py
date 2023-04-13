@@ -81,6 +81,12 @@ def recipe_create_post(request):
             new_ingredient.owner = o
             new_ingredient.related_process = new_process
             new_ingredient.save()
+        for i in p["utils"]:
+            new_util = utensils()
+            new_util.name = i["name"]
+            new_util.owner = o
+            new_util.related_process = new_process
+            new_util.save()
         for count, ps in enumerate(p["steps"]):
             new_step = process_step()
             new_step.text = ps["text"]
