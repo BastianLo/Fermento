@@ -5,93 +5,120 @@ function initialize_edit_fields(){
     document.getElementById(`name`).value = edit_recipe[0]["fields"]["name"]
     document.getElementById(`description`).value = edit_recipe[0]["fields"]["description"]
     document.getElementById(`difficulty`).value = edit_recipe[0]["fields"]["difficulty"]
+    let count = 0
+    edit_processes.forEach(process => {
+        process["ingredients"] = JSON.parse(process["ingredients"])
+        process["process_steps"] = JSON.parse(process["process_steps"])
+        process["utils"] = JSON.parse(process["utils"])
+        process["schedule"] = JSON.parse(process["schedule"])
+        createProcess(process["fields"]["name"])
+        process["ingredients"].forEach(ingredient => createIngredient(count, ingredient["fields"]["name"], ingredient["fields"]["amount"], ingredient["fields"]["unit"]))
+        process["utils"].forEach(util => createUtil(count, util["fields"]["name"]))
+        process["process_steps"].forEach(process_step => createProcessStep(count, process_step["fields"]["text"]))
+        process["schedule"].forEach(schedule => createSchedule(count, schedule["fields"]["executed_once"], schedule["fields"]["start_time"], schedule["fields"]["wait_time"], schedule["fields"]["end_time"]))
+        count += 1
+    });
 }
 
 
 function delete_parent(e) {
-    var t = e.parentNode.parentNode.parentNode
+    let t = e.parentNode.parentNode.parentNode
     e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode);
     refreshOrder(t)
 }
 
 function addIngredient(processNum) {
+    createIngredient(processNum, "", "", "")
+}
+function createIngredient(processNum, name, amount, unit) {
     // Find the number of existing ingredients
-    var numIngredients = document.querySelectorAll('.ingredient').length;
-    var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
+    let numIngredients = document.querySelectorAll('.ingredient').length;
 
     // Create a new ingredient element
-    var newIngredient = document.createElement('tr');
+    let newIngredient = document.createElement('tr');
     newIngredient.classList.add("ingredient")
 
     // Add the HTML for the new ingredient
     newIngredient.innerHTML = `
-    <th><input type="text" class="form-control" id="ingredient-name-${processNum}-${numIngredients}" name="ingredient-name-${processNum}-${numIngredients}"></input></th>
-    <th><input type="number" class="form-control" id="ingredient-amount-${processNum}-${numIngredients}" name="ingredient-amount-${processNum}-${numIngredients}"></input></th>
-    <th><input type="text" class="form-control" id="ingredient-unit-${processNum}-${numIngredients}" name="ingredient-unit-${processNum}-${numIngredients}"></input></th>
+    <th><input type="text" class="form-control" id="ingredient-name-${processNum}-${numIngredients}" name="ingredient-name-${processNum}-${numIngredients}" value="${name}"></input></th>
+    <th><input type="number" class="form-control" id="ingredient-amount-${processNum}-${numIngredients}" name="ingredient-amount-${processNum}-${numIngredients}" value=${amount}></input></th>
+    <th><input type="text" class="form-control" id="ingredient-unit-${processNum}-${numIngredients}" name="ingredient-unit-${processNum}-${numIngredients}" value=${unit}></input></th>
     <td draggable="true"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
     <td><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></td>
     `;
 
     // Append the new ingredient to the ingredients container
-    var ingredientsContainer = document.getElementById(`process-ingredients-${processNum}`);
+    let ingredientsContainer = document.getElementById(`process-ingredients-${processNum}`);
     ingredientsContainer.appendChild(newIngredient);
 }
+
+
 function addUtil(processNum) {
+    createUtil(processNum, "")
+}
+
+function createUtil(processNum, name){
     // Find the number of existing ingredients
-    var numUtils = document.querySelectorAll('.util').length;
-    var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
+    let numUtils = document.querySelectorAll('.util').length;
 
     // Create a new ingredient element
-    var newIngredient = document.createElement('tr');
+    let newIngredient = document.createElement('tr');
     newIngredient.classList.add("util")
 
     // Add the HTML for the new ingredient
     newIngredient.innerHTML = `
-    <th><input type="text" class="form-control" id="util-name-${processNum}-${numUtils}" name="util-name-${processNum}-${numUtils}"></input></th>
+    <th><input type="text" class="form-control" id="util-name-${processNum}-${numUtils}" name="util-name-${processNum}-${numUtils}" value="${name}"></input></th>
     <td draggable="true"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
     <td><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></td>
     `;
 
     // Append the new ingredient to the ingredients container
-    var ingredientsContainer = document.getElementById(`process-utils-${processNum}`);
+    let ingredientsContainer = document.getElementById(`process-utils-${processNum}`);
     ingredientsContainer.appendChild(newIngredient);
 }
 
 function addSchedule(processNum) {
+    createSchedule(processNum, false, "00:00", "00:00", "00:00")
+}
+
+function createSchedule(processNum, runOnce, start, frequency, end) {
     // Find the number of existing ingredients
-    var numSchedules = document.querySelectorAll('.schedule').length;
+    let numSchedules = document.querySelectorAll('.schedule').length;
 
     // Create a new ingredient element
-    var newSchedule = document.createElement('tr');
+    let newSchedule = document.createElement('tr');
     newSchedule.classList.add("schedule")
 
     // Add the HTML for the new ingredient
     newSchedule.innerHTML = `
-    <th><input type="checkbox" name="runonce" id="schedule-runonce-${processNum}-${numSchedules}" value=""></th>
-    <th><input class="form-control" name="start" type="text" name="start_time" value="00:00" required="" id="schedule-start-${processNum}-${numSchedules}"></th>
-    <th><input class="form-control" name="frequency" type="text" name="frequency_time" value="00:00" required="" id="schedule-frequency-${processNum}-${numSchedules}"></th>
-    <th><input class="form-control" name="end" type="text" name="end_time" value="00:00" required="" id="schedule-end-${processNum}-${numSchedules}"></th>
+    <th><input checked=${runOnce} type="checkbox" name="runonce" id="schedule-runonce-${processNum}-${numSchedules}" value=""></th>
+    <th><input value=${start} class="form-control" name="start" type="text" name="start_time" value="00:00" required="" id="schedule-start-${processNum}-${numSchedules}"></th>
+    <th><input value=${frequency} class="form-control" name="frequency" type="text" name="frequency_time" value="00:00" required="" id="schedule-frequency-${processNum}-${numSchedules}"></th>
+    <th><input value=${end} class="form-control" name="end" type="text" name="end_time" value="00:00" required="" id="schedule-end-${processNum}-${numSchedules}"></th>
     <th><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></th>
     `;
 
     // Append the new ingredient to the ingredients container
-    var ingredientsContainer = document.getElementById(`process-schedule-${processNum}`);
+    let ingredientsContainer = document.getElementById(`process-schedule-${processNum}`);
     ingredientsContainer.appendChild(newSchedule);
 }
 
-function addProcess() {
+function addProcess(){
+    createProcess("")
+}
+function createProcess(name) {
     // Find the number of existing processes
-    var numProcesses = document.querySelectorAll('.process').length;
+    let numProcesses = document.querySelectorAll('.process').length;
 
     // Create a new process element
-    var newProcess = document.createElement('div');
+    let newProcess = document.createElement('div');
     newProcess.className = 'process';
 
     // Add the HTML for the new process
     newProcess.innerHTML = `
     <div class="card">
         <label for="process-name-${numProcesses}">${gettext("name")}</label>
-        <input type="text" class="form-control" id="process-name-${numProcesses}" name="process-name-${numProcesses}">
+        <input value="${name}" type="text" class="form-control" id="process-name-${numProcesses}" name="process-name-${numProcesses}">
 
         <h3>${gettext("processSteps")}</h3>
 
@@ -164,28 +191,31 @@ function addProcess() {
     `;
 
     // Append the new process to the processes container
-    var processesContainer = document.getElementById('processes');
+    let processesContainer = document.getElementById('processes');
     processesContainer.appendChild(newProcess);
 }
 
 function addProcessStep(processNum) {
+    createProcessStep(processNum, "")
+}
+function createProcessStep(processNum, text) {
     // Find the number of existing process steps for this process
-    var numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
+    let numProcessSteps = document.querySelectorAll(`#process-steps-${processNum} .process-step`).length;
 
     // Create a new process step element
-    var newProcessStep = document.createElement('tr');
+    let newProcessStep = document.createElement('tr');
     newProcessStep.className = 'process-step';
 
     // Add the HTML for the new process step
     newProcessStep.innerHTML = `
         <td>${numProcessSteps +1}</td>
-        <td><textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}"></textarea></td>
+        <td><textarea class="form-control" id="process-step-text-${processNum}-${numProcessSteps}" name="process-step-text-${processNum}-${numProcessSteps}">${text}</textarea></td>
         <td draggable="true" class="dragicon"  ondragstart="dragit(event)"  ondragover="dragover(event)" style="cursor:pointer">&#9776;</td>
         <td><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></td>
         `;
 
     // Append the new process step to the process steps container for this process
-    var processStepsContainer = document.getElementById(`process-steps-${processNum}`);
+    let processStepsContainer = document.getElementById(`process-steps-${processNum}`);
     processStepsContainer.appendChild(newProcessStep);
 }
 

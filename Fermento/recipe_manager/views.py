@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.core import serializers
 import json
+
 @login_required(login_url='/accounts/login/')
 def index(request):
     recipes = recipe.objects.filter(owner=request.session['_auth_user_id'])
@@ -41,9 +42,17 @@ def edit_recipe_by_id(request, recipe_id):
     uid = request.session['_auth_user_id']
     selected_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
     template = loader.get_template("recipe_manager/components/edit_recipe.html")
+    processes = json.loads(serializers.serialize('json', selected_recipe.get_processes()))
+    for i, p in enumerate(processes):
+        print(i)
+        processes[i]["ingredients"] = serializers.serialize('json', recipe_ingredient.objects.filter(related_process=p["pk"]))
+        processes[i]["process_steps"] = serializers.serialize('json', process_step.objects.filter(related_process=p["pk"]))
+        processes[i]["utils"] = serializers.serialize('json', utensils.objects.filter(related_process=p["pk"]))
+        processes[i]["schedule"] = serializers.serialize('json', process_schedule.objects.filter(related_process=p["pk"]))
     context = {
         "recipe": selected_recipe,
-        "recipe_json": serializers.serialize('json', [ selected_recipe, ])
+        "recipe_json": serializers.serialize('json', [ selected_recipe, ]),
+        "process_json": processes
     }
     return HttpResponse(template.render(context, request))
 
@@ -122,6 +131,9 @@ def not_found(request, e):
 
 def _input_to_deltatime(input_string):
     total_minutes = 0
+    if str(input_string).isdigit():
+        total_minutes += int(input_string) * 24 * 60
+        return total_minutes
     if len(input_string.split(" ")) > 1:
         days = input_string.split(" ")[0]
         time = input_string.split(" ")[1]

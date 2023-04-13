@@ -5,6 +5,9 @@
 
 {% block edit_block %}
 <script>
-    var edit_recipe = {{recipe_json|safe}}
+    var edit_recipe = {{recipe_json|safe}};
+</script>
+<script>
+    var edit_processes = {{process_json|safe}}
 </script>
 {% endblock edit_block %}
