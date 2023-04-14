@@ -27,6 +27,7 @@ urlpatterns = [
     path("", RedirectView.as_view(url='/recipe_manager')),
     
     path("recipe_manager/", include("recipe_manager.urls")),
+    path("recipe_manager/recipe/", include("recipe_manager.urls")),
     path("accounts/", include("django.contrib.auth.urls")),  # new
     path("admin/", admin.site.urls),
     path('set-language/', set_language, name='set_language'),   

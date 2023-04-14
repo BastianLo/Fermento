@@ -18,10 +18,16 @@ class recipe(models.Model):
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='recipe_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    image = ImageCropField(upload_to='images/')
+    image = ImageCropField(upload_to='images/dynamic', default="images/placeholder/recipe.png")
     cropping = ImageRatioField('image', '600x400')
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
 
+    def get_description_preview(self):
+        CHAR_LIMIT = 100
+        if len(self.description) > CHAR_LIMIT:
+            return self.description[:CHAR_LIMIT] + "..."
+        else:
+            return self.description
     def get_total_work_duration(self):
         if len(process.objects.filter(related_recipe=self)) > 0:
             return process.objects.filter(related_recipe=self).aggregate(Sum("work_duration"))["work_duration__sum"]
@@ -49,7 +55,7 @@ class process(models.Model):
     def get_utensils(self):
         return utensils.objects.filter(related_process=self)
     def get_process_steps(self):
-        return process_step.objects.filter(related_process=self)
+        return process_step.objects.filter(related_process=self).order_by("index")
     def get_process_schedule(self):
         return process_schedule.objects.filter(related_process=self)
 
@@ -58,6 +64,7 @@ class process(models.Model):
 
 class process_schedule(models.Model):
     id = models.AutoField(primary_key=True)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='schedule_user', on_delete=models.CASCADE)
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     #True, if this process only gets executed once and is not repeated
     executed_once = models.BooleanField()
@@ -85,7 +92,7 @@ class recipe_ingredient(models.Model):
     amount = models.DecimalField(decimal_places=1, max_digits=7)
     unit = models.CharField(max_length=20)
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
-
+    #TODO: Add index in recipe
     def __str__(self):
         return  f"RecipeIngredient_{self.id}_{self.amount}_{self.unit}_{self.name}"
 
@@ -103,6 +110,7 @@ class utensils(models.Model):
     id = models.AutoField(primary_key=True)
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='utensil_user', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"Utensil_{self.id}"

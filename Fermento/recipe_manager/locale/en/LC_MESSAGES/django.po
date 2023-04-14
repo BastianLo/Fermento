@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 21:18+0200\n"
+"POT-Creation-Date: 2023-04-14 13:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,51 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/recipe_manager/components/create_recipe.html:17
+#: templates/recipe_manager/components/create_recipe.html:19
 msgid "createNewRecipe"
 msgstr "Create new Recipe"
 
-#: templates/recipe_manager/components/create_recipe.html:19
+#: templates/recipe_manager/components/create_recipe.html:21
 msgid "basicInformations"
 msgstr "Basic Informations"
 
-#: templates/recipe_manager/components/create_recipe.html:24
+#: templates/recipe_manager/components/create_recipe.html:26
 msgid "Name"
 msgstr "Name"
 
-#: templates/recipe_manager/components/create_recipe.html:29
+#: templates/recipe_manager/components/create_recipe.html:31
 msgid "description"
 msgstr "Description"
 
-#: templates/recipe_manager/components/create_recipe.html:34
-msgid "Image"
-msgstr "Image"
-
-#: templates/recipe_manager/components/create_recipe.html:39
+#: templates/recipe_manager/components/create_recipe.html:40
 #: templates/recipe_manager/recipe.html:41
 msgid "difficulty"
 msgstr "Difficulty"
 
-#: templates/recipe_manager/components/create_recipe.html:52
+#: templates/recipe_manager/components/create_recipe.html:53
 msgid "Processes"
 msgstr "Processes"
 
-#: templates/recipe_manager/components/create_recipe.html:58
+#: templates/recipe_manager/components/create_recipe.html:59
 msgid "AddProcess"
 msgstr "Add Process"
 
-#: templates/recipe_manager/components/create_recipe.html:66
-#: templates/recipe_manager/index.html:11
-msgid "createRecipe"
-msgstr "Create Recipe"
-
 #: templates/recipe_manager/components/create_recipe.html:67
+msgid "save"
+msgstr "Save"
+
+#: templates/recipe_manager/components/create_recipe.html:68
 msgid "discardChanges"
 msgstr "Discard changes"
 
-#: templates/recipe_manager/components/create_recipe.html:67
+#: templates/recipe_manager/components/create_recipe.html:68
 msgid "cancel"
 msgstr "Cancel"
+
+#: templates/recipe_manager/index.html:8
+msgid "Recipes"
+msgstr "Recipes"
+
+#: templates/recipe_manager/index.html:24
+msgid "readMore"
+msgstr "Read more"
+
+#: templates/recipe_manager/index.html:42
+msgid "createRecipe"
+msgstr "Create Recipe"
 
 #: templates/recipe_manager/recipe.html:56
 msgid "preparation"
@@ -140,3 +147,6 @@ msgstr "Confirm deletion?"
 #: templates/recipe_manager/recipe.html:213
 msgid "deleteRecipe"
 msgstr "Delete Recipe"
+
+#~ msgid "Image"
+#~ msgstr "Image"

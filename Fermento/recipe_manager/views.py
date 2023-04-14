@@ -37,8 +37,16 @@ def delete_recipe_by_id(request, recipe_id):
     recipe.objects.filter(id=recipe_id, owner=uid).first().delete()
     return redirect(index)
 
+
 @login_required(login_url='/accounts/login/')
 def edit_recipe_by_id(request, recipe_id):
+    if request.method == "GET":
+        return edit_recipe_get(request, recipe_id)
+    elif request.method == "POST":
+        return edit_recipe_post(request, recipe_id)
+
+@login_required(login_url='/accounts/login/')
+def edit_recipe_get(request, recipe_id):
     uid = request.session['_auth_user_id']
     selected_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
     template = loader.get_template("recipe_manager/components/edit_recipe.html")
@@ -46,7 +54,7 @@ def edit_recipe_by_id(request, recipe_id):
     for i, p in enumerate(processes):
         print(i)
         processes[i]["ingredients"] = serializers.serialize('json', recipe_ingredient.objects.filter(related_process=p["pk"]))
-        processes[i]["process_steps"] = serializers.serialize('json', process_step.objects.filter(related_process=p["pk"]))
+        processes[i]["process_steps"] = serializers.serialize('json', process_step.objects.filter(related_process=p["pk"]).order_by("index"))
         processes[i]["utils"] = serializers.serialize('json', utensils.objects.filter(related_process=p["pk"]))
         processes[i]["schedule"] = serializers.serialize('json', process_schedule.objects.filter(related_process=p["pk"]))
     context = {
@@ -55,6 +63,98 @@ def edit_recipe_by_id(request, recipe_id):
         "process_json": processes
     }
     return HttpResponse(template.render(context, request))
+
+
+def edit_recipe_post(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    o = User.objects.get(id=uid)
+    data = request.POST.dict()
+
+    new_recipe = recipe.objects.filter(id=recipe_id, owner=o)[0]
+    new_recipe.owner = o
+    new_recipe.name = data["name"]
+    new_recipe.description = data["description"]
+    if "image" in request.FILES:
+        new_recipe.image = request.FILES["image"]
+    new_recipe.difficulty = data["difficulty"]
+    new_recipe.save()
+    processes = json.loads(request.POST.dict()["processes"])
+    db_processes = process.objects.filter(owner=o, related_recipe=new_recipe)
+    delete_processes = [dbp.id for dbp in db_processes if dbp.id not in [int(p["id"]) for p in processes]]
+    process.objects.filter(id__in=delete_processes).delete()
+    for p in processes:
+        if p["id"] == "-1":
+            new_process = process()
+            new_process.related_recipe = new_recipe
+            new_process.owner = o
+        else:
+            new_process = process.objects.filter(id=p["id"], owner=o)[0]
+        new_process.name = p["name"]
+        new_process.save()
+
+        #Delete ingredients that were removed by user
+        db_ingredients = recipe_ingredient.objects.filter(owner=o, related_process=new_process)
+        delete_ingredients = [dbi.id for dbi in db_ingredients if dbi.id not in [int(i["id"]) for i in p["ingredients"]]]
+        recipe_ingredient.objects.filter(id__in=delete_ingredients).delete()
+        #Delete Utensils that were removed by user
+        db_utils = utensils.objects.filter(owner=o, related_process=new_process)
+        delete_utils = [dbu.id for dbu in db_utils if dbu.id not in [int(u["id"]) for u in p["utils"]]]
+        utensils.objects.filter(id__in=delete_utils).delete()
+        #Delete Process steps that were removed by user
+        db_steps = process_step.objects.filter(owner=o, related_process=new_process)
+        delete_steps = [dbps.id for dbps in db_steps if dbps.id not in [int(ps["id"]) for ps in p["steps"]]]
+        process_step.objects.filter(id__in=delete_steps).delete()
+        #Delete Schedules that were removed by user
+        db_schedules = process_schedule.objects.filter(owner=o, related_process=new_process)
+        delete_schedules = [dbs.id for dbs in db_schedules if dbs.id not in [int(s["id"]) for s in p["schedules"]]]
+        process_schedule.objects.filter(id__in=delete_schedules).delete()
+
+        for i in p["ingredients"]:
+            #TODO: Override recipe-index once implemented to save order changes
+            if i["id"] == "-1":
+                new_ingredient = recipe_ingredient()
+                new_ingredient.related_process = new_process
+                new_ingredient.owner = o
+            else:
+                new_ingredient = recipe_ingredient.objects.filter(owner=o, id=i["id"])[0]
+            new_ingredient.name = i["name"]
+            new_ingredient.amount = i["amount"]
+            new_ingredient.unit = i["unit"]
+            new_ingredient.save()
+        for u in p["utils"]:
+            if u["id"] == "-1":
+                new_util = utensils()
+                new_util.related_process = new_process
+                new_util.owner = o
+            else:
+                new_util = utensils.objects.filter(owner=o, id=u["id"])[0]
+            new_util.name = u["name"]
+            new_util.save()
+        for count, ps in enumerate(p["steps"]):
+            print(count, ps)
+            if ps["id"] == "-1":
+                new_step = process_step()
+                new_step.owner = o
+                new_step.related_process = new_process
+            else:
+                new_step = process_step.objects.filter(owner=o, related_process=new_process, id=ps["id"])[0]
+            new_step.text = ps["text"]
+            new_step.index = count
+            new_step.save()
+        for s in p["schedules"]:
+            if s["id"] == "-1":
+                new_schedule = process_schedule()
+                new_schedule.related_process = new_process
+                new_schedule.owner = o
+            else:
+                new_schedule = process_schedule.objects.filter(owner=o, id=s["id"], related_process=new_process)[0]
+            new_schedule.executed_once = s["runOnce"]
+            new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
+            new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))
+            new_schedule.end_time = timedelta(minutes=_input_to_deltatime(s["end"]))
+            new_schedule.save()
+    
+    return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
 
 @login_required(login_url='/accounts/login/')
 def recipe_create(request):
@@ -78,14 +178,13 @@ def recipe_create_post(request):
     new_recipe.owner = o
     new_recipe.name = data["name"]
     new_recipe.description = data["description"]
-    new_recipe.image = request.FILES["image"]
+    if "image" in request.FILES:
+        new_recipe.image = request.FILES["image"]
     new_recipe.difficulty = data["difficulty"]
     new_recipe.save()
 
     processes = json.loads(request.POST.dict()["processes"])
     for p in processes:
-        print(p["utils"])
-        print(p["ingredients"])
         new_process = process()
         new_process.owner = o
         new_process.name = p["name"]
@@ -115,6 +214,7 @@ def recipe_create_post(request):
         for s in p["schedules"]:
             new_schedule = process_schedule()
             new_schedule.related_process = new_process
+            new_schedule.owner = o
             new_schedule.executed_once = s["runOnce"]
             new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
             new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))

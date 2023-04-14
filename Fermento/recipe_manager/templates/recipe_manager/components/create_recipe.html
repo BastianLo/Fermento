@@ -33,7 +33,6 @@
         </div>
 
         <div class="form-group">
-            <!--<label for="image">{% trans "Image" %}</label> -->
             <input type="file" class="form-control-file" id="image" name="image">
         </div>
 
@@ -65,7 +64,7 @@
 {% endblock %}
 
 {% block footer %}
-<button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "createRecipe" %}</button>
-<a href="../" class="btn btn-danger" onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
+<button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "save" %}</button>
+<a href="./" class="btn btn-danger" onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
 
 {% endblock footer %}
