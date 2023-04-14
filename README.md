@@ -34,9 +34,9 @@
 ## 🧐 Features <a name = "about"></a>
 WIP: Project is still in development and not feature complete!
 
-* Manage your fermentation recipes (TODO)
+* Manage your fermentation recipes
 * Create recipe variations (e.g if you are having multiple Kombuchas with the same Base) (TODO)
-* Create reoccuring tasks (TODO)
+* Create reoccuring tasks
   * Each recipes can contain reoccuring tasks which have to be done overtime 
   * Never again forget to feed your sourdough
 
@@ -79,7 +79,28 @@ WIP
 WIP
 
 ## 🚀 Deployment <a name = "deployment"></a>
-WIP
+
+### Docker
+Fermento can easily be deployed using docker.
+
+```
+version: '3.3'
+services:
+    fermento:
+        container_name: fermento
+        environment:
+            - LISTEN_PORT=123123
+            - USERNAME=${USERNAME}
+            - PASSWORD=${PASSWORD}
+            - EMAIL=${EMAIL}
+            - DEBUG=False
+            - APP_DOMAIN=http://127.0.0.1:6733
+        ports:
+            - '6733:6733'
+        image: 'fermento:localdev'
+        volumes:
+            - ./data:/Fermento/Fermento/data
+```
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
