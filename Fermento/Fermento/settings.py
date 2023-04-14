@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d%)(-aco$v5hjy*9uv^29aa!b*=9z+v_c!b+8!+!jrdf9p^jr8'
+SECRET_KEY = os.getenv('SECRET_KEY') if os.getenv('SECRET_KEY') else 'INSECURE_STANDARD_KEY_SET_IN_ENV'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', False) == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'recipe_manager',
+    'Fermento',
+
+    'lineage',
+    'widget_tweaks',
+    'easy_thumbnails',
+    'image_cropping',
+
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
 ]
 
 ROOT_URLCONF = 'Fermento.urls'
@@ -54,7 +70,8 @@ ROOT_URLCONF = 'Fermento.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        'libraries': {
+            'datetime': 'Fermento.modules.datetime',
+        }
         },
     },
 ]
@@ -76,7 +96,7 @@ WSGI_APPLICATION = 'Fermento.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / "data" / 'db.sqlite3',
     }
 }
 
@@ -111,13 +131,48 @@ USE_I18N = True
 
 USE_TZ = True
 
+LANGUAGES = [    ('en', 'English'),    ('de', 'Deutsch')]
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'Fermento', 'locale'),
+    os.path.join(BASE_DIR, 'recipe_manager', 'locale'),
+    os.path.join(BASE_DIR, 'templates', 'locale'),
+    os.path.join(BASE_DIR, 'static', 'custom', 'js', 'locale'),
+)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT = BASE_DIR / 'data' / 'media'
+
+MEDIA_URL = '/media/'
+
+CSRF_TRUSTED_ORIGINS = [
+    #'http://localhost:6733',
+    #'http://127.0.0.1:6733',
+    os.getenv('APP_DOMAIN') if os.getenv('APP_DOMAIN') else 'http://127.0.0.1:6733',
+]
+CORS_ORIGIN_WHITELIST = [
+    #'http://localhost:6733',
+    #'http://127.0.0.1:6733',
+    os.getenv('APP_DOMAIN') if os.getenv('APP_DOMAIN') else 'http://127.0.0.1:6733',
+]
+from easy_thumbnails.conf import Settings as thumbnail_settings
+THUMBNAIL_PROCESSORS = (
+    'image_cropping.thumbnail_processors.crop_corners',
+) + thumbnail_settings.THUMBNAIL_PROCESSORS
+
+
+### Configuration values ###
+SHOW_EMPTY_PROCESS_CATEGORIES = False
+
+### End ###

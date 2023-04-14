@@ -1,0 +1,157 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-14 13:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/recipe_manager/components/create_recipe.html:19
+msgid "createNewRecipe"
+msgstr "Erstelle neues Rezept"
+
+#: templates/recipe_manager/components/create_recipe.html:21
+msgid "basicInformations"
+msgstr "Basis-Informationen"
+
+#: templates/recipe_manager/components/create_recipe.html:26
+msgid "Name"
+msgstr "Name"
+
+#: templates/recipe_manager/components/create_recipe.html:31
+msgid "description"
+msgstr "Beschreibung"
+
+#: templates/recipe_manager/components/create_recipe.html:40
+#: templates/recipe_manager/recipe.html:41
+msgid "difficulty"
+msgstr "Schwierigkeit"
+
+#: templates/recipe_manager/components/create_recipe.html:53
+msgid "Processes"
+msgstr "Prozesse"
+
+#: templates/recipe_manager/components/create_recipe.html:59
+msgid "AddProcess"
+msgstr "Process hinzufügen"
+
+#: templates/recipe_manager/components/create_recipe.html:67
+msgid "save"
+msgstr "Speichern"
+
+#: templates/recipe_manager/components/create_recipe.html:68
+msgid "discardChanges"
+msgstr "Änderungen verwerfen"
+
+#: templates/recipe_manager/components/create_recipe.html:68
+msgid "cancel"
+msgstr "Abbrechen"
+
+#: templates/recipe_manager/index.html:8
+msgid "Recipes"
+msgstr "Rezepte"
+
+#: templates/recipe_manager/index.html:24
+msgid "readMore"
+msgstr "Weiterlesen"
+
+#: templates/recipe_manager/index.html:42
+msgid "createRecipe"
+msgstr "Rezept erstellen"
+
+#: templates/recipe_manager/recipe.html:56
+msgid "preparation"
+msgstr "Vorbereitung"
+
+#: templates/recipe_manager/recipe.html:71
+msgid "total"
+msgstr "Gesamt"
+
+#: templates/recipe_manager/recipe.html:104
+msgid "Ingredients"
+msgstr "Zutaten"
+
+#: templates/recipe_manager/recipe.html:118
+#: templates/recipe_manager/recipe.html:136
+msgid "noIngredients"
+msgstr "Dieser Prozess benötigt keine Zutaten!"
+
+#: templates/recipe_manager/recipe.html:124
+msgid "Utensils"
+msgstr "Hilfsmittel"
+
+#: templates/recipe_manager/recipe.html:141
+msgid "Timeschedule"
+msgstr "Zeitplan"
+
+#: templates/recipe_manager/recipe.html:147
+msgid "nonRecurring"
+msgstr "Einmalig"
+
+#: templates/recipe_manager/recipe.html:149
+msgid "repetitive"
+msgstr "Wiederholend"
+
+#: templates/recipe_manager/recipe.html:152
+msgid "Executions"
+msgstr "Ausführungen"
+
+#: templates/recipe_manager/recipe.html:160
+msgid "onceAfter"
+msgstr "Einmal nach"
+
+#: templates/recipe_manager/recipe.html:164
+msgid "immediately"
+msgstr "Sofort"
+
+#: templates/recipe_manager/recipe.html:168
+msgid "startAfter"
+msgstr "Start"
+
+#: templates/recipe_manager/recipe.html:172
+msgid "FrequencyEvery"
+msgstr "Frequenz"
+
+#: templates/recipe_manager/recipe.html:176
+msgid "end"
+msgstr "Ende"
+
+#: templates/recipe_manager/recipe.html:187
+msgid "process_steps"
+msgstr "Arbeitsschritte"
+
+#: templates/recipe_manager/recipe.html:201
+msgid "noProcessSteps"
+msgstr "Dieser Prozess benötigt keine Arbeitsschritte!"
+
+#: templates/recipe_manager/recipe.html:212
+msgid "editRecipe"
+msgstr "Rezept bearbeiten"
+
+#: templates/recipe_manager/recipe.html:213
+msgid "deleteConfirmation"
+msgstr "Wirklich löschen?"
+
+#: templates/recipe_manager/recipe.html:213
+msgid "deleteRecipe"
+msgstr "Rezept löschen"
+
+#~ msgid "Image"
+#~ msgstr "Bild"
+
+#, fuzzy
+#~| msgid "difficulty"
+#~ msgid "Difficulty"
+#~ msgstr "Schwierigkeit"

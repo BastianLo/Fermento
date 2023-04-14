@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load cropping %}
+{% load static %}
+{% load i18n %}
+{% load thumbnail %}
+
+{% block content %}
+<h1 class="text-center">
+    {% trans "Recipes" %}
+</h1>
+
+{% if recipes %}
+<div class="row">
+    {% for recipe in recipes %}
+    <a href="recipe/{{recipe.id}}">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+            <div class="card">
+                <div class="card-img-top">
+                    <img class="img-fluid rounded" style="overflow: hidden;"
+                        src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{recipe.name}}</h5>
+                    <p class="card-text">{{recipe.get_description_preview}}</p>
+                    <a href="recipe/{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p>No recipes are available.</p>
+{% endif %}
+
+{% endblock %}
+
+
+
+{% block footer %}
+
+<button class="btn btn-primary" onclick="location.href='recipe/create'" type="button">
+    {% trans "createRecipe" %}
+</button>
+{% endblock footer %}
+

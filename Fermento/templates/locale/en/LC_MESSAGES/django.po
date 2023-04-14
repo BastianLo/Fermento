@@ -1,0 +1,20 @@
+#: Fermento/templates/registration/login.html:17
+msgid "loginError"
+msgstr "An Error occured while trying to log in!"
+
+#: Fermento/templates/registration/login.html:23
+msgid "username"
+msgstr "Benutzername"
+
+#: Fermento/templates/registration/login.html:27
+msgid "password"
+msgstr "Password"
+
+#: Fermento/templates/registration/login.html:30
+#, fuzzy
+#| msgid "loginError"
+msgid "login"
+msgstr "Login"
+
+#~ msgid "loginButtonLabel"
+#~ msgstr "Anmelden"

@@ -15,8 +15,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path, reverse_lazy
+from django.views.i18n import set_language
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic.base import RedirectView
+from django.views.i18n import JavaScriptCatalog
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #Temporary until homepage exists
+    path("", RedirectView.as_view(url='/recipe_manager')),
+    
+    path("recipe_manager/", include("recipe_manager.urls")),
+    path("recipe_manager/recipe/", include("recipe_manager.urls")),
+    path("accounts/", include("django.contrib.auth.urls")),  # new
+    path("admin/", admin.site.urls),
+    path('set-language/', set_language, name='set_language'),   
+    path('jsi18n/', JavaScriptCatalog.as_view(), name='javascript-catalog'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns  +=  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

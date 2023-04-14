@@ -1,0 +1,14 @@
+@media (max-width: 992px) {
+    .separation-border {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
+}
+
+@media (min-width: 992px) {
+    .separation-border {
+        border-right: 1px solid rgba(255, 255, 255, 0.25);
+    }
+}
+ol {
+    list-style-position: outside;
+  }

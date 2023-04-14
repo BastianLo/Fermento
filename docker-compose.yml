@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+    fermento:
+        container_name: fermento
+        environment:
+            - LISTEN_PORT=123123
+            - USERNAME=${USERNAME}
+            - PASSWORD=${PASSWORD}
+            - EMAIL=${EMAIL}
+            - DEBUG=False
+            - APP_DOMAIN=http://127.0.0.1:6733
+        ports:
+            - '6733:6733'
+        image: 'fermento:localdev'
+        volumes:
+            - ./dev_container_data:/Fermento/Fermento/data
