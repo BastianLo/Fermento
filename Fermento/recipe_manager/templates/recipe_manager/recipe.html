@@ -137,6 +137,7 @@
                     {% endif %}
                 </div>
                 {% endif %}
+                {% if process.get_process_schedule or show_empty_process_categories %}
                 <div>
                     <h2>{% trans "Timeschedule" %}</h2>
                     {% for schedule in process.get_process_schedule %}
@@ -182,6 +183,7 @@
                     </details>
                     {% endfor %}
                 </div>
+                {% endif %}
             </div>
             <div class="col-lg-8">
                 <h2>{% trans "process_steps" %}</h2>
