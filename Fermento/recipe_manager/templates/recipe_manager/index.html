@@ -12,7 +12,7 @@
 {% if recipes %}
 <div class="row">
     {% for recipe in recipes %}
-    <a href="recipe/{{recipe.id}}">
+    <a href="{{recipe.id}}">
         <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
             <div class="card">
                 <div class="card-img-top">
@@ -22,7 +22,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{recipe.name}}</h5>
                     <p class="card-text">{{recipe.get_description_preview}}</p>
-                    <a href="recipe/{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
+                    <a href="{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
 
 {% block footer %}
 
-<button class="btn btn-primary" onclick="location.href='recipe/create'" type="button">
+<button class="btn btn-primary" onclick="location.href='create'" type="button">
     {% trans "createRecipe" %}
 </button>
 {% endblock footer %}

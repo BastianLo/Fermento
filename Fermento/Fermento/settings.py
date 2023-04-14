@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'batches',
     'recipe_manager',
     'Fermento',
 
@@ -51,6 +52,7 @@ INSTALLED_APPS = [
     'image_cropping',
 
     'django_cleanup.apps.CleanupConfig',
+    'qr_code',
 ]
 
 MIDDLEWARE = [
