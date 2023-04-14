@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'easy_thumbnails',
     'image_cropping',
+
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
