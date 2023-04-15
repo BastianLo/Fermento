@@ -40,9 +40,10 @@ def qrcode_by_id(request, qrcode_id):
     requested_qrcode = QrCode.objects.filter(owner=uid, id=qrcode_id).first()
     if not requested_qrcode:
         raise Http404("Qrcode does not exist")
+    app_url = os.getenv("APP_URL") if "APP_URL" in os.environ else "127.0.0.1"
     context = {
         "qrcode":requested_qrcode,
-        "redirect_url": os.getenv("APP_URL") + "/batches/qrcode/" + str(requested_qrcode.batch.id) + "/redirect"
+        "redirect_url": app_url + "/batches/qrcode/" + str(requested_qrcode.batch.id) + "/redirect"
     }
     return render(request, "batches/qrcodes/details.html", context)
 

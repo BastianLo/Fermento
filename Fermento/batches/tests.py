@@ -13,4 +13,3 @@ class QrCodeTestCase(TestCase):
 
     def test_get_qrcode_for_batch(self):
         self.assertEqual(self.batch1.get_qrcode(), self.qr1)
-        print(self.qr1.get_url())
