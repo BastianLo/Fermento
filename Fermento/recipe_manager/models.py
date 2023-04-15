@@ -22,6 +22,8 @@ class recipe(models.Model):
     cropping = ImageRatioField('image', '600x400')
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
 
+    def create_process(self, **kwargs):
+        return process.objects.create(owner=self.owner, related_recipe=self, **kwargs)
     def get_description_preview(self):
         CHAR_LIMIT = 100
         if len(self.description) > CHAR_LIMIT:
@@ -34,7 +36,7 @@ class recipe(models.Model):
         else:
             return timedelta(minutes=0)
     def get_total_wait_duration(self):
-        return process.objects.filter(related_recipe=self).aggregate(Sum("wait_duration"))["wait_duration"]
+        return process.objects.filter(related_recipe=self).aggregate(Sum("wait_duration"))["wait_duration__sum"]
     
     def get_processes(self):
         return process.objects.filter(related_recipe=self)
@@ -49,6 +51,15 @@ class process(models.Model):
     work_duration = models.DurationField(default=timedelta(minutes=0))
     wait_duration = models.DurationField(default=timedelta(minutes=0))
     related_recipe = models.ForeignKey(recipe, on_delete=models.CASCADE)
+
+    def create_schedule(self, **kwargs):
+        return process_schedule.objects.create(owner=self.owner, related_process=self, **kwargs)
+    def create_recipe_ingredient(self, **kwargs):
+        return recipe_ingredient.objects.create(owner=self.owner, related_process=self, **kwargs)
+    def create_process_step(self, **kwargs):
+        return process_step.objects.create(owner=self.owner, related_process=self, **kwargs)
+    def create_utensil(self, **kwargs):
+        return utensils.objects.create(owner=self.owner, related_process=self, **kwargs)
 
     def get_ingredients(self):
         return recipe_ingredient.objects.filter(related_process=self)
