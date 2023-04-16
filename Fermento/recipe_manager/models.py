@@ -88,7 +88,7 @@ class process_schedule(models.Model):
     wait_time = models.DurationField(default=timedelta(minutes=0))
 
     def get_next_execution(self, start_datetime):
-        now = timezone.now() - timedelta(seconds=10)
+        now = timezone.now() - timedelta(milliseconds=200)
         result_datetime = start_datetime + self.start_time
         while result_datetime < now:
             if result_datetime >= start_datetime + self.end_time or self.executed_once:
