@@ -3,7 +3,8 @@ from django.conf import settings
 import os
 import datetime 
 from django.utils import timezone
-from batches.models import Execution, notification_credentials
+from batches.models import Execution
+from settings_manager.models import settings_notification
 from notifiers import get_notifier
 
 
@@ -19,15 +20,17 @@ def check_scheduled_tasks():
     for execution in Execution.objects.all():
         if timezone.now() > execution.execution_datetime:
             print(f"Execution {execution.id} triggered.")
-            send_notification_pushover(execution)
+            send_notifications(execution)
             execution.delete()
             execution.related_batch.create_next_executions()
 
-def send_notification():
-    pass
+def send_notifications(execution):
+    notification_settings = settings_notification.objects.get(user=execution.owner)
+    if notification_settings.pushover_enabled:
+        send_notification_pushover(execution)
 
 
 def send_notification_pushover(execution):
-    credentials = notification_credentials.objects.get(user=execution.owner)
+    notification_settings = settings_notification.objects.get(user=execution.owner)
     p = get_notifier('pushover')
-    p.notify(user=credentials.pushover_user_token, token=credentials.pushover_app_token, message='test')
+    p.notify(user=notification_settings.pushover_user_token, token=notification_settings.pushover_app_token, message='test')
