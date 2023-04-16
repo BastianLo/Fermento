@@ -5,8 +5,6 @@ from .models import Batch, QrCode
 import os
 from django.http import JsonResponse
 
-# Create your views here.
-
 @login_required(login_url='/accounts/login/')
 def index(request):
     uid = request.session['_auth_user_id']

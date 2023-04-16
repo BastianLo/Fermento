@@ -176,5 +176,6 @@ THUMBNAIL_PROCESSORS = (
 
 ### Configuration values ###
 SHOW_EMPTY_PROCESS_CATEGORIES = False
+SCHEDULE_UPDATE_INTERVAL = os.getenv("SCHEDULE_UPDATE_INTERVAL") if "SCHEDULE_UPDATE_INTERVAL" in os.environ else 1
 
 ### End ###
