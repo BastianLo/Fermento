@@ -97,7 +97,7 @@ services:
             - APP_DOMAIN=http://127.0.0.1:6733
         ports:
             - '6733:6733'
-        image: 'fermento:localdev'
+        image: 'bastianlo/fermento:latest'
         volumes:
             - ./data:/Fermento/Fermento/data
 ```
