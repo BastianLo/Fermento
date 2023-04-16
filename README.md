@@ -89,7 +89,7 @@ services:
     fermento:
         container_name: fermento
         environment:
-            - LISTEN_PORT=123123
+            - LISTEN_PORT=6733
             - USERNAME=${USERNAME}
             - PASSWORD=${PASSWORD}
             - EMAIL=${EMAIL}

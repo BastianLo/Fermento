@@ -4,4 +4,11 @@
 
 {% block content %}
 <h1>All Batches</h1>
+
+{% for batch in batches %}
+<a href={{batch.id}}>
+    {{batch.name}}
+</a>
+{% endfor %}
+
 {% endblock content %}
