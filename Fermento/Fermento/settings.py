@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'batches',
     'recipe_manager',
     'Fermento',
+    'settings_manager',
 
     'lineage',
     'widget_tweaks',
