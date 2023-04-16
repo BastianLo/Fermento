@@ -2,8 +2,8 @@ from django.db import models
 import os
 from recipe_manager.models import recipe, process
 from django.db.models.signals import post_save
-
-
+from django.contrib.auth.models import User
+from encrypted_model_fields.fields import EncryptedCharField
 
 
 
@@ -50,3 +50,9 @@ class Execution(models.Model):
     execution_datetime = models.DateTimeField()
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     related_batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+
+
+class notification_credentials(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    pushover_user_token = EncryptedCharField(max_length=100)
+    pushover_app_token = EncryptedCharField(max_length=100)

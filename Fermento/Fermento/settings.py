@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import base64
 
 load_dotenv()
 
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY') if os.getenv('SECRET_KEY') else 'INSECURE_STANDARD_KEY_SET_IN_ENV'
-
+FIELD_ENCRYPTION_KEY = base64.urlsafe_b64encode(SECRET_KEY.encode())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', False) == 'True'
 
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
 
     'django_cleanup.apps.CleanupConfig',
     'qr_code',
+    'encrypted_model_fields',
 ]
 
 MIDDLEWARE = [
