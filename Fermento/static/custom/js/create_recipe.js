@@ -83,7 +83,6 @@ function addSchedule(processNum) {
 }
 
 function createSchedule(processNum, runOnce, start, frequency, end, schedule_id) {
-    console.log(end)
     // Find the number of existing ingredients
     let numSchedules = document.querySelectorAll('.schedule').length;
 
