@@ -83,6 +83,7 @@ function addSchedule(processNum) {
 }
 
 function createSchedule(processNum, runOnce, start, frequency, end, schedule_id) {
+    console.log(end)
     // Find the number of existing ingredients
     let numSchedules = document.querySelectorAll('.schedule').length;
 
@@ -94,9 +95,9 @@ function createSchedule(processNum, runOnce, start, frequency, end, schedule_id)
     newSchedule.innerHTML = `
     <input type="hidden" id="scheduleid" name="scheduleid" value="${schedule_id}"> 
     <th><input type="checkbox" name="runonce" id="schedule-runonce-${processNum}-${numSchedules}" value=""></th>
-    <th><input value=${start} class="form-control" name="start" type="text" name="start_time" value="00:00" required="" id="schedule-start-${processNum}-${numSchedules}"></th>
-    <th><input value=${frequency} class="form-control" name="frequency" type="text" name="frequency_time" value="00:00" required="" id="schedule-frequency-${processNum}-${numSchedules}"></th>
-    <th><input value=${end} class="form-control" name="end" type="text" name="end_time" value="00:00" required="" id="schedule-end-${processNum}-${numSchedules}"></th>
+    <th><input value='${start}' class="form-control" name="start" type="text" name="start_time" required="" id="schedule-start-${processNum}-${numSchedules}"></th>
+    <th><input value='${frequency}' class="form-control" name="frequency" type="text" name="frequency_time" required="" id="schedule-frequency-${processNum}-${numSchedules}"></th>
+    <th><input value='${end}' class="form-control" name="end" type="text" name="end_time" required="" id="schedule-end-${processNum}-${numSchedules}"></th>
     <th><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></th>
     `;
     
