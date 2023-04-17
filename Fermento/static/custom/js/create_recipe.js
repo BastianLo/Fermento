@@ -104,7 +104,13 @@ function createSchedule(processNum, runOnce, start, frequency, end, schedule_id)
     let ingredientsContainer = document.getElementById(`process-schedule-${processNum}`);
     ingredientsContainer.appendChild(newSchedule);
 
-    document.getElementById(`schedule-runonce-${processNum}-${numSchedules}`).checked = runOnce
+    document.getElementById(`schedule-runonce-${processNum}-${numSchedules}`).onchange = function() {
+        document.getElementById(`schedule-frequency-${processNum}-${numSchedules}`).disabled = this.checked;
+        document.getElementById(`schedule-end-${processNum}-${numSchedules}`).disabled = this.checked;
+    };
+    let checkbox = document.getElementById(`schedule-runonce-${processNum}-${numSchedules}`);
+    checkbox.checked = runOnce;
+    checkbox.onchange();
 }
 
 function addProcess() {
