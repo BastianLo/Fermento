@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.core import serializers
 import json
+from django.core import serializers
+
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -46,6 +48,67 @@ def execute_recipe_by_id(request, recipe_id):
     batch.name = "Batch " + str(batch.id)
     batch.save()
     return redirect("/batches/batch/" + str(batch.id))
+
+@login_required(login_url='/accounts/login/')
+def export_recipe_by_id(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    template_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
+    js = json.loads(serializers.serialize('json', [ template_recipe, ]))[0]
+    del js["pk"]
+    del js["model"]
+    del js["fields"]["owner"]
+    del js["fields"]["image"]
+    del js["fields"]["cropping"]
+    js["processes"] = []
+    for process in template_recipe.get_processes():
+        js_process = json.loads(serializers.serialize('json', [ process, ]))[0]
+        del js_process["pk"]
+        del js_process["model"]
+        del js_process["fields"]["owner"]
+        del js_process["fields"]["related_recipe"]
+
+        js_process["ingredients"] = []
+        for ingredient in process.get_ingredients():
+            js_ingredient = json.loads(serializers.serialize('json', [ ingredient, ]))[0]
+            del js_ingredient["pk"]
+            del js_ingredient["model"]
+            del js_ingredient["fields"]["owner"]
+            del js_ingredient["fields"]["related_process"]
+            js_process["ingredients"].append(js_ingredient)
+
+        js_process["utensils"] = []
+        for utensil in process.get_utensils():
+            js_utensil = json.loads(serializers.serialize('json', [ utensil, ]))[0]
+            del js_utensil["pk"]
+            del js_utensil["model"]
+            del js_utensil["fields"]["owner"]
+            del js_utensil["fields"]["related_process"]
+            js_process["utensils"].append(js_utensil)
+
+        js_process["process_steps"] = []
+        for process_step in process.get_process_steps():
+            js_process_step = json.loads(serializers.serialize('json', [ process_step, ]))[0]
+            del js_process_step["pk"]
+            del js_process_step["model"]
+            del js_process_step["fields"]["owner"]
+            del js_process_step["fields"]["related_process"]
+            js_process["process_steps"].append(js_process_step)
+
+        js_process["process_schedules"] = []
+        for process_schedule in process.get_process_schedule():
+            js_process_schedule = json.loads(serializers.serialize('json', [ process_schedule, ]))[0]
+            del js_process_schedule["pk"]
+            del js_process_schedule["model"]
+            del js_process_schedule["fields"]["owner"]
+            del js_process_schedule["fields"]["related_process"]
+            js_process["process_schedules"].append(js_process_schedule)
+            
+        js["processes"].append(js_process)
+
+    return HttpResponse(
+        json.dumps(js, ensure_ascii=False), 
+        content_type='application/force-download'
+    )
 
 
 @login_required(login_url='/accounts/login/')
