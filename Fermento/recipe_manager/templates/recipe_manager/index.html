@@ -5,11 +5,32 @@
 {% load thumbnail %}
 
 {% block content %}
+{% include 'components/navigation/navigator.html' %}
+
+<div class="modal" id="modal-2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            </a>
+            <h5 class="modal-title">{% trans "importRecipe" %}</h5>
+            <form action="import" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="jsondata" >Json</label>
+                    <textarea type="text" id="jsondata" class="form-control" placeholder="jsondata" name="jsondata" ></textarea>
+                </div>
+                <input class="btn btn-primary btn-block" type="submit" value="{% trans "import" %}">
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <h1 class="text-center">
     {% trans "Recipes" %}
 </h1>
 
 {% if recipes %}
+<!--TODO: Export this navigator as component - so it can be reused by multiple lists-->
 <div class="row">
     {% for recipe in recipes %}
     <a href="{{recipe.id}}">
@@ -20,7 +41,14 @@
                         src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{recipe.name}}</h5>
+                    <h5 class="card-title">{{recipe.name}}</h5> 
+                    {% if recipe.difficulty == "hard" %}
+                    <span class="badge badge-danger">{{recipe.difficulty}}</span>
+                    {% elif recipe.difficulty == "medium" %}
+                    <span class="badge badge-secondary">{{recipe.difficulty}}</span>
+                    {% elif recipe.difficulty == "easy" %}
+                    <span class="badge badge-success">{{recipe.difficulty}}</span>
+                    {% endif %}
                     <p class="card-text">{{recipe.get_description_preview}}</p>
                     <a href="{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
                 </div>
@@ -39,8 +67,10 @@
 
 {% block footer %}
 
-<button class="btn btn-primary" onclick="location.href='create'" type="button">
+<button class="btn btn-primary  mr-10" onclick="location.href='create'" type="button">
     {% trans "createRecipe" %}
 </button>
-{% endblock footer %}
 
+<a href="#modal-2" class="btn btn-primary" role="button">{% trans "importRecipe" %}</a>
+
+{% endblock footer %}

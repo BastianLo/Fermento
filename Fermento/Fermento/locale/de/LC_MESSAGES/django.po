@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-08 19:33+0200\n"
+"POT-Creation-Date: 2023-04-16 19:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -54,14 +54,21 @@ msgstr "Rezepte"
 msgid "recipeVariationSidebarTitle"
 msgstr "Rezept-Variationen"
 
-#: Fermento/templates/base.html:76
+#: Fermento/templates/base.html:76 Fermento/templates/base.html:78
 msgid "batchSidebarTitle"
 msgstr "Chargen"
-
-#: Fermento/templates/base.html:78
-msgid "batchAllSidebarTitle"
-msgstr "Alle"
 
 #: Fermento/templates/base.html:79
 msgid "batchCalenderSidebarTitle"
 msgstr "Kalender"
+
+#: Fermento/templates/base.html:82
+msgid "settingsSidebarTitle"
+msgstr "Einstellungen"
+
+#: Fermento/templates/base.html:84
+msgid "notificationSidebarTitle"
+msgstr "Benchrichtigungen"
+
+#~ msgid "batchAllSidebarTitle"
+#~ msgstr "Alle"

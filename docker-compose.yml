@@ -9,6 +9,7 @@ services:
             - EMAIL=${EMAIL}
             - DEBUG=False
             - APP_URL=${APP_URL}
+            - TZ=${TIMEZONE}
         ports:
             - '6733:6733'
         image: 'fermento:localdev'

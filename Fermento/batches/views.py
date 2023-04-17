@@ -3,15 +3,29 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from .models import Batch, QrCode
 import os
-from django.http import JsonResponse
-
-# Create your views here.
+import math
 
 @login_required(login_url='/accounts/login/')
-def index(request):
+def batches_all(request):
+    #TODO: Limit should be a parameter
+    LIMIT = 10
     uid = request.session['_auth_user_id']
+    batches = Batch.objects.filter(owner=uid)
+    count = len(batches)
+    orderby = request.GET.get("orderby")
+    page = int(request.GET.get("page")) if request.GET.get("page") else 1
+    if orderby:
+        try:
+            desc = "-" if request.GET.get("direction") == "desc" else ""
+            batches = batches.order_by(desc + orderby)
+        except:
+            print(f"Error: '{orderby}' attribute does not exist for object Batch")
+    batches = batches[(page-1)*LIMIT:(page-1)*LIMIT+LIMIT]
     context = {
-        "batches": Batch.objects.filter(owner=uid)
+        "batches": batches,
+        "order_items": ["name", "start_date"],
+        "order_directions": ["asc", "desc"],
+        "pages": {"current": page, "previous": max(page-1, 1), "next": max(1,min(page+1, math.ceil(count/LIMIT)))}
     }
     return render(request, "batches/batches/overview.html", context)
 

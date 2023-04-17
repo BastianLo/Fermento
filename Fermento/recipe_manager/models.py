@@ -3,6 +3,10 @@ from datetime import timedelta
 from django.db.models import Sum
 import math
 from image_cropping import ImageRatioField, ImageCropField
+from django.utils import timezone
+
+from django.apps import apps
+
 
 # Create your models here.
 
@@ -24,6 +28,9 @@ class recipe(models.Model):
 
     def create_process(self, **kwargs):
         return process.objects.create(owner=self.owner, related_recipe=self, **kwargs)
+    def create_batch(self, **kwargs):
+        return apps.get_model('batches', 'Batch').objects.create(owner=self.owner, related_recipe=self, **kwargs)
+    
     def get_description_preview(self):
         CHAR_LIMIT = 100
         if len(self.description) > CHAR_LIMIT:
@@ -86,6 +93,15 @@ class process_schedule(models.Model):
     #How often the process gets triggered
     wait_time = models.DurationField(default=timedelta(minutes=0))
 
+    def get_next_execution(self, start_datetime):
+        now = timezone.now() - timedelta(milliseconds=200)
+        result_datetime = start_datetime + self.start_time
+        while result_datetime < now:
+            if result_datetime >= start_datetime + self.end_time or self.executed_once:
+                return None
+            result_datetime += self.wait_time
+        return result_datetime
+    
     def get_total_execution_count(self):
         if self.executed_once:
             return 1

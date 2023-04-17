@@ -8,12 +8,30 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.core import serializers
 import json
+from django.core import serializers
+from django.utils.dateparse import parse_duration
+import math
 
 @login_required(login_url='/accounts/login/')
 def index(request):
-    recipes = recipe.objects.filter(owner=request.session['_auth_user_id'])
+    LIMIT = 10
+    recipes = recipe.objects.filter(owner=request.user)
+    count = len(recipes)
+    orderby = request.GET.get("orderby")
+    page = int(request.GET.get("page")) if request.GET.get("page") else 1
+    if orderby:
+        try:
+            desc = "-" if request.GET.get("direction") == "desc" else ""
+            recipes = recipes.order_by(desc + orderby)
+        except:
+            print(f"Error: '{orderby}' attribute does not exist for object Batch")
+    recipes = recipes[(page-1)*LIMIT:(page-1)*LIMIT+LIMIT]
     context = {
-        "recipes": recipes
+        "recipes": recipes,
+        "order_items": ["name", "difficulty"],
+        "order_directions": ["asc", "desc"],
+        "pages": {"current": page, "previous": max(page-1, 1), "next": max(1,min(page+1, math.ceil(count/LIMIT)))}
+
     }
     return render(request, "recipe_manager/index.html", context)
 
@@ -36,6 +54,129 @@ def delete_recipe_by_id(request, recipe_id):
     uid = request.session['_auth_user_id']
     recipe.objects.filter(id=recipe_id, owner=uid).first().delete()
     return redirect(index)
+
+
+@login_required(login_url='/accounts/login/')
+def execute_recipe_by_id(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    template_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
+    batch = template_recipe.create_batch()
+    batch.name = "Batch " + str(batch.id)
+    batch.save()
+    return redirect("/batches/batch/" + str(batch.id))
+
+
+
+@login_required(login_url='/accounts/login/')
+def import_recipe(request):
+    imported_recipe = recipe.objects.create(owner=request.user)
+    try:
+        recipe_json = json.loads(request.POST.get('jsondata', ''))
+        [setattr(imported_recipe, x, recipe_json["fields"][x]) for x in  recipe_json["fields"].keys()]
+        for p in recipe_json["processes"]:
+            imported_process = process.objects.create(owner=request.user, related_recipe=imported_recipe)
+            for x in p["fields"].keys():
+                if parse_duration(p["fields"][x]) != None:
+                    setattr(imported_process, x, parse_duration(p["fields"][x]))
+                else:
+                    setattr(imported_process, x, p["fields"][x])
+            if "ingredients" in  p:
+                for ingr in p["ingredients"]:
+                    amount = float(ingr["fields"]["amount"])
+                    unit = ingr["fields"]["unit"]
+                    name = ingr["fields"]["name"]
+                    imported_ingredient = recipe_ingredient.objects.create(owner=request.user, related_process=imported_process, amount=amount, unit=unit, name=name)
+                    imported_ingredient.save()
+            if "utensils" in p:
+                for utens in p["utensils"]:
+                    name = utens["fields"]["name"]
+                    imported_utensil = utensils.objects.create(owner=request.user, related_process=imported_process, name=name)
+                    imported_utensil.save()
+            if "process_steps" in p:
+                for ps in p["process_steps"]:
+                    text = ps["fields"]["text"]
+                    index = ps["fields"]["index"]
+                    imported_ps = process_step.objects.create(owner=request.user, related_process=imported_process, text=text, index=int(index))
+                    imported_ps.save()
+            if "process_schedules" in p:
+                for schedule in p["process_schedules"]:
+                    executed_once = schedule["fields"]["executed_once"]
+                    start_time = parse_duration(schedule["fields"]["start_time"])
+                    end_time = parse_duration(schedule["fields"]["end_time"])
+                    wait_time = parse_duration(schedule["fields"]["wait_time"])
+                    imported_schedule = process_schedule.objects.create(owner=request.user, related_process=imported_process, executed_once=executed_once, start_time=start_time, end_time=end_time, wait_time=wait_time)
+                    imported_schedule.save()
+
+            imported_process.save()
+        imported_recipe.save()
+    except:
+        imported_recipe.delete()
+        request.session["error"] = "Could not parse recipe!"
+        return redirect(request.path.replace("/import", "/#modal-2"))
+        #return JsonResponse({'message':'fail','error':True,'code':500,'result':{'totalItems':0,'items':[],'totalPages':0,'currentPage':0}})    
+    
+    return redirect("/recipe_manager/recipe/" + str(imported_recipe.id))
+
+@login_required(login_url='/accounts/login/')
+def export_recipe_by_id(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    template_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
+    js = json.loads(serializers.serialize('json', [ template_recipe, ]))[0]
+    del js["pk"]
+    del js["model"]
+    del js["fields"]["owner"]
+    del js["fields"]["image"]
+    del js["fields"]["cropping"]
+    js["processes"] = []
+    for process in template_recipe.get_processes():
+        js_process = json.loads(serializers.serialize('json', [ process, ]))[0]
+        del js_process["pk"]
+        del js_process["model"]
+        del js_process["fields"]["owner"]
+        del js_process["fields"]["related_recipe"]
+
+        js_process["ingredients"] = []
+        for ingredient in process.get_ingredients():
+            js_ingredient = json.loads(serializers.serialize('json', [ ingredient, ]))[0]
+            del js_ingredient["pk"]
+            del js_ingredient["model"]
+            del js_ingredient["fields"]["owner"]
+            del js_ingredient["fields"]["related_process"]
+            js_process["ingredients"].append(js_ingredient)
+
+        js_process["utensils"] = []
+        for utensil in process.get_utensils():
+            js_utensil = json.loads(serializers.serialize('json', [ utensil, ]))[0]
+            del js_utensil["pk"]
+            del js_utensil["model"]
+            del js_utensil["fields"]["owner"]
+            del js_utensil["fields"]["related_process"]
+            js_process["utensils"].append(js_utensil)
+
+        js_process["process_steps"] = []
+        for process_step in process.get_process_steps():
+            js_process_step = json.loads(serializers.serialize('json', [ process_step, ]))[0]
+            del js_process_step["pk"]
+            del js_process_step["model"]
+            del js_process_step["fields"]["owner"]
+            del js_process_step["fields"]["related_process"]
+            js_process["process_steps"].append(js_process_step)
+
+        js_process["process_schedules"] = []
+        for process_schedule in process.get_process_schedule():
+            js_process_schedule = json.loads(serializers.serialize('json', [ process_schedule, ]))[0]
+            del js_process_schedule["pk"]
+            del js_process_schedule["model"]
+            del js_process_schedule["fields"]["owner"]
+            del js_process_schedule["fields"]["related_process"]
+            js_process["process_schedules"].append(js_process_schedule)
+            
+        js["processes"].append(js_process)
+
+    return HttpResponse(
+        json.dumps(js, ensure_ascii=False), 
+        content_type='application/force-download'
+    )
 
 
 @login_required(login_url='/accounts/login/')
