@@ -69,43 +69,52 @@ def execute_recipe_by_id(request, recipe_id):
 
 @login_required(login_url='/accounts/login/')
 def import_recipe(request):
-    recipe_json = json.loads(request.POST.get('jsondata', ''))
     imported_recipe = recipe.objects.create(owner=request.user)
-    [setattr(imported_recipe, x, recipe_json["fields"][x]) for x in  recipe_json["fields"].keys()]
-    for p in recipe_json["processes"]:
-        imported_process = process.objects.create(owner=request.user, related_recipe=imported_recipe)
-        for x in p["fields"].keys():
-            if parse_duration(p["fields"][x]) != None:
-                setattr(imported_process, x, parse_duration(p["fields"][x]))
-            else:
-                setattr(imported_process, x, p["fields"][x])
-        for ingr in p["ingredients"]:
-            amount = float(ingr["fields"]["amount"])
-            unit = ingr["fields"]["unit"]
-            name = ingr["fields"]["name"]
-            imported_ingredient = recipe_ingredient.objects.create(owner=request.user, related_process=imported_process, amount=amount, unit=unit, name=name)
-            imported_ingredient.save()
-        for utens in p["utensils"]:
-            name = utens["fields"]["name"]
-            imported_utensil = utensils.objects.create(owner=request.user, related_process=imported_process, name=name)
-            imported_utensil.save()
-        for ps in p["process_steps"]:
-            text = ps["fields"]["text"]
-            index = ps["fields"]["index"]
-            imported_ps = process_step.objects.create(owner=request.user, related_process=imported_process, text=text, index=int(index))
-            imported_ps.save()
-        for schedule in p["process_schedules"]:
-            executed_once = schedule["fields"]["executed_once"]
-            start_time = parse_duration(schedule["fields"]["start_time"])
-            end_time = parse_duration(schedule["fields"]["end_time"])
-            wait_time = parse_duration(schedule["fields"]["wait_time"])
-            imported_schedule = process_schedule.objects.create(owner=request.user, related_process=imported_process, executed_once=executed_once, start_time=start_time, end_time=end_time, wait_time=wait_time)
-            imported_schedule.save()
+    try:
+        recipe_json = json.loads(request.POST.get('jsondata', ''))
+        [setattr(imported_recipe, x, recipe_json["fields"][x]) for x in  recipe_json["fields"].keys()]
+        for p in recipe_json["processes"]:
+            imported_process = process.objects.create(owner=request.user, related_recipe=imported_recipe)
+            for x in p["fields"].keys():
+                if parse_duration(p["fields"][x]) != None:
+                    setattr(imported_process, x, parse_duration(p["fields"][x]))
+                else:
+                    setattr(imported_process, x, p["fields"][x])
+            if "ingredients" in  p:
+                for ingr in p["ingredients"]:
+                    amount = float(ingr["fields"]["amount"])
+                    unit = ingr["fields"]["unit"]
+                    name = ingr["fields"]["name"]
+                    imported_ingredient = recipe_ingredient.objects.create(owner=request.user, related_process=imported_process, amount=amount, unit=unit, name=name)
+                    imported_ingredient.save()
+            if "utensils" in p:
+                for utens in p["utensils"]:
+                    name = utens["fields"]["name"]
+                    imported_utensil = utensils.objects.create(owner=request.user, related_process=imported_process, name=name)
+                    imported_utensil.save()
+            if "process_steps" in p:
+                for ps in p["process_steps"]:
+                    text = ps["fields"]["text"]
+                    index = ps["fields"]["index"]
+                    imported_ps = process_step.objects.create(owner=request.user, related_process=imported_process, text=text, index=int(index))
+                    imported_ps.save()
+            if "process_schedules" in p:
+                for schedule in p["process_schedules"]:
+                    executed_once = schedule["fields"]["executed_once"]
+                    start_time = parse_duration(schedule["fields"]["start_time"])
+                    end_time = parse_duration(schedule["fields"]["end_time"])
+                    wait_time = parse_duration(schedule["fields"]["wait_time"])
+                    imported_schedule = process_schedule.objects.create(owner=request.user, related_process=imported_process, executed_once=executed_once, start_time=start_time, end_time=end_time, wait_time=wait_time)
+                    imported_schedule.save()
 
-
-
-        imported_process.save()
-    imported_recipe.save()
+            imported_process.save()
+        imported_recipe.save()
+    except:
+        imported_recipe.delete()
+        request.session["error"] = "Could not parse recipe!"
+        return redirect(request.path.replace("/import", "/#modal-2"))
+        #return JsonResponse({'message':'fail','error':True,'code':500,'result':{'totalItems':0,'items':[],'totalPages':0,'currentPage':0}})    
+    
     return redirect("/recipe_manager/recipe/" + str(imported_recipe.id))
 
 @login_required(login_url='/accounts/login/')
