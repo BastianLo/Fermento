@@ -41,7 +41,14 @@
                         src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{recipe.name}}</h5>
+                    <h5 class="card-title">{{recipe.name}}</h5> 
+                    {% if recipe.difficulty == "hard" %}
+                    <span class="badge badge-danger">{{recipe.difficulty}}</span>
+                    {% elif recipe.difficulty == "medium" %}
+                    <span class="badge badge-secondary">{{recipe.difficulty}}</span>
+                    {% elif recipe.difficulty == "easy" %}
+                    <span class="badge badge-success">{{recipe.difficulty}}</span>
+                    {% endif %}
                     <p class="card-text">{{recipe.get_description_preview}}</p>
                     <a href="{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
                 </div>
