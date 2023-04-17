@@ -5,6 +5,24 @@
 {% load thumbnail %}
 
 {% block content %}
+<div class="modal" id="modal-2" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            </a>
+            <h5 class="modal-title">{% trans "importRecipe" %}</h5>
+            <form action="import" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="jsondata" >Json</label>
+                    <textarea type="text" id="jsondata" class="form-control" placeholder="jsondata" name="jsondata" ></textarea>
+                </div>
+                <input class="btn btn-primary btn-block" type="submit" value="{% trans "import" %}">
+            </form>
+        </div>
+    </div>
+</div>
+
+
 <h1 class="text-center">
     {% trans "Recipes" %}
 </h1>
@@ -43,8 +61,10 @@
 
 {% block footer %}
 
-<button class="btn btn-primary" onclick="location.href='create'" type="button">
+<button class="btn btn-primary  mr-10" onclick="location.href='create'" type="button">
     {% trans "createRecipe" %}
 </button>
-{% endblock footer %}
 
+<a href="#modal-2" class="btn btn-primary" role="button">{% trans "importRecipe" %}</a>
+
+{% endblock footer %}
