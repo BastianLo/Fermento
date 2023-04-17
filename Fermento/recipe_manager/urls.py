@@ -12,6 +12,7 @@ urlpatterns = [
     path("recipe/<int:recipe_id>/", views.recipe_by_id, name="recipe_by_id"),
     path("recipe/<int:recipe_id>/delete", views.delete_recipe_by_id, name="delete_recipe_by_id"),
     path("recipe/<int:recipe_id>/edit", views.edit_recipe_by_id, name="edit_recipe_by_id"),
+    path("recipe/<int:recipe_id>/execute", views.execute_recipe_by_id, name="execute_recipe_by_id"),
     path("recipe/create", views.recipe_create, name="recipe_by_id"),
 ]
 handler404 = 'recipe_manager.views.not_found'

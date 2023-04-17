@@ -1,14 +1,86 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load cropping %}
+{% load thumbnail %}
+
 
 {% block content %}
-<h1>All Batches</h1>
+<h1 class="text-center">All Batches</h1>
+<div class="row">
+    <form style="width:100%" action="{% url 'batch_all' %}" method="GET">
+        <div class="card p-0 d-flex">
+            <div class="d-flex">
+                <select class="form-control mr-2" name="orderby" onchange="this.form.submit()">
+                    <option value="" selected="selected" disabled="disabled">{% trans "sortby" %}</option>
+                    {% for oi in order_items %}
+                    <option value="{{oi}}" {% if oi == request.GET.orderby %}selected="selected" {% endif %}>
+                        {{oi}}
+                    </option>
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-2" name="direction" onchange="this.form.submit()">
+                    <option value="" selected="selected" disabled="disabled">{% trans "direction" %}</option>
+                    {% for oi in order_directions %}
+                    <option value="{{oi}}" {% if oi == request.GET.direction %}selected="selected" {% endif %}>
+                        {{oi}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <nav class="mt-2">
+            <ul style="width:100%" class="pagination text-center justify-content-center">
+                <!-- TODO: Add min&max page boxes. Ref: https://www.gethalfmoon.com/docs/pagination/ -->
+                <!-- Previous page -->
+                {% if pages.current > 1 %}
+                <li class="page-item">
+                    <button name="page" value={{pages.previous}} class="page-link">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </button>
+                </li>
+                {% endif %}
+                <!-- Active page item -->
+                <li class="page-item active" aria-current="page">
+                    <button name="page" value={{pages.next}} class="page-link">{{pages.current}}</button>
+                </li>
+                <!-- Next page -->
+                {% if pages.current != pages.next %}
+                <li class="page-item">
+                    <button name="page" value={{pages.next}} class="page-link">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </button>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </form>
+</div>
 
-{% for batch in batches %}
-<a href={{batch.id}}>
-    {{batch.name}}
-</a>
-{% endfor %}
+
+{% if batches %}
+<div class="row">
+    {% for batch in batches %}
+    <a href="{{batch.id}}">
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+            <div class="card">
+                <div class="card-img-top">
+                    <img class="img-fluid rounded" style="overflow: hidden;"
+                        src="{% thumbnail batch.related_recipe.image 400x300 box=batch.related_recipe.cropping crop detail %}"
+                        alt="...">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{batch.name}}</h5>
+                    <p class="card-text">{{batch.start_date}}</p>
+                    <a href="{{batch.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<p>No recipes are available.</p>
+{% endif %}
 
 {% endblock content %}

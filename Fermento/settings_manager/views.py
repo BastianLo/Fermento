@@ -21,6 +21,8 @@ def notifcation(request):
 
 @login_required(login_url='/accounts/login/')
 def notifcation_save(request):
+    if request.method !='POST':
+        return redirect(notifcation)
     setting = settings_notification.objects.filter(user=request.user).first()
 
     setting.pushover_enabled = request.POST.get('pushover_enabled', '') == 'on'

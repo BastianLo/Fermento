@@ -3,8 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("batch/", views.index, name="index"),
+    path("", views.batches_all, name="index"),
+    path("batch/", views.batches_all, name="batch_all"),
     path("batch/<int:batch_id>/", views.batch_by_id, name="batch_by_id"),
     path("qrcode/", views.qrcode_overview, name="qrcode_overview"),
     path("qrcode/<int:qrcode_id>/", views.qrcode_by_id, name="qrcode_by_id"),

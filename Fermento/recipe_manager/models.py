@@ -5,6 +5,9 @@ import math
 from image_cropping import ImageRatioField, ImageCropField
 from django.utils import timezone
 
+from django.apps import apps
+
+
 # Create your models here.
 
 USER_FOREIGN_KEY = "auth.User"
@@ -25,6 +28,9 @@ class recipe(models.Model):
 
     def create_process(self, **kwargs):
         return process.objects.create(owner=self.owner, related_recipe=self, **kwargs)
+    def create_batch(self, **kwargs):
+        return apps.get_model('batches', 'Batch').objects.create(owner=self.owner, related_recipe=self, **kwargs)
+    
     def get_description_preview(self):
         CHAR_LIMIT = 100
         if len(self.description) > CHAR_LIMIT:

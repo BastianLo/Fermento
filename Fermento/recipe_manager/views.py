@@ -39,6 +39,16 @@ def delete_recipe_by_id(request, recipe_id):
 
 
 @login_required(login_url='/accounts/login/')
+def execute_recipe_by_id(request, recipe_id):
+    uid = request.session['_auth_user_id']
+    template_recipe = recipe.objects.filter(id=recipe_id, owner=uid).first()
+    batch = template_recipe.create_batch()
+    batch.name = "Batch " + str(batch.id)
+    batch.save()
+    return redirect("/batches/batch/" + str(batch.id))
+
+
+@login_required(login_url='/accounts/login/')
 def edit_recipe_by_id(request, recipe_id):
     if request.method == "GET":
         return edit_recipe_get(request, recipe_id)

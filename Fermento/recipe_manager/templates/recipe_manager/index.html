@@ -10,6 +10,7 @@
 </h1>
 
 {% if recipes %}
+<!--TODO: Export this navigator as component - so it can be reused by multiple lists-->
 <div class="row">
     {% for recipe in recipes %}
     <a href="{{recipe.id}}">
@@ -23,6 +24,9 @@
                     <h5 class="card-title">{{recipe.name}}</h5>
                     <p class="card-text">{{recipe.get_description_preview}}</p>
                     <a href="{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
+                    <!-- TODO: Add progress bar with progress of batch. Ref: https://www.gethalfmoon.com/docs/progress/-->
+                    <!-- TODO: Add red batch if a task in batch is overdue. Ref: https://www.gethalfmoon.com/docs/progress/-->
+                    <!-- TODO: Replace image with latest image of batch. Use recipe image only if not batch image available -->
                 </div>
             </div>
         </div>
