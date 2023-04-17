@@ -1,0 +1,52 @@
+{% load static %}
+{% load i18n %}
+
+<div class="row">
+    <form style="width:100%" action="" method="GET">
+        <div class="card p-0 d-flex">
+            <div class="d-flex">
+                <select class="form-control mr-2" name="orderby" onchange="this.form.submit()">
+                    <option value="" selected="selected" disabled="disabled">{% trans "sortby" %}</option>
+                    {% for oi in order_items %}
+                    <option value="{{oi}}" {% if oi == request.GET.orderby %}selected="selected" {% endif %}>
+                        {{oi}}
+                    </option>
+                    {% endfor %}
+                </select>
+                <select class="form-control mr-2" name="direction" onchange="this.form.submit()">
+                    <option value="" selected="selected" disabled="disabled">{% trans "direction" %}</option>
+                    {% for oi in order_directions %}
+                    <option value="{{oi}}" {% if oi == request.GET.direction %}selected="selected" {% endif %}>
+                        {{oi}}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <nav class="mt-2">
+            <ul style="width:100%" class="pagination text-center justify-content-center">
+                <!-- TODO: Add min&max page boxes. Ref: https://www.gethalfmoon.com/docs/pagination/ -->
+                <!-- Previous page -->
+                {% if pages.current > 1 %}
+                <li class="page-item">
+                    <button name="page" value={{pages.previous}} class="page-link">
+                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </button>
+                </li>
+                {% endif %}
+                <!-- Active page item -->
+                <li class="page-item active" aria-current="page">
+                    <button name="page" value={{pages.next}} class="page-link">{{pages.current}}</button>
+                </li>
+                <!-- Next page -->
+                {% if pages.current != pages.next %}
+                <li class="page-item">
+                    <button name="page" value={{pages.next}} class="page-link">
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </button>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </form>
+</div>
