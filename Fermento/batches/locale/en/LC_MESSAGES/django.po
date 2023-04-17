@@ -17,19 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#: settings_manager/templates/settings_manager/notification.html:6
-msgid "Notification"
-msgstr "Benachrichtigungen"
-
-#: settings_manager/templates/settings_manager/notification.html:16
-msgid "Active"
-msgstr "Aktiv"
-
-#: settings_manager/templates/settings_manager/notification.html:21
-msgid "Credentials"
-msgstr "Zugangsdaten"
-
-#: settings_manager/templates/settings_manager/notification.html:39
-msgid "save"
-msgstr "Speichern"
+#: batches/templates/batches/batches/overview.html:40
+msgid "readMore"
+msgstr "Read more"

@@ -1,18 +1,24 @@
-#: Fermento/templates/registration/login.html:17
+#: templates/components/navigation/navigator.html:9
+msgid "sortby"
+msgstr "Sortiere"
+
+#: templates/components/navigation/navigator.html:17
+msgid "direction"
+msgstr "Richtung"
+
+#: templates/registration/login.html:17
 msgid "loginError"
 msgstr "Beim Anmelden ist ein Fehler aufgetreten"
 
-#: Fermento/templates/registration/login.html:23
+#: templates/registration/login.html:23
 msgid "username"
 msgstr "Username"
 
-#: Fermento/templates/registration/login.html:27
+#: templates/registration/login.html:27
 msgid "password"
 msgstr "Password"
 
-#: Fermento/templates/registration/login.html:30
-#, fuzzy
-#| msgid "loginError"
+#: templates/registration/login.html:30
 msgid "login"
 msgstr "Login"
 
