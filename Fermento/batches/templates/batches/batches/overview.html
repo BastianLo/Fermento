@@ -22,6 +22,20 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{batch.name}}</h5>
+                    <div class="progress-group">
+                        <div class="progress">
+                            <div role="progressbar" style="width: {{batch.get_progress_percentage}}%;"
+                                aria-valuenow="{{batch.get_progress_percentage}}" aria-valuemin="0" aria-valuemax="100"
+                                class="progress-bar progress-bar-animated
+                                {% if batch.get_progress_percentage < 20 %} bg-danger
+                                {% elif batch.get_progress_percentage < 40 %} bg-secondary
+                                {% elif batch.get_progress_percentage < 100 %} bg-primary
+                                {% else %} bg-success
+                                
+                                {% endif %} "></div>
+                        </div>
+                        <span class="progress-group-label">{{batch.get_progress_percentage}}%</span>
+                    </div>
                     <p class="card-text">{{batch.start_date}}</p>
                     <a href="{{batch.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
                     <!-- TODO: Add progress bar with progress of batch. Ref: https://www.gethalfmoon.com/docs/progress/-->

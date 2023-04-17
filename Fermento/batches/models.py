@@ -2,8 +2,8 @@ from django.db import models
 import os
 from recipe_manager.models import recipe, process
 from django.db.models.signals import post_save
-
-
+from datetime import timedelta
+from django.utils import timezone
 
 
 USER_FOREIGN_KEY = "auth.User"
@@ -18,6 +18,13 @@ class Batch(models.Model):
     def get_qrcode(self):
         return QrCode.objects.filter(batch=self).first()
     
+    def get_progress_percentage(self):
+        duration = timedelta(seconds=1)
+        for process in self.related_recipe.get_processes():
+            duration = max(duration, max([x.end_time for x in process.get_process_schedule()]))
+        progress_duration = timezone.now() - self.start_date
+        return min(100, round(progress_duration/duration*100))
+
     def create_next_executions(self):
         for process in self.related_recipe.get_processes():
             for schedule in process.get_process_schedule():
