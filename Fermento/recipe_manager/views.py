@@ -10,12 +10,28 @@ from django.core import serializers
 import json
 from django.core import serializers
 from django.utils.dateparse import parse_duration
+import math
 
 @login_required(login_url='/accounts/login/')
 def index(request):
-    recipes = recipe.objects.filter(owner=request.session['_auth_user_id'])
+    LIMIT = 10
+    recipes = recipe.objects.filter(owner=request.user)
+    count = len(recipes)
+    orderby = request.GET.get("orderby")
+    page = int(request.GET.get("page")) if request.GET.get("page") else 1
+    if orderby:
+        try:
+            desc = "-" if request.GET.get("direction") == "desc" else ""
+            recipes = recipes.order_by(desc + orderby)
+        except:
+            print(f"Error: '{orderby}' attribute does not exist for object Batch")
+    recipes = recipes[(page-1)*LIMIT:(page-1)*LIMIT+LIMIT]
     context = {
-        "recipes": recipes
+        "recipes": recipes,
+        "order_items": ["name", "difficulty"],
+        "order_directions": ["asc", "desc"],
+        "pages": {"current": page, "previous": max(page-1, 1), "next": max(1,min(page+1, math.ceil(count/LIMIT)))}
+
     }
     return render(request, "recipe_manager/index.html", context)
 
