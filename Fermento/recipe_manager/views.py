@@ -386,7 +386,7 @@ def _input_to_deltatime(input_string):
     hours = int(time.split(":")[0])
     minutes = int(time.split(":")[1])
     if len(time.split(":")) == 3:
-        seconds = int(time.split(":")[1])
+        seconds = int(time.split(":")[2])
     total_seconds += hours * 60 * 60
     total_seconds += minutes * 60
     total_seconds += seconds
