@@ -6,7 +6,7 @@
 
 
 {% block content %}
-<h1 class="text-center">All Batches</h1>
+<h1 class="text-center">{% trans "allBatches" %}</h1>
 {% include 'components/navigation/navigator.html' %}
 
 {% if batches %}
@@ -45,7 +45,7 @@
     {% endfor %}
 </div>
 {% else %}
-<p>No recipes are available.</p>
+<p>{% trans "noBatchesExist" %}</p>
 {% endif %}
 
 {% endblock content %}
