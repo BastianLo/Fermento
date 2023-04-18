@@ -193,7 +193,6 @@ def edit_recipe_get(request, recipe_id):
     template = loader.get_template("recipe_manager/components/edit_recipe.html")
     processes = json.loads(serializers.serialize('json', selected_recipe.get_processes()))
     for i, p in enumerate(processes):
-        print(i)
         processes[i]["ingredients"] = serializers.serialize('json', recipe_ingredient.objects.filter(related_process=p["pk"]))
         processes[i]["process_steps"] = serializers.serialize('json', process_step.objects.filter(related_process=p["pk"]).order_by("index"))
         processes[i]["utils"] = serializers.serialize('json', utensils.objects.filter(related_process=p["pk"]))
@@ -231,6 +230,9 @@ def edit_recipe_post(request, recipe_id):
         else:
             new_process = process.objects.filter(id=p["id"], owner=o)[0]
         new_process.name = p["name"]
+        new_process.work_duration = parse_duration(p["work_duration"])
+        new_process.wait_duration = parse_duration(p["wait_duration"])
+        print(new_process.wait_duration)
         new_process.save()
 
         #Delete ingredients that were removed by user
@@ -272,7 +274,6 @@ def edit_recipe_post(request, recipe_id):
             new_util.name = u["name"]
             new_util.save()
         for count, ps in enumerate(p["steps"]):
-            print(count, ps)
             if ps["id"] == "-1":
                 new_step = process_step()
                 new_step.owner = o
@@ -329,6 +330,8 @@ def recipe_create_post(request):
         new_process = process()
         new_process.owner = o
         new_process.name = p["name"]
+        new_process.work_duration = parse_duration(p["work_duration"])
+        new_process.wait_duration = parse_duration(p["wait_duration"])
         new_process.related_recipe = new_recipe
         new_process.save()
         for i in p["ingredients"]:
