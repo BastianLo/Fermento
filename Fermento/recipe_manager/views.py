@@ -253,7 +253,6 @@ def edit_recipe_post(request, recipe_id):
         process_schedule.objects.filter(id__in=delete_schedules).delete()
 
         for i in p["ingredients"]:
-            #TODO: Override recipe-index once implemented to save order changes
             if i["id"] == "-1":
                 new_ingredient = recipe_ingredient()
                 new_ingredient.related_process = new_process
