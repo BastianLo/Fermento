@@ -33,9 +33,8 @@
 <!--TODO: Export this navigator as component - so it can be reused by multiple lists-->
 <div class="row">
     {% for recipe in recipes %}
-    <a href="{{recipe.id}}">
         <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
-            <div class="card">
+            <div style="cursor: pointer;" onclick="location.href='{{recipe.id}}';"  class="card">
                 <div class="card-img-top">
                     <img class="img-fluid rounded" style="overflow: hidden;"
                         src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
@@ -50,11 +49,9 @@
                     <span class="badge badge-success">{{recipe.difficulty}}</span>
                     {% endif %}
                     <p class="card-text">{{recipe.get_description_preview}}</p>
-                    <a href="{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
                 </div>
             </div>
         </div>
-    </a>
     {% endfor %}
 </div>
 {% else %}
