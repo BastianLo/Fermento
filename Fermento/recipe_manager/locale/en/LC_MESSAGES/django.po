@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 00:34+0200\n"
+"POT-Creation-Date: 2023-04-18 23:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,152 +18,156 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:19
+#: templates/recipe_manager/components/create_recipe.html:19
 msgid "createNewRecipe"
 msgstr "Create new Recipe"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:21
+#: templates/recipe_manager/components/create_recipe.html:21
 msgid "basicInformations"
 msgstr "Basic Informations"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:26
+#: templates/recipe_manager/components/create_recipe.html:26
 msgid "Name"
 msgstr "Name"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:31
+#: templates/recipe_manager/components/create_recipe.html:31
 msgid "description"
 msgstr "Description"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:40
-#: recipe_manager/templates/recipe_manager/recipe.html:41
+#: templates/recipe_manager/components/create_recipe.html:40
+#: templates/recipe_manager/recipe.html:41
 msgid "difficulty"
 msgstr "Difficulty"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:53
+#: templates/recipe_manager/components/create_recipe.html:53
 msgid "Processes"
 msgstr "Processes"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:59
+#: templates/recipe_manager/components/create_recipe.html:59
 msgid "AddProcess"
 msgstr "Add Process"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:67
+#: templates/recipe_manager/components/create_recipe.html:67
 msgid "save"
 msgstr "Save"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:68
+#: templates/recipe_manager/components/create_recipe.html:68
 msgid "discardChanges"
 msgstr "Discard changes"
 
-#: recipe_manager/templates/recipe_manager/components/create_recipe.html:68
+#: templates/recipe_manager/components/create_recipe.html:68
 msgid "cancel"
 msgstr "Cancel"
 
-#: recipe_manager/templates/recipe_manager/index.html:14
-#: recipe_manager/templates/recipe_manager/index.html:74
+#: templates/recipe_manager/index.html:14
+#: templates/recipe_manager/index.html:76
 msgid "importRecipe"
 msgstr "Import Recipe"
 
-#: recipe_manager/templates/recipe_manager/index.html:21
+#: templates/recipe_manager/index.html:21
 msgid "import"
 msgstr "Import"
 
-#: recipe_manager/templates/recipe_manager/index.html:29
+#: templates/recipe_manager/index.html:29
 msgid "Recipes"
 msgstr "Recipes"
 
-#: recipe_manager/templates/recipe_manager/index.html:53
-msgid "readMore"
-msgstr "Read more"
+#: templates/recipe_manager/index.html:69
+#: templates/recipe_manager/recipe.html:218
+msgid "actions"
+msgstr "Actions"
 
-#: recipe_manager/templates/recipe_manager/index.html:71
+#: templates/recipe_manager/index.html:73
 msgid "createRecipe"
 msgstr "Create Recipe"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:56
+#: templates/recipe_manager/recipe.html:56
 msgid "preparation"
 msgstr "Preparation"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:71
+#: templates/recipe_manager/recipe.html:71
 msgid "total"
 msgstr "Total"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:104
+#: templates/recipe_manager/recipe.html:104
 msgid "Ingredients"
 msgstr "Ingredients"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:118
-#: recipe_manager/templates/recipe_manager/recipe.html:136
+#: templates/recipe_manager/recipe.html:118
+#: templates/recipe_manager/recipe.html:136
 msgid "noIngredients"
 msgstr "This process requires no ingredients!"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:124
+#: templates/recipe_manager/recipe.html:124
 msgid "Utensils"
 msgstr "Utensils"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:142
+#: templates/recipe_manager/recipe.html:142
 msgid "Timeschedule"
 msgstr "Schedule"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:148
+#: templates/recipe_manager/recipe.html:148
 msgid "nonRecurring"
 msgstr "Non-Recurring"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:150
+#: templates/recipe_manager/recipe.html:150
 msgid "repetitive"
 msgstr "Repetitive"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:153
+#: templates/recipe_manager/recipe.html:153
 msgid "Executions"
 msgstr "Executions"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:161
+#: templates/recipe_manager/recipe.html:161
 msgid "onceAfter"
 msgstr "Once after"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:165
+#: templates/recipe_manager/recipe.html:165
 msgid "immediately"
 msgstr "Immediately"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:169
+#: templates/recipe_manager/recipe.html:169
 msgid "startAfter"
 msgstr "Start"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:173
+#: templates/recipe_manager/recipe.html:173
 msgid "FrequencyEvery"
 msgstr "Frequency"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:177
+#: templates/recipe_manager/recipe.html:177
 msgid "end"
 msgstr "End"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:189
+#: templates/recipe_manager/recipe.html:189
 msgid "process_steps"
 msgstr "Process steps"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:203
+#: templates/recipe_manager/recipe.html:203
 msgid "noProcessSteps"
 msgstr "This process requires no work steps!"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:215
-msgid "editRecipe"
-msgstr "Edit Recipe"
-
-#: recipe_manager/templates/recipe_manager/recipe.html:216
-msgid "deleteConfirmation"
-msgstr "Confirm deletion?"
-
-#: recipe_manager/templates/recipe_manager/recipe.html:216
-msgid "deleteRecipe"
-msgstr "Delete Recipe"
-
-#: recipe_manager/templates/recipe_manager/recipe.html:217
+#: templates/recipe_manager/recipe.html:221
 msgid "executeRecipe"
 msgstr "Execute Recipe"
 
-#: recipe_manager/templates/recipe_manager/recipe.html:218
+#: templates/recipe_manager/recipe.html:222
 msgid "exportRecipe"
 msgstr "Export Recipe"
+
+#: templates/recipe_manager/recipe.html:223
+msgid "editRecipe"
+msgstr "Edit Recipe"
+
+#: templates/recipe_manager/recipe.html:225
+msgid "deleteConfirmation"
+msgstr "Confirm deletion?"
+
+#: templates/recipe_manager/recipe.html:225
+msgid "deleteRecipe"
+msgstr "Delete Recipe"
+
+#~ msgid "readMore"
+#~ msgstr "Read more"
 
 #~ msgid "Image"
 #~ msgstr "Image"

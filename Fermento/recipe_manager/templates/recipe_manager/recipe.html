@@ -211,10 +211,19 @@
 {% endblock %}
 
 {% block footer %}
-<div class="content">
-    <button class="btn btn-primary mr-10" type="button" onclick="location.href='edit'">{% trans "editRecipe" %}</button>
-    <a href="delete" class="btn btn-danger mr-10" onclick="return confirm('{% trans "deleteConfirmation" %}')">{% trans "deleteRecipe" %}</a>
-    <a href="execute" class="btn btn-success mr-10" >{% trans "executeRecipe" %}</a>
-    <a href="export" class="btn btn-primary" >{% trans "exportRecipe" %}</a>
+
+
+<div class="dropdown dropup with-arrow">
+    <button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true" aria-expanded="false">
+        {% trans "actions" %} <i class="fa fa-angle-up ml-5" aria-hidden="true"></i>
+    </button>
+    <div class="dropdown-menu " aria-labelledby="...">
+        <a href="execute" style="width:100%" class="btn btn-success mb-10">{% trans "executeRecipe" %}</a>
+        <a href="export" style="width:100%" class="btn btn-primary mb-10">{% trans "exportRecipe" %}</a>
+        <button style="width:100%" class="btn btn-primary mb-10" type="button" onclick="location.href='edit'">{% trans "editRecipe" %}</button>
+        <a href="delete" style="width:100%" class="btn btn-danger mb-10"
+            onclick="return confirm('{% trans "deleteConfirmation" %}')">{% trans "deleteRecipe" %}</a>
+    </div>
 </div>
+
 {% endblock %}
