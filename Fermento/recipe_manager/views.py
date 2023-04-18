@@ -290,9 +290,9 @@ def edit_recipe_post(request, recipe_id):
             else:
                 new_schedule = process_schedule.objects.filter(owner=o, id=s["id"], related_process=new_process)[0]
             new_schedule.executed_once = s["runOnce"]
-            new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
-            new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))
-            new_schedule.end_time = timedelta(minutes=_input_to_deltatime(s["end"]))
+            new_schedule.start_time = timedelta(seconds=_input_to_deltatime(s["start"]))
+            new_schedule.wait_time = timedelta(seconds=_input_to_deltatime(s["frequency"]))
+            new_schedule.end_time = timedelta(seconds=_input_to_deltatime(s["end"]))
             new_schedule.save()
     
     return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
@@ -359,9 +359,9 @@ def recipe_create_post(request):
             new_schedule.related_process = new_process
             new_schedule.owner = o
             new_schedule.executed_once = s["runOnce"]
-            new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
-            new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))
-            new_schedule.end_time = timedelta(minutes=_input_to_deltatime(s["end"]))
+            new_schedule.start_time = timedelta(seconds=_input_to_deltatime(s["start"]))
+            new_schedule.wait_time = timedelta(seconds=_input_to_deltatime(s["frequency"]))
+            new_schedule.end_time = timedelta(seconds=_input_to_deltatime(s["end"]))
             new_schedule.save()
     
     return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
@@ -373,20 +373,23 @@ def not_found(request, e):
 
 
 def _input_to_deltatime(input_string):
-    total_minutes = 0
+    total_seconds = 0
     if str(input_string).isdigit():
-        total_minutes += int(input_string) * 24 * 60
-        return total_minutes
+        total_seconds += int(input_string) * 24 * 60 * 60
+        return total_seconds
     if len(input_string.split(" ")) > 1:
         days = input_string.split(" ")[0]
         time = input_string.split(" ")[1]
-        total_minutes += (int(days) * 24 * 60)
+        total_seconds += (int(days) * 24 * 60 * 60)
     else:
         time = input_string.split(" ")[0]
     hours = int(time.split(":")[0])
     minutes = int(time.split(":")[1])
-    total_minutes += hours * 60
-    total_minutes += minutes
-    return total_minutes
+    if len(time.split(":")) == 3:
+        seconds = int(time.split(":")[1])
+    total_seconds += hours * 60 * 60
+    total_seconds += minutes * 60
+    total_seconds += seconds
+    return total_seconds
 
     

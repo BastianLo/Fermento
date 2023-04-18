@@ -79,7 +79,7 @@ function createUtil(processNum, name, util_id) {
 }
 
 function addSchedule(processNum) {
-    createSchedule(processNum, false, "00:00", "00:00", "00:00", -1)
+    createSchedule(processNum, false, "00:00:00", "00:00:00", "00:00:00", -1)
 }
 
 function createSchedule(processNum, runOnce, start, frequency, end, schedule_id) {
