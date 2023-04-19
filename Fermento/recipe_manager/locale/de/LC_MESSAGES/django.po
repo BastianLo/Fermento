@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 23:13+0200\n"
+"POT-Creation-Date: 2023-04-19 16:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,136 +35,141 @@ msgid "description"
 msgstr "Beschreibung"
 
 #: templates/recipe_manager/components/create_recipe.html:40
-#: templates/recipe_manager/recipe.html:41
 msgid "difficulty"
 msgstr "Schwierigkeit"
 
-#: templates/recipe_manager/components/create_recipe.html:53
+#: templates/recipe_manager/components/create_recipe.html:49
+msgid "rating"
+msgstr ""
+
+#: templates/recipe_manager/components/create_recipe.html:63
 msgid "Processes"
 msgstr "Prozesse"
 
-#: templates/recipe_manager/components/create_recipe.html:59
+#: templates/recipe_manager/components/create_recipe.html:69
 msgid "AddProcess"
 msgstr "Process hinzufügen"
 
-#: templates/recipe_manager/components/create_recipe.html:67
+#: templates/recipe_manager/components/create_recipe.html:77
 msgid "save"
 msgstr "Speichern"
 
-#: templates/recipe_manager/components/create_recipe.html:68
+#: templates/recipe_manager/components/create_recipe.html:78
 msgid "discardChanges"
 msgstr "Änderungen verwerfen"
 
-#: templates/recipe_manager/components/create_recipe.html:68
+#: templates/recipe_manager/components/create_recipe.html:78
 msgid "cancel"
 msgstr "Abbrechen"
 
 #: templates/recipe_manager/index.html:14
-#: templates/recipe_manager/index.html:76
+#: templates/recipe_manager/index.html:90
 msgid "importRecipe"
 msgstr "Rezept importieren"
 
-#: templates/recipe_manager/index.html:21
+#: templates/recipe_manager/index.html:22
 msgid "import"
 msgstr "Importieren"
 
-#: templates/recipe_manager/index.html:29
+#: templates/recipe_manager/index.html:30
 msgid "Recipes"
 msgstr "Rezepte"
 
-#: templates/recipe_manager/index.html:69
-#: templates/recipe_manager/recipe.html:218
+#: templates/recipe_manager/index.html:83
+#: templates/recipe_manager/recipe.html:197
 msgid "actions"
 msgstr "Aktionen"
 
-#: templates/recipe_manager/index.html:73
+#: templates/recipe_manager/index.html:87
 msgid "createRecipe"
 msgstr "Rezept erstellen"
 
-#: templates/recipe_manager/recipe.html:56
-msgid "preparation"
-msgstr "Vorbereitung"
+#: templates/recipe_manager/recipe.html:53
+msgid "DescriptionWorkDuration"
+msgstr "Gesamte Arbeitsdauer"
 
-#: templates/recipe_manager/recipe.html:71
-msgid "total"
-msgstr "Gesamt"
-
-#: templates/recipe_manager/recipe.html:104
+#: templates/recipe_manager/recipe.html:83
 msgid "Ingredients"
 msgstr "Zutaten"
 
-#: templates/recipe_manager/recipe.html:118
-#: templates/recipe_manager/recipe.html:136
+#: templates/recipe_manager/recipe.html:97
+#: templates/recipe_manager/recipe.html:115
 msgid "noIngredients"
 msgstr "Dieser Prozess benötigt keine Zutaten!"
 
-#: templates/recipe_manager/recipe.html:124
+#: templates/recipe_manager/recipe.html:103
 msgid "Utensils"
 msgstr "Hilfsmittel"
 
-#: templates/recipe_manager/recipe.html:142
+#: templates/recipe_manager/recipe.html:121
 msgid "Timeschedule"
 msgstr "Zeitplan"
 
-#: templates/recipe_manager/recipe.html:148
+#: templates/recipe_manager/recipe.html:127
 msgid "nonRecurring"
 msgstr "Einmalig"
 
-#: templates/recipe_manager/recipe.html:150
+#: templates/recipe_manager/recipe.html:129
 msgid "repetitive"
 msgstr "Wiederholend"
 
-#: templates/recipe_manager/recipe.html:153
+#: templates/recipe_manager/recipe.html:132
 msgid "Executions"
 msgstr "Ausführungen"
 
-#: templates/recipe_manager/recipe.html:161
+#: templates/recipe_manager/recipe.html:140
 msgid "onceAfter"
 msgstr "Einmal nach"
 
-#: templates/recipe_manager/recipe.html:165
+#: templates/recipe_manager/recipe.html:144
 msgid "immediately"
 msgstr "Sofort"
 
-#: templates/recipe_manager/recipe.html:169
+#: templates/recipe_manager/recipe.html:148
 msgid "startAfter"
 msgstr "Start"
 
-#: templates/recipe_manager/recipe.html:173
+#: templates/recipe_manager/recipe.html:152
 msgid "FrequencyEvery"
 msgstr "Frequenz"
 
-#: templates/recipe_manager/recipe.html:177
+#: templates/recipe_manager/recipe.html:156
 msgid "end"
 msgstr "Ende"
 
-#: templates/recipe_manager/recipe.html:189
+#: templates/recipe_manager/recipe.html:168
 msgid "process_steps"
 msgstr "Arbeitsschritte"
 
-#: templates/recipe_manager/recipe.html:203
+#: templates/recipe_manager/recipe.html:182
 msgid "noProcessSteps"
 msgstr "Dieser Prozess benötigt keine Arbeitsschritte!"
 
-#: templates/recipe_manager/recipe.html:221
+#: templates/recipe_manager/recipe.html:200
 msgid "executeRecipe"
 msgstr "Rezept ausführen"
 
-#: templates/recipe_manager/recipe.html:222
+#: templates/recipe_manager/recipe.html:201
 msgid "exportRecipe"
 msgstr "Rezept exportieren"
 
-#: templates/recipe_manager/recipe.html:223
+#: templates/recipe_manager/recipe.html:203
 msgid "editRecipe"
 msgstr "Rezept bearbeiten"
 
-#: templates/recipe_manager/recipe.html:225
+#: templates/recipe_manager/recipe.html:205
 msgid "deleteConfirmation"
 msgstr "Wirklich löschen?"
 
-#: templates/recipe_manager/recipe.html:225
+#: templates/recipe_manager/recipe.html:205
 msgid "deleteRecipe"
 msgstr "Rezept löschen"
+
+#~ msgid "preparation"
+#~ msgstr "Vorbereitung"
+
+#~ msgid "total"
+#~ msgstr "Gesamt"
 
 #~ msgid "readMore"
 #~ msgstr "Weiterlesen"

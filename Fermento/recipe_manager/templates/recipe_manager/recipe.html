@@ -27,62 +27,35 @@
                 <h1 class="text-center">
                     {{ recipe.name }}
                 </h1>
-                <div class="row flex-nowrap">
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="col-lg-2">
-                                {% if recipe.difficulty == "easy" %}
-                                <img width="32px" height="32px" src="{% static 'img/speedometer_easy.png' %}" alt="...">
-                                {% elif recipe.difficulty == "medium" %}
-                                <img width="32px" height="32px" src="{% static 'img/speedometer_medium.png' %}"
-                                    alt="...">
-                                {% elif recipe.difficulty == "hard" %}
-                                <img width="32px" height="32px" src="{% static 'img/speedometer_hard.png' %}" alt="...">
-                                {% else %}
-                                <img width="32px" height="32px" src="{% static 'img/speedometer_easy.png' %}" alt="...">
-                                {% endif %}
-                            </div>
-                            <div class="col-lg-10">
-                                <div>
-                                    <b>{% trans "difficulty" %}</b>
-                                    <br />
-                                    <i><span>{{ recipe.difficulty }}</span></i>
-                                </div>
-                            </div>
-                        </div>
+                <div class="content">
+                    {% if recipe.difficulty == "easy" %}
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                        <span class="bi bi-speedometer2 badge badge-success"></span>
+                        <span class="badge badge-success">{{ recipe.difficulty }}</span>
                     </div>
-                    <!--
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <img width="32px" height="32px" src="{% static 'img/hourglass.png' %}" alt="...">
-                            </div>
-                            <div class="col-lg-10">
-                                <div>
-                                    <b>{% trans "preparation" %}</b>
-                                    <br />
-                                    <i><span>{{ recipe.preparation_duration }}</span></i>
-                                </div>
-                            </div>
-                        </div>
+                    {% elif recipe.difficulty == "medium" %}
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                        <span class="bi bi-speedometer2 badge badge-secondary"></span>
+                        <span class="badge badge-secondary">{{ recipe.difficulty }}</span>
                     </div>
-                    -->
-                    <div class="col-lg-4">
-                        <div class="row">
-                            <div class="col-lg-2">
-                                <img width="32px" height="32px" src="{% static 'img/schedule.png' %}" alt="...">
-                            </div>
-                            <div class="col-lg-10">
-                                <div>
-                                    <b>{% trans "total" %}</b>
-                                    <br />
-                                    <i><span>{{ recipe.get_total_work_duration|duration }}</span></i>
-                                </div>
-                            </div>
-                        </div>
+                    {% elif recipe.difficulty == "hard" %}
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                        <span class="bi bi-speedometer2 badge badge-danger"></span>
+                        <span class="badge badge-danger">{{ recipe.difficulty }}</span>
                     </div>
+                    {% else %}
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                        <span class="bi bi-speedometer2 badge badge-success"></span>
+                        <span class="badge badge-success">{{ recipe.difficulty }}</span>
+                    </div>
+                    {% endif %}
+                    {% if  recipe.get_total_work_duration %}
+                    <span data-toggle="tooltip" data-title="{% trans "DescriptionWorkDuration" %}" data-placement="bottom" class="badge-group" role="group">
+                        <span class="badge bi bi-alarm"></span>
+                        <span class="badge">{{ recipe.get_total_work_duration|duration }}</span>
+                    </span>
+                    {% endif %}
                 </div>
-                <br />
                 <div class="border-top">
                     <p>
                         {{recipe.description}}
@@ -221,12 +194,13 @@
 
 <div class="dropdown dropup with-arrow">
     <button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true" aria-expanded="false">
-        {% trans "actions" %} <i class="fa fa-angle-up ml-5" aria-hidden="true"></i>
+        <i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
     </button>
     <div class="dropdown-menu " aria-labelledby="...">
         <a href="execute" style="width:100%" class="btn btn-success mb-10">{% trans "executeRecipe" %}</a>
         <a href="export" style="width:100%" class="btn btn-primary mb-10">{% trans "exportRecipe" %}</a>
-        <button style="width:100%" class="btn btn-primary mb-10" type="button" onclick="location.href='edit'">{% trans "editRecipe" %}</button>
+        <button style="width:100%" class="btn btn-primary mb-10" type="button"
+            onclick="location.href='edit'">{% trans "editRecipe" %}</button>
         <a href="delete" style="width:100%" class="btn btn-danger mb-10"
             onclick="return confirm('{% trans "deleteConfirmation" %}')">{% trans "deleteRecipe" %}</a>
     </div>

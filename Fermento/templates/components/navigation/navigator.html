@@ -30,7 +30,7 @@
                 {% if pages.current > 1 %}
                 <li class="page-item">
                     <button name="page" value={{pages.previous}} class="page-link">
-                        <i class="fa fa-angle-left" aria-hidden="true"></i>
+                        <i class="bi bi-caret-left-fill" aria-hidden="true"></i>
                     </button>
                 </li>
                 {% endif %}
@@ -42,7 +42,7 @@
                 {% if pages.current != pages.next %}
                 <li class="page-item">
                     <button name="page" value={{pages.next}} class="page-link">
-                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        <i class="bi bi-caret-right-fill" aria-hidden="true"></i>
                     </button>
                 </li>
                 {% endif %}
