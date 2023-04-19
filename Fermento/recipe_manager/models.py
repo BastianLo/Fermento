@@ -45,7 +45,8 @@ class recipe(models.Model):
             return timedelta(minutes=0)
     def get_total_wait_duration(self):
         return process.objects.filter(related_recipe=self).aggregate(Sum("wait_duration"))["wait_duration__sum"]
-    
+    def time_until_complete(self):
+        return max([p.get_time_until_finish() for p in self.get_processes()])
     def get_processes(self):
         return process.objects.filter(related_recipe=self)
     
@@ -77,6 +78,9 @@ class process(models.Model):
         return process_step.objects.filter(related_process=self).order_by("index")
     def get_process_schedule(self):
         return process_schedule.objects.filter(related_process=self)
+    
+    def get_time_until_finish(self):
+        return max([max(x.end_time, x.start_time) for x in self.get_process_schedule()])
 
     def __str__(self) -> str:
         return f"Process_{self.id}_{self.name}_{self.related_recipe}"

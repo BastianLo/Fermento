@@ -40,7 +40,7 @@ msgstr "Difficulty"
 
 #: templates/recipe_manager/components/create_recipe.html:49
 msgid "rating"
-msgstr ""
+msgstr "Rating"
 
 #: templates/recipe_manager/components/create_recipe.html:63
 msgid "Processes"
@@ -86,7 +86,7 @@ msgstr "Create Recipe"
 
 #: templates/recipe_manager/recipe.html:53
 msgid "DescriptionWorkDuration"
-msgstr ""
+msgstr "Total work duration"
 
 #: templates/recipe_manager/recipe.html:83
 msgid "Ingredients"

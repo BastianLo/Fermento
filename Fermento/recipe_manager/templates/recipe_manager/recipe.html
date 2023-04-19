@@ -55,6 +55,12 @@
                         <span class="badge">{{ recipe.get_total_work_duration|duration }}</span>
                     </span>
                     {% endif %}
+                    {% if  recipe.time_until_complete %}
+                    <span data-toggle="tooltip" data-title="{% trans "DescriptionCompleteDuration" %}" data-placement="bottom" class="badge-group" role="group">
+                        <span class="badge bi bi-calendar-check"></span>
+                        <span class="badge">{{ recipe.time_until_complete|duration }}</span>
+                    </span>
+                    {% endif %}
                 </div>
                 <div class="border-top">
                     <p>
