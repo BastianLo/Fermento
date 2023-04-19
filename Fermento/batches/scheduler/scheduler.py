@@ -1,15 +1,12 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.conf import settings
-import os
 from django.utils import timezone
-from batches.models import Execution, Finished_Execution
+from batches.models import Execution
 from settings_manager.models import settings_notification
 from notifiers import get_notifier
 
 
 def start():
-    if not os.environ.get('RUN_MAIN'):
-        return
     scheduler = BackgroundScheduler()
     scheduler.add_job(check_scheduled_tasks, 'interval', seconds=int(settings.SCHEDULE_UPDATE_INTERVAL))
     scheduler.start()

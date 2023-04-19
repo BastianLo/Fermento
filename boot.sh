@@ -23,4 +23,4 @@ create-superuser ${USERNAME} ${EMAIL} ${PASSWORD}
 django-admin compilemessages > /dev/null 2>&1
 cd Fermento
 echo 'Starting application'
-gunicorn --bind :6734 Fermento.wsgi
+gunicorn --bind :6734 --workers 3 --preload Fermento.wsgi 
