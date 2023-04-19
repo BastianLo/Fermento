@@ -46,7 +46,7 @@ class recipe(models.Model):
     def get_total_wait_duration(self):
         return process.objects.filter(related_recipe=self).aggregate(Sum("wait_duration"))["wait_duration__sum"]
     def time_until_complete(self):
-        return max([p.get_time_until_finish() for p in self.get_processes()])
+        return max([p.get_time_until_finish() for p in self.get_processes()], default= timedelta(seconds=0))
     def get_processes(self):
         return process.objects.filter(related_recipe=self)
     
