@@ -25,6 +25,7 @@ class recipe(models.Model):
     image = ImageCropField(upload_to='images')
     cropping = ImageRatioField('image', '600x400')
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
+    rating = models.IntegerField(default=0)
 
     def create_process(self, **kwargs):
         return process.objects.create(owner=self.owner, related_recipe=self, **kwargs)
@@ -109,7 +110,8 @@ class process_schedule(models.Model):
             return 1
         if not self.end_time:
             return "∞"
-        return math.floor((self.end_time - self.start_time)/self.wait_time)
+        print((self.end_time - self.start_time)/self.wait_time)
+        return math.floor((self.end_time - self.start_time)/self.wait_time) + 1
     
     def __str__(self):
         return  f"ProcessSchedule{self.id}"

@@ -4,6 +4,7 @@ function initialize_edit_fields() {
     document.getElementById(`name`).value = edit_recipe[0]["fields"]["name"]
     document.getElementById(`description`).value = edit_recipe[0]["fields"]["description"]
     document.getElementById(`difficulty`).value = edit_recipe[0]["fields"]["difficulty"]
+    document.getElementById(`rating`).value = edit_recipe[0]["fields"]["rating"]
     let count = 0
     edit_processes.forEach(process => {
         process["ingredients"] = JSON.parse(process["ingredients"])

@@ -216,6 +216,7 @@ def edit_recipe_post(request, recipe_id):
     new_recipe.owner = o
     new_recipe.name = data["name"]
     new_recipe.description = data["description"]
+    new_recipe.rating = int(data["rating"])
     if "image" in request.FILES:
         new_recipe.image = request.FILES["image"]
     new_recipe.difficulty = data["difficulty"]
@@ -321,6 +322,7 @@ def recipe_create_post(request):
     new_recipe.owner = o
     new_recipe.name = data["name"]
     new_recipe.description = data["description"]
+    new_recipe.rating = int(data["rating"])
     if "image" in request.FILES:
         new_recipe.image = request.FILES["image"]
     new_recipe.difficulty = data["difficulty"]

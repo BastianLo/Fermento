@@ -29,11 +29,10 @@ class Batch(models.Model):
     def get_executions(self):
         return Execution.objects.filter(related_batch=self).order_by("execution_datetime")
     def create_next_executions(self):
-        #FIXME: Processes with starttime 0 not working - starttime 0 is being skipped
         #TODO: If process frequency changes, delete old entries
         for process in self.related_recipe.get_processes():
             for schedule in process.get_process_schedule():
-                next_execution_datetime = schedule.get_next_execution(self.start_date)
+                next_execution_datetime = schedule.get_next_execution(self.start_date + timedelta(milliseconds=100))
                 if next_execution_datetime == None:
                     continue
                 Execution.objects.get_or_create(owner=self.owner, execution_datetime=next_execution_datetime, related_process=process, related_batch=self)
