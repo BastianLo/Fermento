@@ -16,22 +16,18 @@ def start():
 
 
 def check_scheduled_tasks():
-    for execution in Execution.objects.all():
+    for execution in Execution.objects.filter(notification_sent=False):
         if timezone.now() > execution.execution_datetime:
             print(f"Execution {execution.id} triggered.")
             send_notifications(execution)
-            archive_execution(execution)
             execution.related_batch.create_next_executions()
-
-def archive_execution(execution):
-    #TODO: Add execution to Finished_exection model - alternatively create bool (was_executed) in execution_model
-    #Finished_Execution.objects.create(owner=execution.owner, execution_datetime=execution.execution_datetime, related_process=execution.related_process, related_batch=execution.related_batch).save()
-    execution.delete()
 
 def send_notifications(execution):
     notification_settings = settings_notification.objects.get(user=execution.owner)
     if notification_settings.pushover_enabled:
         send_notification_pushover(execution)
+    execution.notification_sent = True
+    execution.save()
 
 
 def send_notification_pushover(execution):

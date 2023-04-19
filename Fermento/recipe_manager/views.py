@@ -11,6 +11,8 @@ import json
 from django.core import serializers
 from django.utils.dateparse import parse_duration
 import math
+from django.apps import apps
+
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -294,7 +296,7 @@ def edit_recipe_post(request, recipe_id):
             new_schedule.wait_time = timedelta(seconds=_input_to_deltatime(s["frequency"]))
             new_schedule.end_time = timedelta(seconds=_input_to_deltatime(s["end"]))
             new_schedule.save()
-    
+    [batch.create_next_executions() for batch in apps.get_model('batches', 'Batch').objects.filter(related_recipe=new_recipe)]
     return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
 
 @login_required(login_url='/accounts/login/')

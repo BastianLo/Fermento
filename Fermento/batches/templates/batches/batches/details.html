@@ -13,26 +13,31 @@
     <h2 class="card-title">
         {% trans "NextTasks" %}
     </h2>
-    <!-- Collapse group -->
-    <div class="collapse-group w-500 mw-full">
+    {% for execution in batch.get_executions %}
+    <div class="collapse-group w-500 mw-full mb-10">
         <!-- w-500 = width: 50rem (500px), mw-full = max-width: 100% -->
         <!-- First collapse panel (open by default) -->
-        <details class="collapse-panel" open>
-            <summary class="collapse-header">
-                <strong>Plain White T-Shirt</strong>
-                <br />
-                <span class="text-muted">Price: $20.00</span>
-            </summary>
-            <div class="collapse-content">
-                A long description that lists all the good sides of the product and none of the bad. Compels the shopper
-                to add this product to their cart immediately.
-            </div>
-        </details>
+        <div class="container border p-10">
+            <a href="/recipe_manager/recipe/{{batch.related_recipe.id}}"><strong>{{execution.related_process.name}}</strong></a>
+            <br />
+            <span class="text-muted">{% trans "execution" %}: {{execution.execution_datetime}}</span>
+            {% if execution.is_overdue %}
+            <span class="badge badge-danger">{% trans "overdue" %}</span>
+            <br/>
+            <form action="" method="post" target="">
+                {% csrf_token %}
+                <button name="complete" value="{{execution.id}}" class="btn btn-success"> {% trans "done" %}</button>
+            </form>
+            {% endif %}
+            
+        </div>
     </div>
+
+    {% endfor %}
 </div>
 
 <h1>{{batch.start_date}}</h1>
-  
+
 
 
 

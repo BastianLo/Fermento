@@ -35,8 +35,10 @@
         <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
             <div style="cursor: pointer;" onclick="location.href='{{recipe.id}}';"  class="card">
                 <div class="card-img-top">
+                    {% if recipe.image.url is not null %}
                     <img class="img-fluid rounded" style="overflow: hidden;"
                         src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
+                    {% endif %}
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{recipe.name}}</h5> 

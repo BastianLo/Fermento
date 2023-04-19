@@ -22,7 +22,7 @@ class recipe(models.Model):
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='recipe_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    image = ImageCropField(upload_to='images/dynamic', default="images/placeholder/recipe.png")
+    image = ImageCropField(upload_to='images')
     cropping = ImageRatioField('image', '600x400')
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
 

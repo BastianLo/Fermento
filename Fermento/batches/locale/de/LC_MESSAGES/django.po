@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 23:21+0200\n"
+"POT-Creation-Date: 2023-04-19 11:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,6 +18,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: templates/batches/batches/details.html:14
+msgid "NextTasks"
+msgstr "Nächste Aufgaben"
+
+#: templates/batches/batches/details.html:23
+msgid "execution"
+msgstr "Ausführung"
+
+#: templates/batches/batches/details.html:25
+msgid "overdue"
+msgstr "Überfällig"
+
+#: templates/batches/batches/details.html:29
+msgid "done"
+msgstr "Erledigt"
+
 #: templates/batches/batches/overview.html:9
 msgid "allBatches"
 msgstr "Alle Chargen"
@@ -26,7 +42,19 @@ msgstr "Alle Chargen"
 msgid "recipe"
 msgstr "Rezept"
 
-#: templates/batches/batches/overview.html:48
+#: templates/batches/batches/overview.html:43
+msgid "overdueTasks"
+msgstr "Überfällige Aufgaben"
+
+#: templates/batches/batches/overview.html:45
+msgid "BatchFinished"
+msgstr "Fertig"
+
+#: templates/batches/batches/overview.html:47
+msgid "noOverdueTasks"
+msgstr "Keine überfälligen Aufgaben"
+
+#: templates/batches/batches/overview.html:55
 msgid "noBatchesExist"
 msgstr "Es wurden noch keine Chargen erstellt!"
 

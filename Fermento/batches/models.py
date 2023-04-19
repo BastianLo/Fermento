@@ -24,8 +24,13 @@ class Batch(models.Model):
         progress_duration = timezone.now() - self.start_date
         return min(100, round(progress_duration/duration*100))
 
+    def get_executions_overdue(self):
+        return [e for e in self.get_executions() if e.is_overdue()]
+    def get_executions(self):
+        return Execution.objects.filter(related_batch=self).order_by("execution_datetime")
     def create_next_executions(self):
         #FIXME: Processes with starttime 0 not working - starttime 0 is being skipped
+        #TODO: If process frequency changes, delete old entries
         for process in self.related_recipe.get_processes():
             for schedule in process.get_process_schedule():
                 next_execution_datetime = schedule.get_next_execution(self.start_date)
@@ -55,7 +60,13 @@ class Execution(models.Model):
     execution_datetime = models.DateTimeField()
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     related_batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    notification_sent = models.BooleanField(default=False)
 
+    def is_overdue(self):
+        return self.execution_datetime < timezone.now()
+    
+    def archive(self):
+        self.delete()
 class Finished_Execution(Execution):
     pass
 

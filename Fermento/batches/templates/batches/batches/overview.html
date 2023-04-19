@@ -39,6 +39,13 @@
                     <p class="card-text">{{batch.start_date}}</p>
                     <!-- TODO: Add red batch if a task in batch is overdue. Ref: https://www.gethalfmoon.com/docs/progress/-->
                     <!-- TODO: Replace image with latest image of batch. Use recipe image only if not batch image available -->
+                    {% if batch.get_executions_overdue|length %}
+                    <span class="badge badge-danger"> {% trans "overdueTasks" %}: {{batch.get_executions_overdue|length}}</span>
+                    {% elif batch.get_progress_percentage == 100 %}
+                    <span class="badge badge-success"> {% trans "BatchFinished" %}</span>
+                    {% else %}
+                    <span class="badge badge-primary"> {% trans "noOverdueTasks" %}</span>
+                    {% endif %}
                 </div>
             </div>
         </div>
