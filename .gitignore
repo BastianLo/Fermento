@@ -163,6 +163,7 @@ cython_debug/
 #own ignores
 **/.DS_Store
 **/images/dynamic
+**/media/*
 staticfiles
 dev_container_data/
 .idea/
