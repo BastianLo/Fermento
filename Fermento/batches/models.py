@@ -5,7 +5,6 @@ from django.db.models.signals import post_save
 from datetime import timedelta
 from django.utils import timezone
 
-
 USER_FOREIGN_KEY = "auth.User"
 class Batch(models.Model):
     id = models.AutoField(primary_key=True)
@@ -19,17 +18,20 @@ class Batch(models.Model):
         return QrCode.objects.filter(batch=self).first()
     
     def get_progress_percentage(self):
-        duration = timedelta(seconds=1)
-        for process in self.related_recipe.get_processes():
-            duration = max(duration, max([x.end_time for x in process.get_process_schedule()], default=timedelta(seconds=0)))
+        duration = self.related_recipe.time_until_complete()
         progress_duration = timezone.now() - self.start_date
         return min(100, round(progress_duration/duration*100))
 
+    def get_executions_overdue(self):
+        return [e for e in self.get_executions() if e.is_overdue()]
+    def get_executions(self):
+        return Execution.objects.filter(related_batch=self).order_by("execution_datetime")
     def create_next_executions(self):
+        #TODO: If process frequency changes, delete old entries
         for process in self.related_recipe.get_processes():
             for schedule in process.get_process_schedule():
-                next_execution_datetime = schedule.get_next_execution(self.start_date)
-                if not next_execution_datetime:
+                next_execution_datetime = schedule.get_next_execution(self.start_date + timedelta(milliseconds=100))
+                if next_execution_datetime == None:
                     continue
                 Execution.objects.get_or_create(owner=self.owner, execution_datetime=next_execution_datetime, related_process=process, related_batch=self)
 
@@ -55,4 +57,13 @@ class Execution(models.Model):
     execution_datetime = models.DateTimeField()
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     related_batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    notification_sent = models.BooleanField(default=False)
+
+    def is_overdue(self):
+        return self.execution_datetime < timezone.now()
+    
+    def archive(self):
+        self.delete()
+class Finished_Execution(Execution):
+    pass
 

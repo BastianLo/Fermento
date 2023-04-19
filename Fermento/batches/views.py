@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from .models import Batch, QrCode
+from .models import Batch, QrCode, Execution
 import os
 import math
 
@@ -31,6 +31,9 @@ def batches_all(request):
 
 @login_required(login_url='/accounts/login/')
 def batch_by_id(request, batch_id):
+    if "complete" in request.POST:
+        if Execution.objects.filter(id=request.POST["complete"]).exists():
+            Execution.objects.filter(id=request.POST["complete"]).first().archive()
     uid = request.session['_auth_user_id']
     requested_batch = Batch.objects.filter(owner=uid, id=batch_id).first()
     if not requested_batch:

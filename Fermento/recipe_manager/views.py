@@ -11,6 +11,8 @@ import json
 from django.core import serializers
 from django.utils.dateparse import parse_duration
 import math
+from django.apps import apps
+
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -193,7 +195,6 @@ def edit_recipe_get(request, recipe_id):
     template = loader.get_template("recipe_manager/components/edit_recipe.html")
     processes = json.loads(serializers.serialize('json', selected_recipe.get_processes()))
     for i, p in enumerate(processes):
-        print(i)
         processes[i]["ingredients"] = serializers.serialize('json', recipe_ingredient.objects.filter(related_process=p["pk"]))
         processes[i]["process_steps"] = serializers.serialize('json', process_step.objects.filter(related_process=p["pk"]).order_by("index"))
         processes[i]["utils"] = serializers.serialize('json', utensils.objects.filter(related_process=p["pk"]))
@@ -215,6 +216,7 @@ def edit_recipe_post(request, recipe_id):
     new_recipe.owner = o
     new_recipe.name = data["name"]
     new_recipe.description = data["description"]
+    new_recipe.rating = int(data["rating"])
     if "image" in request.FILES:
         new_recipe.image = request.FILES["image"]
     new_recipe.difficulty = data["difficulty"]
@@ -231,6 +233,9 @@ def edit_recipe_post(request, recipe_id):
         else:
             new_process = process.objects.filter(id=p["id"], owner=o)[0]
         new_process.name = p["name"]
+        new_process.work_duration = parse_duration(p["work_duration"])
+        new_process.wait_duration = parse_duration(p["wait_duration"])
+        print(new_process.wait_duration)
         new_process.save()
 
         #Delete ingredients that were removed by user
@@ -251,7 +256,6 @@ def edit_recipe_post(request, recipe_id):
         process_schedule.objects.filter(id__in=delete_schedules).delete()
 
         for i in p["ingredients"]:
-            #TODO: Override recipe-index once implemented to save order changes
             if i["id"] == "-1":
                 new_ingredient = recipe_ingredient()
                 new_ingredient.related_process = new_process
@@ -272,7 +276,6 @@ def edit_recipe_post(request, recipe_id):
             new_util.name = u["name"]
             new_util.save()
         for count, ps in enumerate(p["steps"]):
-            print(count, ps)
             if ps["id"] == "-1":
                 new_step = process_step()
                 new_step.owner = o
@@ -290,11 +293,11 @@ def edit_recipe_post(request, recipe_id):
             else:
                 new_schedule = process_schedule.objects.filter(owner=o, id=s["id"], related_process=new_process)[0]
             new_schedule.executed_once = s["runOnce"]
-            new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
-            new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))
-            new_schedule.end_time = timedelta(minutes=_input_to_deltatime(s["end"]))
+            new_schedule.start_time = timedelta(seconds=_input_to_deltatime(s["start"]))
+            new_schedule.wait_time = timedelta(seconds=_input_to_deltatime(s["frequency"]))
+            new_schedule.end_time = timedelta(seconds=_input_to_deltatime(s["end"]))
             new_schedule.save()
-    
+    [batch.create_next_executions() for batch in apps.get_model('batches', 'Batch').objects.filter(related_recipe=new_recipe)]
     return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
 
 @login_required(login_url='/accounts/login/')
@@ -319,6 +322,7 @@ def recipe_create_post(request):
     new_recipe.owner = o
     new_recipe.name = data["name"]
     new_recipe.description = data["description"]
+    new_recipe.rating = int(data["rating"])
     if "image" in request.FILES:
         new_recipe.image = request.FILES["image"]
     new_recipe.difficulty = data["difficulty"]
@@ -329,6 +333,8 @@ def recipe_create_post(request):
         new_process = process()
         new_process.owner = o
         new_process.name = p["name"]
+        new_process.work_duration = parse_duration(p["work_duration"])
+        new_process.wait_duration = parse_duration(p["wait_duration"])
         new_process.related_recipe = new_recipe
         new_process.save()
         for i in p["ingredients"]:
@@ -357,9 +363,9 @@ def recipe_create_post(request):
             new_schedule.related_process = new_process
             new_schedule.owner = o
             new_schedule.executed_once = s["runOnce"]
-            new_schedule.start_time = timedelta(minutes=_input_to_deltatime(s["start"]))
-            new_schedule.wait_time = timedelta(minutes=_input_to_deltatime(s["frequency"]))
-            new_schedule.end_time = timedelta(minutes=_input_to_deltatime(s["end"]))
+            new_schedule.start_time = timedelta(seconds=_input_to_deltatime(s["start"]))
+            new_schedule.wait_time = timedelta(seconds=_input_to_deltatime(s["frequency"]))
+            new_schedule.end_time = timedelta(seconds=_input_to_deltatime(s["end"]))
             new_schedule.save()
     
     return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
@@ -371,20 +377,23 @@ def not_found(request, e):
 
 
 def _input_to_deltatime(input_string):
-    total_minutes = 0
+    total_seconds = 0
     if str(input_string).isdigit():
-        total_minutes += int(input_string) * 24 * 60
-        return total_minutes
+        total_seconds += int(input_string) * 24 * 60 * 60
+        return total_seconds
     if len(input_string.split(" ")) > 1:
         days = input_string.split(" ")[0]
         time = input_string.split(" ")[1]
-        total_minutes += (int(days) * 24 * 60)
+        total_seconds += (int(days) * 24 * 60 * 60)
     else:
         time = input_string.split(" ")[0]
     hours = int(time.split(":")[0])
     minutes = int(time.split(":")[1])
-    total_minutes += hours * 60
-    total_minutes += minutes
-    return total_minutes
+    if len(time.split(":")) == 3:
+        seconds = int(time.split(":")[2])
+    total_seconds += hours * 60 * 60
+    total_seconds += minutes * 60
+    total_seconds += seconds
+    return total_seconds
 
     

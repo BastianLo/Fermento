@@ -15,8 +15,9 @@
             <form action="import" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="jsondata" >Json</label>
-                    <textarea type="text" id="jsondata" class="form-control" placeholder="jsondata" name="jsondata" ></textarea>
+                    <label for="jsondata">Json</label>
+                    <textarea type="text" id="jsondata" class="form-control" placeholder="jsondata"
+                        name="jsondata"></textarea>
                 </div>
                 <input class="btn btn-primary btn-block" type="submit" value="{% trans "import" %}">
             </form>
@@ -30,31 +31,41 @@
 </h1>
 
 {% if recipes %}
-<!--TODO: Export this navigator as component - so it can be reused by multiple lists-->
 <div class="row">
     {% for recipe in recipes %}
-    <a href="{{recipe.id}}">
-        <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
-            <div class="card">
-                <div class="card-img-top">
-                    <img class="img-fluid rounded" style="overflow: hidden;"
-                        src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">{{recipe.name}}</h5> 
-                    {% if recipe.difficulty == "hard" %}
-                    <span class="badge badge-danger">{{recipe.difficulty}}</span>
-                    {% elif recipe.difficulty == "medium" %}
-                    <span class="badge badge-secondary">{{recipe.difficulty}}</span>
-                    {% elif recipe.difficulty == "easy" %}
-                    <span class="badge badge-success">{{recipe.difficulty}}</span>
-                    {% endif %}
-                    <p class="card-text">{{recipe.get_description_preview}}</p>
-                    <a href="{{recipe.id}}" class="btn btn-primary">{% trans "readMore" %}</a>
-                </div>
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+        <div style="cursor: pointer;" onclick="location.href='{{recipe.id}}';" class="card">
+            <div class="card-img-top">
+                {% if recipe.image.url is not null %}
+                <img class="img-fluid rounded" style="overflow: hidden;"
+                    src="{% thumbnail recipe.image 400x300 box=recipe.cropping crop detail %}" alt="...">
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{recipe.name}}</h5>
+                <span class="badge">
+                    <span class="bi bi-star-fill {% if recipe.rating > 0 %} checked {% endif %}"></span>
+                    <span class="bi bi-star-fill {% if recipe.rating > 1 %} checked {% endif %}"></span>
+                    <span class="bi bi-star-fill {% if recipe.rating > 2 %} checked {% endif %}"></span>
+                    <span class="bi bi-star-fill {% if recipe.rating > 3 %} checked {% endif %}"></span>
+                    <span class="bi bi-star-fill {% if recipe.rating > 4 %} checked {% endif %}"></span>
+                </span>
+                <style>
+                    .checked {
+                        color: orange;
+                    }
+                </style>
+                {% if recipe.difficulty == "hard" %}
+                <span class="badge badge-danger">{{recipe.difficulty}}</span>
+                {% elif recipe.difficulty == "medium" %}
+                <span class="badge badge-secondary">{{recipe.difficulty}}</span>
+                {% elif recipe.difficulty == "easy" %}
+                <span class="badge badge-success">{{recipe.difficulty}}</span>
+                {% endif %}
+                <p class="card-text">{{recipe.get_description_preview}}</p>
             </div>
         </div>
-    </a>
+    </div>
     {% endfor %}
 </div>
 {% else %}
@@ -67,10 +78,18 @@
 
 {% block footer %}
 
-<button class="btn btn-primary  mr-10" onclick="location.href='create'" type="button">
-    {% trans "createRecipe" %}
-</button>
+<div class="dropdown dropup with-arrow">
+    <button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true" aria-expanded="false">
+        <i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
+    </button>
+    <div class="dropdown-menu " aria-labelledby="...">
+        <button style="width:100%" class="btn btn-primary mb-10" onclick="location.href='create'" type="button">
+            {% trans "createRecipe" %}
+        </button>
 
-<a href="#modal-2" class="btn btn-primary" role="button">{% trans "importRecipe" %}</a>
+        <a href="#modal-2" style="width:100%" class="btn btn-primary" role="button">{% trans "importRecipe" %}</a>
+    </div>
+</div>
+
 
 {% endblock footer %}

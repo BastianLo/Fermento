@@ -22,9 +22,10 @@ class recipe(models.Model):
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='recipe_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    image = ImageCropField(upload_to='images/dynamic', default="images/placeholder/recipe.png")
+    image = ImageCropField(upload_to='images')
     cropping = ImageRatioField('image', '600x400')
     difficulty = models.CharField(choices=recipe_difficulty.choices, max_length=20, default=recipe_difficulty.undefined)
+    rating = models.IntegerField(default=0)
 
     def create_process(self, **kwargs):
         return process.objects.create(owner=self.owner, related_recipe=self, **kwargs)
@@ -44,7 +45,8 @@ class recipe(models.Model):
             return timedelta(minutes=0)
     def get_total_wait_duration(self):
         return process.objects.filter(related_recipe=self).aggregate(Sum("wait_duration"))["wait_duration__sum"]
-    
+    def time_until_complete(self):
+        return max([p.get_time_until_finish() for p in self.get_processes()])
     def get_processes(self):
         return process.objects.filter(related_recipe=self)
     
@@ -76,6 +78,9 @@ class process(models.Model):
         return process_step.objects.filter(related_process=self).order_by("index")
     def get_process_schedule(self):
         return process_schedule.objects.filter(related_process=self)
+    
+    def get_time_until_finish(self):
+        return max([max(x.end_time, x.start_time) for x in self.get_process_schedule()])
 
     def __str__(self) -> str:
         return f"Process_{self.id}_{self.name}_{self.related_recipe}"
@@ -94,10 +99,12 @@ class process_schedule(models.Model):
     wait_time = models.DurationField(default=timedelta(minutes=0))
 
     def get_next_execution(self, start_datetime):
-        now = timezone.now() - timedelta(milliseconds=200)
+        now = timezone.now()
         result_datetime = start_datetime + self.start_time
         while result_datetime < now:
             if result_datetime >= start_datetime + self.end_time or self.executed_once:
+                return None
+            if self.wait_time == timedelta(seconds=0):
                 return None
             result_datetime += self.wait_time
         return result_datetime
@@ -107,7 +114,8 @@ class process_schedule(models.Model):
             return 1
         if not self.end_time:
             return "∞"
-        return math.floor((self.end_time - self.start_time)/self.wait_time)
+        print((self.end_time - self.start_time)/self.wait_time)
+        return math.floor((self.end_time - self.start_time)/self.wait_time) + 1
     
     def __str__(self):
         return  f"ProcessSchedule{self.id}"

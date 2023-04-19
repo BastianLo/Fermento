@@ -4,6 +4,7 @@ function initialize_edit_fields() {
     document.getElementById(`name`).value = edit_recipe[0]["fields"]["name"]
     document.getElementById(`description`).value = edit_recipe[0]["fields"]["description"]
     document.getElementById(`difficulty`).value = edit_recipe[0]["fields"]["difficulty"]
+    document.getElementById(`rating`).value = edit_recipe[0]["fields"]["rating"]
     let count = 0
     edit_processes.forEach(process => {
         process["ingredients"] = JSON.parse(process["ingredients"])
@@ -11,7 +12,7 @@ function initialize_edit_fields() {
         process["utils"] = JSON.parse(process["utils"])
         process["schedule"] = JSON.parse(process["schedule"])
 
-        createProcess(process["fields"]["name"], process["pk"])
+        createProcess(process["fields"]["name"], process["fields"]["work_duration"], process["fields"]["wait_duration"], process["pk"])
         process["ingredients"].forEach(ingredient => createIngredient(count, ingredient["fields"]["name"], ingredient["fields"]["amount"], ingredient["fields"]["unit"], ingredient["pk"]))
         process["utils"].forEach(util => createUtil(count, util["fields"]["name"], util["pk"]))
         process["process_steps"].forEach(process_step => createProcessStep(count, process_step["fields"]["text"], process_step["pk"]))
@@ -79,7 +80,7 @@ function createUtil(processNum, name, util_id) {
 }
 
 function addSchedule(processNum) {
-    createSchedule(processNum, false, "00:00", "00:00", "00:00", -1)
+    createSchedule(processNum, false, "00:00:00", "00:00:00", "00:00:00", -1)
 }
 
 function createSchedule(processNum, runOnce, start, frequency, end, schedule_id) {
@@ -99,12 +100,12 @@ function createSchedule(processNum, runOnce, start, frequency, end, schedule_id)
     <th><input value='${end}' class="form-control" name="end" type="text" name="end_time" required="" id="schedule-end-${processNum}-${numSchedules}"></th>
     <th><button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}</button></th>
     `;
-    
+
     // Append the new ingredient to the ingredients container
     let ingredientsContainer = document.getElementById(`process-schedule-${processNum}`);
     ingredientsContainer.appendChild(newSchedule);
 
-    document.getElementById(`schedule-runonce-${processNum}-${numSchedules}`).onchange = function() {
+    document.getElementById(`schedule-runonce-${processNum}-${numSchedules}`).onchange = function () {
         document.getElementById(`schedule-frequency-${processNum}-${numSchedules}`).disabled = this.checked;
         document.getElementById(`schedule-end-${processNum}-${numSchedules}`).disabled = this.checked;
     };
@@ -114,10 +115,10 @@ function createSchedule(processNum, runOnce, start, frequency, end, schedule_id)
 }
 
 function addProcess() {
-    createProcess("", -1)
+    createProcess("", "00:00:00", "00:00:00", -1)
 }
 
-function createProcess(name, process_id) {
+function createProcess(name, work_duration, wait_duration, process_id) {
     // Find the number of existing processes
     let numProcesses = document.querySelectorAll('.process').length;
 
@@ -129,10 +130,24 @@ function createProcess(name, process_id) {
     newProcess.innerHTML = `
     <div class="card">
         <label for="process-name-${numProcesses}">${gettext("name")}</label>
-        <input value="${name}" type="text" class="form-control" id="process-name-${numProcesses}" name="process-name-${numProcesses}">
-        <input type="hidden" id="processid" name="processid" value="${process_id}"> 
+        <input value="${name}" type="text" class="form-control" id="process-name-${numProcesses}" name="process-name-${numProcesses}"/>
+        <input type="hidden" id="processid" name="processid" value="${process_id}"/> 
+        
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm">
+                    <label for="process-work-duration-${numProcesses}">${gettext("work_duration")}</label>
+                    <input value='${work_duration}' class="form-control" name="work_duration" type="text" required="" id="process-work-duration-${numProcesses}"></input>
+                </div>
+                <div class="col-sm">
+                    <label for="process-wait-duration-${numProcesses}">${gettext("wait_duration")}</label>
+                    <input value='${wait_duration}' class="form-control" name="wait_duration" type="text" required="" id="process-wait-duration-${numProcesses}"></input>
+                </div>
+            </div>
+        </div>
+        
+        
         <h3>${gettext("processSteps")}</h3>
-
         <table class="table sortable">
             <thead>
                 <tr>
@@ -244,6 +259,12 @@ function createRecipe() {
         const processName = processElements[i].querySelector(
             'input[name^="process-name"]'
         ).value;
+        const processWork = processElements[i].querySelector(
+            'input[name^="work_duration"]'
+        ).value;
+        const processWait = processElements[i].querySelector(
+            'input[name^="wait_duration"]'
+        ).value;
         const processId = processElements[i].querySelector(
             'input[name^="processid"]'
         ).value;
@@ -329,6 +350,8 @@ function createRecipe() {
 
         processes.push({
             name: processName,
+            wait_duration: processWait,
+            work_duration: processWork,
             id: processId,
             steps: processSteps,
             ingredients: processIngredients,
@@ -336,7 +359,6 @@ function createRecipe() {
             utils: processUtils
         });
     }
-
     // add processes to formData
     formData.append("processes", JSON.stringify(processes));
 
@@ -349,10 +371,11 @@ function createRecipe() {
         .then((response) => response.json())
         .then((data) => {
             form.reset();
-            if (window.location.href.includes("edit"))
-                {window.location.href = "."}
-            else
-                {window.location.href = "./" + data["recipe_id"];}
+            if (window.location.href.includes("edit")) {
+                window.location.href = "."
+            } else {
+                window.location.href = "./" + data["recipe_id"];
+            }
         })
         .catch((error) => {
             console.error(error);
