@@ -182,4 +182,8 @@ THUMBNAIL_PROCESSORS = (
 SHOW_EMPTY_PROCESS_CATEGORIES = False
 SCHEDULE_UPDATE_INTERVAL = os.getenv("SCHEDULE_UPDATE_INTERVAL") if "SCHEDULE_UPDATE_INTERVAL" in os.environ else 1
 TIME_ZONE = os.getenv("TIMEZONE") if "TIMEZONE" in os.environ else "Europe/Berlin"
+
+#Images
+DOWNSIZE_IMAGES = bool(os.getenv("DOWNSIZE_IMAGES")) if "DOWNSIZE_IMAGES" in os.environ else True
+MAX_IMAGE_WIDTH = int(os.getenv("MAX_IMAGE_WIDTH")) if "MAX_IMAGE_WIDTH" in os.environ else 600
 ### End ###

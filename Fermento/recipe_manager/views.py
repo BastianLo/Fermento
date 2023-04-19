@@ -12,7 +12,10 @@ from django.core import serializers
 from django.utils.dateparse import parse_duration
 import math
 from django.apps import apps
-
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import uuid
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -217,8 +220,9 @@ def edit_recipe_post(request, recipe_id):
     new_recipe.name = data["name"]
     new_recipe.description = data["description"]
     new_recipe.rating = int(data["rating"])
+    #TODO: Optionally reduce image size to reduce required space
     if "image" in request.FILES:
-        new_recipe.image = request.FILES["image"]
+        new_recipe.image = downsize_image(request.FILES["image"])
     new_recipe.difficulty = data["difficulty"]
     new_recipe.save()
     processes = json.loads(request.POST.dict()["processes"])
@@ -323,7 +327,7 @@ def recipe_create_post(request):
     new_recipe.description = data["description"]
     new_recipe.rating = int(data["rating"])
     if "image" in request.FILES:
-        new_recipe.image = request.FILES["image"]
+        new_recipe.image = downsize_image(request.FILES["image"])
     new_recipe.difficulty = data["difficulty"]
     new_recipe.save()
 
@@ -395,4 +399,16 @@ def _input_to_deltatime(input_string):
     total_seconds += seconds
     return total_seconds
 
-    
+def downsize_image(image):
+    if not settings.DOWNSIZE_IMAGES:
+        return image
+    basewidth = settings.MAX_IMAGE_WIDTH
+    img = Image.open(image)
+    wpercent = (basewidth/float(img.size[0]))
+    hsize = int((float(img.size[1])*float(wpercent)))
+    img = img.resize((basewidth,hsize), Image.Resampling.LANCZOS)
+    buffer = BytesIO()
+    img.save(buffer, format="JPEG")
+    buffer.seek(0)
+    image_file = InMemoryUploadedFile(buffer, None, f"image_{uuid.uuid4()}.jpg", "image/jpeg", buffer.getbuffer().nbytes, None)
+    return image_file
