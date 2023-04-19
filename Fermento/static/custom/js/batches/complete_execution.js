@@ -1,6 +1,6 @@
 
 $(function () {
-    $(":button").click(function () {   
+    $('button[name="complete"]').click(function () {   
         let container = $(this).parent()
         $.ajax({
             url: "/batches/executions/complete/" + $(this).attr('btnvalue') + "/",
