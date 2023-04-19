@@ -2,6 +2,13 @@
 {% load static %}
 {% load i18n %}
 
+{% block header %}
+<script>
+    var csrftoken = '{{ csrf_token }}';
+</script>
+<script type="text/javascript" src="{% static 'custom/js/batches/complete_execution.js' %}"></script>
+{% endblock header %}
+
 {% block content %}
 <h1>Batch {{batch.name}}</h1>
 
@@ -18,18 +25,17 @@
         <!-- w-500 = width: 50rem (500px), mw-full = max-width: 100% -->
         <!-- First collapse panel (open by default) -->
         <div class="container border p-10">
-            <a href="/recipe_manager/recipe/{{batch.related_recipe.id}}"><strong>{{execution.related_process.name}}</strong></a>
+            <a
+                href="/recipe_manager/recipe/{{batch.related_recipe.id}}"><strong>{{execution.related_process.name}}</strong></a>
             <br />
             <span class="text-muted">{% trans "execution" %}: {{execution.execution_datetime}}</span>
             {% if execution.is_overdue %}
             <span class="badge badge-danger">{% trans "overdue" %}</span>
-            <br/>
-            <form action="" method="post" target="">
-                {% csrf_token %}
-                <button name="complete" value="{{execution.id}}" class="btn btn-success"> {% trans "done" %}</button>
-            </form>
+            <br />
+            <button btnvalue="{{execution.id}}" name="complete" value="{{execution.id}}" class="btn btn-success">
+                {% trans "done" %}</button>
             {% endif %}
-            
+
         </div>
     </div>
 

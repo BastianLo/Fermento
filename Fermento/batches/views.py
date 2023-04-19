@@ -4,6 +4,8 @@ from django.http import Http404
 from .models import Batch, QrCode, Execution
 import os
 import math
+from django.http import JsonResponse
+
 
 @login_required(login_url='/accounts/login/')
 def batches_all(request):
@@ -43,6 +45,16 @@ def batch_by_id(request, batch_id):
     }
     return render(request, "batches/batches/details.html", context)
 
+@login_required(login_url='/accounts/login/')
+def execute_execution_by_id(request, execution_id):
+    try:
+        if Execution.objects.filter(id=int(execution_id)).exists():
+            Execution.objects.filter(id=int(execution_id)).first().archive()
+            return JsonResponse({"status": "success"}, status=200)
+        else:
+            return JsonResponse({"status": "not found"}, status=404)
+    except:
+        return JsonResponse({"status": "Internal Server error"}, status=500)
 @login_required(login_url='/accounts/login/')
 def qrcode_overview(request):
     uid = request.session['_auth_user_id']

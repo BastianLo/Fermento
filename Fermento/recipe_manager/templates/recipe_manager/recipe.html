@@ -29,34 +29,40 @@
                 </h1>
                 <div class="content">
                     {% if recipe.difficulty == "easy" %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                        style="font-weight: bold;" class="badge-group" style="width:80px">
                         <span class="bi bi-speedometer2 badge badge-success"></span>
                         <span class="badge badge-success">{{ recipe.difficulty }}</span>
                     </div>
                     {% elif recipe.difficulty == "medium" %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                        style="font-weight: bold;" class="badge-group" style="width:80px">
                         <span class="bi bi-speedometer2 badge badge-secondary"></span>
                         <span class="badge badge-secondary">{{ recipe.difficulty }}</span>
                     </div>
                     {% elif recipe.difficulty == "hard" %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                        style="font-weight: bold;" class="badge-group" style="width:80px">
                         <span class="bi bi-speedometer2 badge badge-danger"></span>
                         <span class="badge badge-danger">{{ recipe.difficulty }}</span>
                     </div>
                     {% else %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom" style="font-weight: bold;" class="badge-group" style="width:80px">
+                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                        style="font-weight: bold;" class="badge-group" style="width:80px">
                         <span class="bi bi-speedometer2 badge badge-success"></span>
                         <span class="badge badge-success">{{ recipe.difficulty }}</span>
                     </div>
                     {% endif %}
                     {% if  recipe.get_total_work_duration %}
-                    <span data-toggle="tooltip" data-title="{% trans "DescriptionWorkDuration" %}" data-placement="bottom" class="badge-group" role="group">
+                    <span data-toggle="tooltip" data-title="{% trans "DescriptionWorkDuration" %}"
+                        data-placement="bottom" class="badge-group" role="group">
                         <span class="badge bi bi-alarm"></span>
                         <span class="badge">{{ recipe.get_total_work_duration|duration }}</span>
                     </span>
                     {% endif %}
                     {% if  recipe.time_until_complete %}
-                    <span data-toggle="tooltip" data-title="{% trans "DescriptionCompleteDuration" %}" data-placement="bottom" class="badge-group" role="group">
+                    <span data-toggle="tooltip" data-title="{% trans "DescriptionCompleteDuration" %}"
+                        data-placement="bottom" class="badge-group" role="group">
                         <span class="badge bi bi-calendar-check"></span>
                         <span class="badge">{{ recipe.time_until_complete|duration }}</span>
                     </span>
@@ -127,7 +133,7 @@
                     <h2>{% trans "Timeschedule" %}</h2>
                     {% for schedule in process.get_process_schedule %}
                     <details class="collapse-panel w-400 mw-full">
-                        <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+                        <!-- TODO: Format schedule times in more human readable-->
                         <summary class="collapse-header">
                             {% if schedule.executed_once %}
                             <strong>{% trans "nonRecurring" %}</strong>
@@ -175,12 +181,7 @@
                 {% if process.get_process_steps %}
                 <ol>
                     {% for step in process.get_process_steps %}
-                    <div class="custom-checkbox mb-5">
-                        <input type="checkbox" id="checkbox-step-{{ step.id }}" value="">
-                        <label for="checkbox-step-{{ step.id }}">
-                            <li>{{ step.text }}</li>
-                        </label>
-                    </div>
+                    <li class="ml-10">{{ step.text }}</li>
                     <br />
                     {% endfor %}
                 </ol>
