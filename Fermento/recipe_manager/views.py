@@ -12,7 +12,7 @@ from django.core import serializers
 from django.utils.dateparse import parse_duration
 import math
 from django.apps import apps
-from PIL import Image
+from PIL import Image, ExifTags
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import uuid
@@ -402,13 +402,29 @@ def _input_to_deltatime(input_string):
 def downsize_image(image):
     if not settings.DOWNSIZE_IMAGES:
         return image
+    image = Image.open(image)
     basewidth = settings.MAX_IMAGE_WIDTH
-    img = Image.open(image)
-    wpercent = (basewidth/float(img.size[0]))
-    hsize = int((float(img.size[1])*float(wpercent)))
-    img = img.resize((basewidth,hsize), Image.Resampling.LANCZOS)
+    # Rotate the image based on the EXIF orientation tag
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                exif = dict(image._getexif().items())
+                if exif[orientation] == 3:
+                    image = image.rotate(180, expand=True)
+                elif exif[orientation] == 6:
+                    image = image.rotate(270, expand=True)
+                elif exif[orientation] == 8:
+                    image = image.rotate(90, expand=True)
+                break
+    except (AttributeError, KeyError, IndexError):
+        pass
+
+    wpercent = (basewidth/float(image.size[0]))
+    hsize = int((float(image.size[1])*float(wpercent)))
+    image = image.resize((basewidth,hsize), Image.Resampling.LANCZOS)
+
     buffer = BytesIO()
-    img.save(buffer, format="JPEG")
+    image.save(buffer, format="JPEG")
     buffer.seek(0)
     image_file = InMemoryUploadedFile(buffer, None, f"image_{uuid.uuid4()}.jpg", "image/jpeg", buffer.getbuffer().nbytes, None)
     return image_file
