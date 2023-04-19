@@ -4,4 +4,36 @@
 
 {% block content %}
 <h1>Batch {{batch.name}}</h1>
+
+
+
+
+
+<div class="card">
+    <h2 class="card-title">
+        {% trans "NextTasks" %}
+    </h2>
+    <!-- Collapse group -->
+    <div class="collapse-group w-500 mw-full">
+        <!-- w-500 = width: 50rem (500px), mw-full = max-width: 100% -->
+        <!-- First collapse panel (open by default) -->
+        <details class="collapse-panel" open>
+            <summary class="collapse-header">
+                <strong>Plain White T-Shirt</strong>
+                <br />
+                <span class="text-muted">Price: $20.00</span>
+            </summary>
+            <div class="collapse-content">
+                A long description that lists all the good sides of the product and none of the bad. Compels the shopper
+                to add this product to their cart immediately.
+            </div>
+        </details>
+    </div>
+</div>
+
+<h1>{{batch.start_date}}</h1>
+  
+
+
+
 {% endblock content %}

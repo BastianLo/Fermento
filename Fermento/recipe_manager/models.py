@@ -3,6 +3,7 @@ from datetime import timedelta
 from django.db.models import Sum
 import math
 from image_cropping import ImageRatioField, ImageCropField
+from datetime import datetime
 from django.utils import timezone
 
 from django.apps import apps
@@ -94,10 +95,12 @@ class process_schedule(models.Model):
     wait_time = models.DurationField(default=timedelta(minutes=0))
 
     def get_next_execution(self, start_datetime):
-        now = timezone.now() - timedelta(milliseconds=200)
+        now = timezone.now()
         result_datetime = start_datetime + self.start_time
         while result_datetime < now:
             if result_datetime >= start_datetime + self.end_time or self.executed_once:
+                return None
+            if self.wait_time == timedelta(seconds=0):
                 return None
             result_datetime += self.wait_time
         return result_datetime

@@ -181,5 +181,5 @@ THUMBNAIL_PROCESSORS = (
 ### Configuration values ###
 SHOW_EMPTY_PROCESS_CATEGORIES = False
 SCHEDULE_UPDATE_INTERVAL = os.getenv("SCHEDULE_UPDATE_INTERVAL") if "SCHEDULE_UPDATE_INTERVAL" in os.environ else 1
-TIME_ZONE = os.getenv("TZ") if "TZ" in os.environ else "Europe/Berlin"
+TIME_ZONE = os.getenv("TIMEZONE") if "TIMEZONE" in os.environ else "Europe/Berlin"
 ### End ###

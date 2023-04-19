@@ -3,8 +3,7 @@ import os
 from recipe_manager.models import recipe, process
 from django.db.models.signals import post_save
 from datetime import timedelta
-from django.utils import timezone
-
+from datetime import datetime
 
 USER_FOREIGN_KEY = "auth.User"
 class Batch(models.Model):
@@ -22,14 +21,15 @@ class Batch(models.Model):
         duration = timedelta(seconds=1)
         for process in self.related_recipe.get_processes():
             duration = max(duration, max([x.end_time for x in process.get_process_schedule()], default=timedelta(seconds=0)))
-        progress_duration = timezone.now() - self.start_date
+        progress_duration = datetime.now() - self.start_date
         return min(100, round(progress_duration/duration*100))
 
     def create_next_executions(self):
+        #FIXME: Processes with starttime 0 not working - starttime 0 is being skipped
         for process in self.related_recipe.get_processes():
             for schedule in process.get_process_schedule():
                 next_execution_datetime = schedule.get_next_execution(self.start_date)
-                if not next_execution_datetime:
+                if next_execution_datetime == None:
                     continue
                 Execution.objects.get_or_create(owner=self.owner, execution_datetime=next_execution_datetime, related_process=process, related_batch=self)
 
@@ -55,4 +55,7 @@ class Execution(models.Model):
     execution_datetime = models.DateTimeField()
     related_process = models.ForeignKey(process, on_delete=models.CASCADE)
     related_batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+
+class Finished_Execution(Execution):
+    pass
 
