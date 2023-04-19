@@ -400,6 +400,7 @@ def _input_to_deltatime(input_string):
     return total_seconds
 
 def downsize_image(image):
+    #FIXME: Seems to rotate vertical pictures, taken from an iphone.
     if not settings.DOWNSIZE_IMAGES:
         return image
     basewidth = settings.MAX_IMAGE_WIDTH
