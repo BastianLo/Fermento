@@ -3,7 +3,6 @@ from datetime import timedelta
 from django.db.models import Sum
 import math
 from image_cropping import ImageRatioField, ImageCropField
-from datetime import datetime
 from django.utils import timezone
 
 from django.apps import apps
