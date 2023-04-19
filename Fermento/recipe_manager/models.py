@@ -114,7 +114,6 @@ class process_schedule(models.Model):
             return 1
         if not self.end_time:
             return "∞"
-        print((self.end_time - self.start_time)/self.wait_time)
         return math.floor((self.end_time - self.start_time)/self.wait_time) + 1
     
     def __str__(self):

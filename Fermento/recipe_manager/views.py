@@ -224,7 +224,7 @@ def edit_recipe_post(request, recipe_id):
     processes = json.loads(request.POST.dict()["processes"])
     db_processes = process.objects.filter(owner=o, related_recipe=new_recipe)
     delete_processes = [dbp.id for dbp in db_processes if dbp.id not in [int(p["id"]) for p in processes]]
-    process.objects.filter(id__in=delete_processes).delete()
+    process.objects.filter(id__in=delete_processes, owner=request.user).delete()
     for p in processes:
         if p["id"] == "-1":
             new_process = process()
@@ -235,25 +235,24 @@ def edit_recipe_post(request, recipe_id):
         new_process.name = p["name"]
         new_process.work_duration = parse_duration(p["work_duration"])
         new_process.wait_duration = parse_duration(p["wait_duration"])
-        print(new_process.wait_duration)
         new_process.save()
 
         #Delete ingredients that were removed by user
         db_ingredients = recipe_ingredient.objects.filter(owner=o, related_process=new_process)
         delete_ingredients = [dbi.id for dbi in db_ingredients if dbi.id not in [int(i["id"]) for i in p["ingredients"]]]
-        recipe_ingredient.objects.filter(id__in=delete_ingredients).delete()
+        recipe_ingredient.objects.filter(id__in=delete_ingredients, owner=request.user).delete()
         #Delete Utensils that were removed by user
         db_utils = utensils.objects.filter(owner=o, related_process=new_process)
         delete_utils = [dbu.id for dbu in db_utils if dbu.id not in [int(u["id"]) for u in p["utils"]]]
-        utensils.objects.filter(id__in=delete_utils).delete()
+        utensils.objects.filter(id__in=delete_utils, owner=request.user).delete()
         #Delete Process steps that were removed by user
         db_steps = process_step.objects.filter(owner=o, related_process=new_process)
         delete_steps = [dbps.id for dbps in db_steps if dbps.id not in [int(ps["id"]) for ps in p["steps"]]]
-        process_step.objects.filter(id__in=delete_steps).delete()
+        process_step.objects.filter(id__in=delete_steps, owner=request.user).delete()
         #Delete Schedules that were removed by user
         db_schedules = process_schedule.objects.filter(owner=o, related_process=new_process)
         delete_schedules = [dbs.id for dbs in db_schedules if dbs.id not in [int(s["id"]) for s in p["schedules"]]]
-        process_schedule.objects.filter(id__in=delete_schedules).delete()
+        process_schedule.objects.filter(id__in=delete_schedules, owner=request.user).delete()
 
         for i in p["ingredients"]:
             if i["id"] == "-1":
@@ -297,7 +296,7 @@ def edit_recipe_post(request, recipe_id):
             new_schedule.wait_time = timedelta(seconds=_input_to_deltatime(s["frequency"]))
             new_schedule.end_time = timedelta(seconds=_input_to_deltatime(s["end"]))
             new_schedule.save()
-    [batch.create_next_executions() for batch in apps.get_model('batches', 'Batch').objects.filter(related_recipe=new_recipe)]
+    [batch.create_next_executions() for batch in apps.get_model('batches', 'Batch').objects.filter(related_recipe=new_recipe, owner=request.user)]
     return JsonResponse({'status':'success', 'recipe_id':new_recipe.id})
 
 @login_required(login_url='/accounts/login/')
