@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'recipe_manager',
     'Fermento',
     'settings_manager',
+    'restapi_manager',
 
     'lineage',
     'widget_tweaks',
@@ -56,6 +57,8 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
     'qr_code',
     'encrypted_model_fields',
+    'drf_yasg',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

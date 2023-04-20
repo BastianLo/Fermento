@@ -29,6 +29,7 @@ urlpatterns = [
     path("recipe_manager/", include("recipe_manager.urls")),
     path("batches/", include("batches.urls")),
     path("settings/", include("settings_manager.urls")),
+    path("api/", include("restapi_manager.urls")),
 
     path("accounts/", include("django.contrib.auth.urls")),  # new
     path("admin/", admin.site.urls),
