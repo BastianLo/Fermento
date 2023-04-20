@@ -22,6 +22,8 @@ class Batch(models.Model):
         progress_duration = timezone.now() - self.start_date
         return min(100, round(progress_duration/duration*100))
 
+    def get_end_date(self):
+        return self.start_date + self.related_recipe.time_until_complete()
     def get_executions_overdue(self):
         return [e for e in self.get_executions() if e.is_overdue()]
     def get_executions(self):

@@ -12,7 +12,86 @@
 {% block content %}
 <h1>Batch {{batch.name}}</h1>
 
+<div class="modal" id="modal-1" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <h5 class="modal-title">{% trans "editBatch" %}</h5>
+            <form action="..." method="..." class="w-400 mw-full">
+                <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+                <!-- Input -->
+                <div class="form-group">
+                    <label for="batchname" class="required">{% trans "name" %}</label>
+                    <input type="text" class="form-control" id="batchname" placeholder="Batch name" value="{{batch.name}}" required="required">
+                </div>
 
+                <!-- Textarea -->
+                <div class="form-group">
+                    <label for="description">{% trans "Description" %}</label>
+                    <textarea placeholder="Description" class="form-control" id="description">{{batch.description}}</textarea>
+                </div>
+
+
+                <!-- Submit button -->
+                <div class="text-right mt-20">
+                    <!-- text-right = text-align: right, mt-20 = margin-top: 2rem (20px) -->
+                    <a href="#" class="btn mr-5" role="button">Close</a>
+                    <input type="submit" value="Submit" class="btn btn-primary" role="button"></input>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h1 class="text-center">
+        {{ batch.name }}
+    </h1>
+
+    <div class="row">
+        <div class="col-2">
+        </div>
+        <div class="col-8">
+            <div class="progress-group">
+                <div class="progress">
+                    <div role="progressbar" style="width: {{batch.get_progress_percentage}}%;"
+                        aria-valuenow="{{batch.get_progress_percentage}}" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar-animated
+                        {% if batch.get_progress_percentage < 20 %} bg-danger
+                        {% elif batch.get_progress_percentage < 40 %} bg-secondary
+                        {% elif batch.get_progress_percentage < 100 %} bg-primary
+                        {% else %} bg-success
+                        {% endif %} "></div>
+                </div>
+                <span class="progress-group-label">{{batch.get_progress_percentage}}%</span>
+            </div>
+        </div>
+        <div class="col-2">
+        </div>
+    </div>
+    <div class="content">
+        <span data-toggle="tooltip" data-title="{% trans "StartDate" %}" data-placement="bottom" class="badge-group"
+            role="group">
+            <span class="badge bi bi-calendar-plus"></span>
+            <span class="badge">{{ batch.start_date }}</span>
+        </span>
+        <span data-toggle="tooltip" data-title="{% trans "EndDate" %}" data-placement="bottom" class="badge-group"
+            role="group">
+            <span class="badge bi bi-calendar-check"></span>
+            <span class="badge">{{ batch.get_end_date }}</span>
+        </span>
+        <span data-toggle="tooltip" data-title="{% trans "recipe" %}" data-placement="bottom" class="badge-group"
+            role="group">
+            <a href="/recipe_manager/recipe/{{batch.related_recipe.id}}"
+                class="badge badge-primary">{{ batch.related_recipe.name }}</a>
+        </span>
+    </div>
+    <div class="border-top">
+        <p>
+            {{batch.description}}
+        </p>
+        <a href="#modal-1" class="btn" type="button">{% trans "edit" %}</a>
+    </div>
+</div>
 
 
 
@@ -41,10 +120,6 @@
 
     {% endfor %}
 </div>
-
-<h1>{{batch.start_date}}</h1>
-
-
 
 
 {% endblock content %}
