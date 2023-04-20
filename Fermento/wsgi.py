@@ -15,5 +15,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Fermento.settings')
 
 application = get_wsgi_application()
 
-from batches.scheduler import scheduler
+from Apps.batches.scheduler import scheduler
+
 scheduler.start()

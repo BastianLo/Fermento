@@ -1,6 +1,6 @@
 from django.db import models
 import os
-from recipe_manager.models import recipe, process
+from Apps.recipe_manager.models import recipe, process
 from django.db.models.signals import post_save
 from datetime import timedelta
 from django.utils import timezone

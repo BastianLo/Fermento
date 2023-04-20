@@ -43,11 +43,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'batches',
-    'recipe_manager',
+    'Apps.batches',
+    'Apps.recipe_manager',
     'Fermento',
-    'settings_manager',
-    'restapi_manager',
+    'Apps.settings_manager',
+    'Apps.restapi_manager',
 
     'lineage',
     'widget_tweaks',
@@ -143,8 +143,8 @@ LANGUAGES = [    ('en', 'English'),    ('de', 'Deutsch')]
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'Fermento', 'locale'),
-    os.path.join(BASE_DIR, 'recipe_manager', 'locale'),
-    os.path.join(BASE_DIR, 'batches', 'locale'),
+    os.path.join(BASE_DIR, 'Apps/recipe_manager', 'locale'),
+    os.path.join(BASE_DIR, 'Apps/batches', 'locale'),
     os.path.join(BASE_DIR, 'templates', 'locale'),
     os.path.join(BASE_DIR, 'static', 'custom', 'js', 'locale'),
 )

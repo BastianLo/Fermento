@@ -2,7 +2,7 @@ from django.test import TestCase
 
 
 from .models import QrCode, Batch
-from recipe_manager.models import recipe
+from Apps.recipe_manager.models import recipe
 from django.contrib.auth.models import User
 
 class QrCodeTestCase(TestCase):

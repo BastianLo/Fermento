@@ -2,9 +2,6 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 
 from . import views
-from django.conf.urls import (
-handler400, handler403, handler404, handler500
-)
 
 urlpatterns = [
     path("", RedirectView.as_view(url='recipe')),
@@ -17,4 +14,4 @@ urlpatterns = [
     path("recipe/import", views.import_recipe, name="import_recipe"),
     path("recipe/create", views.recipe_create, name="recipe_by_id"),
 ]
-handler404 = 'recipe_manager.views.not_found'
+handler404 = 'Apps.recipe_manager.views.not_found'

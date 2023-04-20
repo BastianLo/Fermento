@@ -1,8 +1,9 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-from recipe_manager.models import recipe
+from Apps.recipe_manager.models import recipe
 from rest_framework import generics
-from recipe_manager.serializers import *
+
+from Apps.recipe_manager.serializers import RecipeBaseSerializer
 
 
 @permission_classes([IsAuthenticated])

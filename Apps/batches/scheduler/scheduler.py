@@ -1,8 +1,8 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.conf import settings
 from django.utils import timezone
-from batches.models import Execution
-from settings_manager.models import settings_notification
+from Apps.batches.models import Execution
+from Apps.settings_manager.models import settings_notification
 from notifiers import get_notifier
 
 
