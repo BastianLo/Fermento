@@ -3,7 +3,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from .views.recipe_view import *
+from .views.recipe_manager_view import *
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -22,7 +22,12 @@ urlpatterns = [
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
-    # recipe views
+    ### --- Recipe_manager --- ###
+    # Recipe views
     path('RecipeManager/recipe/<int:id>', RecipeDetail.as_view()),
     path('RecipeManager/recipe/', RecipeListCreate.as_view()),
+    # Process views
+    path('RecipeManager/process/<int:id>', ProcessDetail.as_view()),
+    path('RecipeManager/process/', ProcessListCreate.as_view()),
+
 ]
