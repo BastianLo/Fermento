@@ -4,7 +4,8 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
-from .views.batch_view import BatchDetail, BatchListCreate, QrCodeDetail, QrCodeListCreate
+from .views.batch_view import BatchDetail, BatchListCreate, QrCodeDetail, QrCodeListCreate, ExecutionListCreate, \
+    ExecutionDetail
 from .views.recipe_manager_view import *
 
 schema_view = get_schema_view(
@@ -52,5 +53,8 @@ urlpatterns = [
     # QrCode view
     path('qrcode/<int:id>', QrCodeDetail.as_view()),
     path('qrcode/', QrCodeListCreate.as_view()),
+    # Execution view
+    path('execution/<int:id>', ExecutionDetail.as_view()),
+    path('execution/', ExecutionListCreate.as_view()),
 
 ]

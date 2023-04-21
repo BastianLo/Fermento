@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Batch, QrCode
+from .models import Batch, QrCode, Execution
 
 
 ### Batch ###
@@ -23,7 +23,20 @@ class QrCodeBaseSerializer(serializers.ModelSerializer):
         exclude = ["owner"]
 
 
-class QrCodePostSerializer(BatchBaseSerializer):
+class QrCodePostSerializer(QrCodeBaseSerializer):
     class Meta:
         model = QrCode
         exclude = QrCodeBaseSerializer.Meta.exclude + ["id"]
+
+
+### Execution ###
+class ExecutionBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Execution
+        exclude = ["owner"]
+
+
+class ExecutionPostSerializer(ExecutionBaseSerializer):
+    class Meta:
+        model = Execution
+        exclude = ExecutionBaseSerializer.Meta.exclude + ["id"]
