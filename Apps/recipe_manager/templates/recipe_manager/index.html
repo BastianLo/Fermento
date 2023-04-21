@@ -5,13 +5,18 @@
 {% load thumbnail %}
 
 {% block content %}
+
+    <h1 class="text-center">
+        {% trans "Recipes" %}
+    </h1>
+
     {% include 'components/navigation/navigator.html' %}
 
     <div class="modal" id="modal-2" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <h5 class="modal-title">{% trans "importRecipe" %}</h5>
-                <form action="import" method="post">
+                <form action="import/" method="post">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="jsondata">Json</label>
@@ -25,9 +30,6 @@
     </div>
 
 
-    <h1 class="text-center">
-        {% trans "Recipes" %}
-    </h1>
 
     {% if recipes %}
         <div class="row">

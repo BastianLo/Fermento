@@ -372,9 +372,9 @@ function createRecipe() {
         .then((data) => {
             form.reset();
             if (window.location.href.includes("edit")) {
-                window.location.href = "."
+                window.location.href = "../"
             } else {
-                window.location.href = "./" + data["recipe_id"];
+                window.location.href = "../" + data["recipe_id"];
             }
         })
         .catch((error) => {
