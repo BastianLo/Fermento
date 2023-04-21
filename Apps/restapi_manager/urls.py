@@ -7,9 +7,9 @@ from .views.recipe_manager_view import *
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Administration Swagger",
+        title="Fermento Swagger",
         default_version='v1',
-        description="API Documentation for Administration",
+        description="API Documentation for Fermento",
         contact=openapi.Contact(url="https://github.com/BastianLo/Fermento"),
         license=openapi.License(name="Apache-2.0 license "),
     ),
