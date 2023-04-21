@@ -4,6 +4,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from .views.batch_view import BatchDetail, BatchListCreate
 from .views.recipe_manager_view import *
 
 schema_view = get_schema_view(
@@ -26,22 +27,26 @@ urlpatterns = [
 
     ### --- Recipe_manager --- ###
     # Recipe views
-    path('RecipeManager/recipe/<int:id>', RecipeDetail.as_view()),
-    path('RecipeManager/recipe/', RecipeListCreate.as_view()),
+    path('recipe/<int:id>', RecipeDetail.as_view()),
+    path('recipe/', RecipeListCreate.as_view()),
     # Process views
-    path('RecipeManager/process/<int:id>', ProcessDetail.as_view()),
-    path('RecipeManager/process/', ProcessListCreate.as_view()),
+    path('process/<int:id>', ProcessDetail.as_view()),
+    path('process/', ProcessListCreate.as_view()),
     # Process step view
-    path('RecipeManager/processstep/<int:id>', ProcessStepDetail.as_view()),
-    path('RecipeManager/processstep/', ProcessStepListCreate.as_view()),
+    path('processstep/<int:id>', ProcessStepDetail.as_view()),
+    path('processstep/', ProcessStepListCreate.as_view()),
     # Process schedule view
-    path('RecipeManager/processschedule/<int:id>', ProcessScheduleDetail.as_view()),
-    path('RecipeManager/processschedule/', ProcessScheduleListCreate.as_view()),
+    path('processschedule/<int:id>', ProcessScheduleDetail.as_view()),
+    path('processschedule/', ProcessScheduleListCreate.as_view()),
     # Ingredient view
-    path('RecipeManager/ingredient/<int:id>', RecipeIngredientDetail.as_view()),
-    path('RecipeManager/ingredient/', RecipeIngredientListCreate.as_view()),
+    path('ingredient/<int:id>', RecipeIngredientDetail.as_view()),
+    path('ingredient/', RecipeIngredientListCreate.as_view()),
     # Utensil view
-    path('RecipeManager/utensil/<int:id>', UtensilsDetail.as_view()),
-    path('RecipeManager/utensil/', UtensilsListCreate.as_view()),
+    path('utensil/<int:id>', UtensilsDetail.as_view()),
+    path('utensil/', UtensilsListCreate.as_view()),
+
+    ### --- Batch Manager --- ###
+    path('batch/<int:id>', BatchDetail.as_view()),
+    path('batch/', BatchListCreate.as_view()),
 
 ]
