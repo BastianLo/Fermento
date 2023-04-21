@@ -37,5 +37,11 @@ urlpatterns = [
     # Process schedule view
     path('RecipeManager/processschedule/<int:id>', ProcessScheduleDetail.as_view()),
     path('RecipeManager/processschedule/', ProcessScheduleListCreate.as_view()),
+    # Ingredient view
+    path('RecipeManager/ingredient/<int:id>', RecipeIngredientDetail.as_view()),
+    path('RecipeManager/ingredient/', RecipeIngredientListCreate.as_view()),
+    # Utensil view
+    path('RecipeManager/utensil/<int:id>', UtensilsDetail.as_view()),
+    path('RecipeManager/utensil/', UtensilsListCreate.as_view()),
 
 ]

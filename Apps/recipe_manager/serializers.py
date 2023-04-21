@@ -62,8 +62,20 @@ class RecipeIngredientBaseSerializer(serializers.ModelSerializer):
         exclude = ["owner"]
 
 
+class RecipeIngredientPostSerializer(RecipeIngredientBaseSerializer):
+    class Meta:
+        model = RecipeIngredient
+        exclude = ProcessScheduleBaseSerializer.Meta.exclude + ["id"]
+
+
 ### Process Utensils ###
 class UtensilsBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utensils
         exclude = ["owner"]
+
+
+class UtensilsPostSerializer(UtensilsBaseSerializer):
+    class Meta:
+        model = Utensils
+        exclude = UtensilsBaseSerializer.Meta.exclude + ["id"]
