@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load cropping %}
+{% load thumbnail %}
+
+
+{% block content %}
+    <h1 class="text-center">{% trans "allBatches" %}</h1>
+    {% include 'components/navigation/navigator.html' %}
+
+    {% if batches %}
+        <div class="row">
+            {% for batch in batches %}
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+                    <div style="cursor: pointer;" onclick="location.href='{{ batch.id }}';" class="card">
+                        <div class="card-img-top">
+                            <img class="img-fluid rounded" style="overflow: hidden;"
+                                 src="{% thumbnail batch.related_recipe.image 400x300 box=batch.related_recipe.cropping crop detail %}"
+                                 alt="...">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ batch.name }}</h5>
+                            <a href="/recipe_manager/recipe/{{ batch.related_recipe.id }}"
+                               class="card-text">{% trans "recipe" %}: {{ batch.related_recipe.name }}</a>
+                            <div class="progress-group">
+                                <div class="progress">
+                                    <div role="progressbar" style="width: {{ batch.get_progress_percentage }}%;"
+                                         aria-valuenow="{{ batch.get_progress_percentage }}" aria-valuemin="0"
+                                         aria-valuemax="100"
+                                         class="progress-bar progress-bar-animated
+                                {% if batch.get_progress_percentage < 20 %} bg-danger
+                                {% elif batch.get_progress_percentage < 40 %} bg-secondary
+                                {% elif batch.get_progress_percentage < 100 %} bg-primary
+                                {% else %} bg-success
+                                
+                                {% endif %} "></div>
+                                </div>
+                                <span class="progress-group-label">{{ batch.get_progress_percentage }}%</span>
+                            </div>
+                            <p class="card-text">{{ batch.start_date }}</p>
+                            <!-- TODO: Add red batch if a task in batch is overdue. Ref: https://www.gethalfmoon.com/docs/progress/-->
+                            <!-- TODO: Replace image with latest image of batch. Use recipe image only if not batch image available -->
+                            {% if batch.get_executions_overdue|length %}
+                                <span class="badge badge-danger"> {% trans "overdueTasks" %}: {{ batch.get_executions_overdue|length }}</span>
+                            {% elif batch.get_progress_percentage == 100 %}
+                                <span class="badge badge-success"> {% trans "BatchFinished" %}</span>
+                            {% else %}
+                                <span class="badge badge-primary"> {% trans "noOverdueTasks" %}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{% trans "noBatchesExist" %}</p>
+    {% endif %}
+
+{% endblock content %}

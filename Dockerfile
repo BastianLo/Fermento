@@ -25,7 +25,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Create a directory for static files
-RUN mkdir static
+RUN mkdir /static
 
 # Copy the Nginx configuration file to the container's /etc/nginx/sites-available directory
 COPY nginx.conf /etc/nginx/sites-available/default

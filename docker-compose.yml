@@ -14,4 +14,4 @@ services:
             - '6733:6733'
         image: 'fermento:localdev'
         volumes:
-            - ./dev_container_data:/Fermento/Fermento/data
+            - ./dev_container_data:/Fermento/data
