@@ -3,9 +3,10 @@ from rest_framework.decorators import permission_classes
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import IsAuthenticated
 
-from Apps.recipe_manager.models import Recipe, Process, ProcessStep
+from Apps.recipe_manager.models import Recipe, Process, ProcessStep, ProcessSchedule
 from Apps.recipe_manager.serializers import RecipeBaseSerializer, RecipePostSerializer, ProcessBaseSerializer, \
-    ProcessPostSerializer, ProcessStepBaseSerializer, ProcessStepPostSerializer
+    ProcessPostSerializer, ProcessStepBaseSerializer, ProcessStepPostSerializer, ProcessScheduleBaseSerializer, \
+    ProcessSchedulePostSerializer
 
 
 @permission_classes([IsAuthenticated])
@@ -88,3 +89,31 @@ class ProcessStepDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return ProcessStep.objects.filter(owner=self.request.user)
+
+
+@permission_classes([IsAuthenticated])
+class ProcessScheduleListCreate(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return ProcessScheduleBaseSerializer
+        return ProcessSchedulePostSerializer
+
+    def perform_create(self, serializer):
+        if serializer.validated_data["related_process"].owner != self.request.user:
+            raise PermissionDenied("Process does not belong to this user!")
+        serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        user = self.request.user
+        return ProcessSchedule.objects.filter(owner=user)
+
+
+@permission_classes([IsAuthenticated])
+class ProcessScheduleDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProcessScheduleBaseSerializer
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return ProcessSchedule.objects.filter(owner=self.request.user)

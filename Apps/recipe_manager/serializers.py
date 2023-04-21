@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import Recipe, Process, ProcessStep, ProcessSchedule, RecipeIngredient, Utensils
 
 
+### Recipe ###
 class RecipeBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
@@ -15,6 +16,7 @@ class RecipePostSerializer(RecipeBaseSerializer):
         exclude = RecipeBaseSerializer.Meta.exclude + ["id"]
 
 
+### Process ###
 class ProcessBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Process
@@ -27,6 +29,7 @@ class ProcessPostSerializer(ProcessBaseSerializer):
         exclude = ProcessBaseSerializer.Meta.exclude + ["id"]
 
 
+### Process Step ###
 class ProcessStepBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProcessStep
@@ -39,18 +42,27 @@ class ProcessStepPostSerializer(ProcessStepBaseSerializer):
         exclude = ProcessStepBaseSerializer.Meta.exclude + ["id"]
 
 
+### Process schedule
 class ProcessScheduleBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProcessSchedule
         exclude = ["owner"]
 
 
+class ProcessSchedulePostSerializer(ProcessScheduleBaseSerializer):
+    class Meta:
+        model = ProcessSchedule
+        exclude = ProcessScheduleBaseSerializer.Meta.exclude + ["id"]
+
+
+### Process Ingredient ###
 class RecipeIngredientBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         exclude = ["owner"]
 
 
+### Process Utensils ###
 class UtensilsBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utensils
