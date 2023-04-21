@@ -21,7 +21,7 @@ class ProcessBaseSerializer(serializers.ModelSerializer):
         exclude = ["owner"]
 
 
-class ProcessPostSerializer(serializers.ModelSerializer):
+class ProcessPostSerializer(ProcessBaseSerializer):
     class Meta:
         model = Process
         exclude = ProcessBaseSerializer.Meta.exclude + ["id"]
@@ -30,22 +30,28 @@ class ProcessPostSerializer(serializers.ModelSerializer):
 class ProcessStepBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProcessStep
-        exclude = []
+        exclude = ["owner"]
+
+
+class ProcessStepPostSerializer(ProcessStepBaseSerializer):
+    class Meta:
+        model = ProcessStep
+        exclude = ProcessStepBaseSerializer.Meta.exclude + ["id"]
 
 
 class ProcessScheduleBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProcessSchedule
-        exclude = []
+        exclude = ["owner"]
 
 
 class RecipeIngredientBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
-        exclude = []
+        exclude = ["owner"]
 
 
 class UtensilsBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utensils
-        exclude = []
+        exclude = ["owner"]
