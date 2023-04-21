@@ -5,6 +5,6 @@
 
 
 {% block content %}
-<h1>Qrcode {{qrcode.name}}</h1>
-{% qr_from_text redirect_url size="10" image_format="png" error_correction="Q" border=1 %}
+    <h1>Qrcode {{ qrcode.name }}</h1>
+    {% qr_from_text redirect_url size="10" image_format="png" error_correction="Q" border=1 %}
 {% endblock content %}

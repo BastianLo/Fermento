@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("notification/", views.notifcation, name="notifcation"),
-    path("notification/save", views.notifcation_save, name="notifcation_save"),
+    path("notification/", views.notification, name="notification"),
+    path("notification/save", views.notification_save, name="notification_save"),
 ]

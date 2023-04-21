@@ -4,213 +4,216 @@
 {% load datetime %}
 
 {% block header %}
-<link rel="stylesheet" type="text/css" href="{% static 'custom/css/recipe_view.css' %}">
-<script type="text/javascript" src="{% static 'custom/js/recipe_view.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'custom/css/recipe_view.css' %}">
+    <script type="text/javascript" src="{% static 'custom/js/recipe_view.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row row-eq-spacing-lg">
-        <div class="col-lg-4">
-            {% if recipe.image.url is not null %}
-            <a href="{{ recipe.image.url }}">
-                <img class="img-fluid rounded" style="overflow: hidden;" src="{{ recipe.image.url }}" />
-            </a>
-            {% else %}
-            <a href="/img/fermentation.png">
-                <img class="img-fluid rounded" style="overflow: hidden;" src="/img/fermentation.png" />
-            </a>
-            {% endif %}
-        </div>
-        <div class="col-lg-8">
-            <div class="card">
-                <h1 class="text-center">
-                    {{ recipe.name }}
-                </h1>
-                <div class="content">
-                    {% if recipe.difficulty == "easy" %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                        style="font-weight: bold;" class="badge-group" style="width:80px">
-                        <span class="bi bi-speedometer2 badge badge-success"></span>
-                        <span class="badge badge-success">{{ recipe.difficulty }}</span>
-                    </div>
-                    {% elif recipe.difficulty == "medium" %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                        style="font-weight: bold;" class="badge-group" style="width:80px">
-                        <span class="bi bi-speedometer2 badge badge-secondary"></span>
-                        <span class="badge badge-secondary">{{ recipe.difficulty }}</span>
-                    </div>
-                    {% elif recipe.difficulty == "hard" %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                        style="font-weight: bold;" class="badge-group" style="width:80px">
-                        <span class="bi bi-speedometer2 badge badge-danger"></span>
-                        <span class="badge badge-danger">{{ recipe.difficulty }}</span>
-                    </div>
-                    {% else %}
-                    <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                        style="font-weight: bold;" class="badge-group" style="width:80px">
-                        <span class="bi bi-speedometer2 badge badge-success"></span>
-                        <span class="badge badge-success">{{ recipe.difficulty }}</span>
-                    </div>
-                    {% endif %}
-                    {% if  recipe.get_total_work_duration %}
-                    <span data-toggle="tooltip" data-title="{% trans "DescriptionWorkDuration" %}"
-                        data-placement="bottom" class="badge-group" role="group">
+    <div class="container-fluid">
+        <div class="row row-eq-spacing-lg">
+            <div class="col-lg-4">
+                {% if recipe.image.url is not null %}
+                    <a href="{{ recipe.image.url }}">
+                        <img class="img-fluid rounded" style="overflow: hidden;" src="{{ recipe.image.url }}"
+                             alt="Recipe Image"/>
+                    </a>
+                {% else %}
+                    <a href="/img/fermentation.png">
+                        <img class="img-fluid rounded" style="overflow: hidden;" src="/img/fermentation.png"
+                             alt="Recipe Image"/>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-lg-8">
+                <div class="card">
+                    <h1 class="text-center">
+                        {{ recipe.name }}
+                    </h1>
+                    <div class="content">
+                        {% if recipe.difficulty == "easy" %}
+                            <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                                 style="font-weight: bold;width:80px" class="badge-group">
+                                <span class="bi bi-speedometer2 badge badge-success"></span>
+                                <span class="badge badge-success">{{ recipe.difficulty }}</span>
+                            </div>
+                        {% elif recipe.difficulty == "medium" %}
+                            <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                                 style="font-weight: bold;width:80px" class="badge-group">
+                                <span class="bi bi-speedometer2 badge badge-secondary"></span>
+                                <span class="badge badge-secondary">{{ recipe.difficulty }}</span>
+                            </div>
+                        {% elif recipe.difficulty == "hard" %}
+                            <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                                 style="font-weight: bold;width:80px" class="badge-group">
+                                <span class="bi bi-speedometer2 badge badge-danger"></span>
+                                <span class="badge badge-danger">{{ recipe.difficulty }}</span>
+                            </div>
+                        {% else %}
+                            <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
+                                 style="font-weight: bold;width:80px" class="badge-group">
+                                <span class="bi bi-speedometer2 badge badge-success"></span>
+                                <span class="badge badge-success">{{ recipe.difficulty }}</span>
+                            </div>
+                        {% endif %}
+                        {% if  recipe.get_total_work_duration %}
+                            <span data-toggle="tooltip" data-title="{% trans "DescriptionWorkDuration" %}"
+                                  data-placement="bottom" class="badge-group" role="group">
                         <span class="badge bi bi-alarm"></span>
                         <span class="badge">{{ recipe.get_total_work_duration|duration }}</span>
                     </span>
-                    {% endif %}
-                    {% if  recipe.time_until_complete %}
-                    <span data-toggle="tooltip" data-title="{% trans "DescriptionCompleteDuration" %}"
-                        data-placement="bottom" class="badge-group" role="group">
+                        {% endif %}
+                        {% if  recipe.time_until_complete %}
+                            <span data-toggle="tooltip" data-title="{% trans "DescriptionCompleteDuration" %}"
+                                  data-placement="bottom" class="badge-group" role="group">
                         <span class="badge bi bi-calendar-check"></span>
                         <span class="badge">{{ recipe.time_until_complete|duration }}</span>
                     </span>
-                    {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="border-top">
+                        <p>
+                            {{ recipe.description }}
+                        </p>
+                    </div>
                 </div>
-                <div class="border-top">
-                    <p>
-                        {{recipe.description}}
-                    </p>
-                </div>
-            </div>
 
-        </div>
-    </div>
-    {% for process in recipe.get_processes%}
-    <div class="card">
-        <div class="row row-eq-spacing-lg border-bottom">
-            <div class="col-lg-2">
-            </div>
-            <div class="col-lg-8">
-                <h1 class="text-center">{{ process.name }}</h1>
-            </div>
-            <div class="col-lg-2">
             </div>
         </div>
-        <div class="row row-eq-spacing-lg">
-            <div class="col-lg-4 separation-border">
-                {% if process.get_ingredients or show_empty_process_categories %}
-                <div class="border-bottom">
-                    <h2>{% trans "Ingredients" %}</h2>
-                    {% if process.get_ingredients %}
-                    <ul class="list-group">
-                        {% for ingredient in process.get_ingredients %}
-                        <div class="custom-checkbox mb-5">
-                            <input type="checkbox" id="checkbox-ingredient-{{ ingredient.id }}" value="">
-                            <label for="checkbox-ingredient-{{ ingredient.id }}">
-                                <span class="font-weight-bold">{{ingredient.amount|floatformat}}</span>
-                                <span>{{ingredient.unit}}</span>
-                                <span class="font-weight-bold">{{ ingredient.name }}</span></label>
-                        </div>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <b>{% trans "noIngredients" %}</b>
-                    {% endif %}
+        {% for process in recipe.get_processes %}
+            <div class="card">
+                <div class="row row-eq-spacing-lg border-bottom">
+                    <div class="col-lg-2">
+                    </div>
+                    <div class="col-lg-8">
+                        <h1 class="text-center">{{ process.name }}</h1>
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
                 </div>
-                {% endif %}
-                {% if process.get_utensils or show_empty_process_categories %}
-                <div class="border-bottom">
-                    <h2>{% trans "Utensils" %}</h2>
-                    {% if process.get_utensils %}
-                    <ul class="list-group">
-                        {% for utensil in process.get_utensils %}
-                        <div class="custom-checkbox mb-5">
-                            <input type="checkbox" id="checkbox-utensil-{{ utensil.id }}" value="">
-                            <label for="checkbox-utensil-{{ utensil.id }}">
-                                <span>{{ utensil.name }}</span></label>
-                        </div>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <b>{% trans "noIngredients" %}</b>
-                    {% endif %}
-                </div>
-                {% endif %}
-                {% if process.get_process_schedule or show_empty_process_categories %}
-                <div>
-                    <h2>{% trans "Timeschedule" %}</h2>
-                    {% for schedule in process.get_process_schedule %}
-                    <details class="collapse-panel w-400 mw-full">
-                        <!-- TODO: Format schedule times in more human readable-->
-                        <summary class="collapse-header">
-                            {% if schedule.executed_once %}
-                            <strong>{% trans "nonRecurring" %}</strong>
-                            {% else %}
-                            <strong>{% trans "repetitive" %}</strong>
-                            {% endif %}
-                            <br />
-                            <span class="text-muted">{% trans "Executions" %}:
-                                {{schedule.get_total_execution_count}}</span>
-                        </summary>
-                        <div class="collapse-content">
-                            <ul>
-                                {% if schedule.executed_once %}
-                                {% if schedule.start_time %}
-                                <li>
-                                    <span>{% trans "onceAfter" %}</span>
-                                    <span class="font-weight-bold">{{schedule.start_time|duration}}</span>
-                                </li>
+                <div class="row row-eq-spacing-lg">
+                    <div class="col-lg-4 separation-border">
+                        {% if process.get_ingredients or show_empty_process_categories %}
+                            <div class="border-bottom">
+                                <h2>{% trans "Ingredients" %}</h2>
+                                {% if process.get_ingredients %}
+                                    <ul class="list-group">
+                                        {% for ingredient in process.get_ingredients %}
+                                            <div class="custom-checkbox mb-5">
+                                                <input type="checkbox" id="checkbox-ingredient-{{ ingredient.id }}"
+                                                       value="">
+                                                <label for="checkbox-ingredient-{{ ingredient.id }}">
+                                                    <span class="font-weight-bold">{{ ingredient.amount|floatformat }}</span>
+                                                    <span>{{ ingredient.unit }}</span>
+                                                    <span class="font-weight-bold">{{ ingredient.name }}</span></label>
+                                            </div>
+                                        {% endfor %}
+                                    </ul>
                                 {% else %}
-                                <li>{% trans "immediately" %}</li>
+                                    <b>{% trans "noIngredients" %}</b>
                                 {% endif %}
+                            </div>
+                        {% endif %}
+                        {% if process.get_utensils or show_empty_process_categories %}
+                            <div class="border-bottom">
+                                <h2>{% trans "Utensils" %}</h2>
+                                {% if process.get_utensils %}
+                                    <ul class="list-group">
+                                        {% for utensil in process.get_utensils %}
+                                            <div class="custom-checkbox mb-5">
+                                                <input type="checkbox" id="checkbox-utensil-{{ utensil.id }}" value="">
+                                                <label for="checkbox-utensil-{{ utensil.id }}">
+                                                    <span>{{ utensil.name }}</span></label>
+                                            </div>
+                                        {% endfor %}
+                                    </ul>
                                 {% else %}
-                                <li>
-                                    <span>{% trans "startAfter" %}: </span>
-                                    <span class="font-weight-bold">{{schedule.start_time|duration}}</span>
-                                </li>
-                                <li>
-                                    <span>{% trans "FrequencyEvery" %}: </span>
-                                    <span class="font-weight-bold">{{ schedule.wait_time|duration }}</span>
-                                </li>
-                                <li>
-                                    <span>{% trans "end" %}: </span>
-                                    <span class="font-weight-bold">{{schedule.end_time|duration}}</span>
-                                </li>
+                                    <b>{% trans "noIngredients" %}</b>
                                 {% endif %}
-                            </ul>
-                        </div>
-                    </details>
-                    {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if process.get_process_schedule or show_empty_process_categories %}
+                            <div>
+                                <h2>{% trans "Timeschedule" %}</h2>
+                                {% for schedule in process.get_process_schedule %}
+                                    <details class="collapse-panel w-400 mw-full">
+                                        <!-- TODO: Format schedule times in more human readable-->
+                                        <summary class="collapse-header">
+                                            {% if schedule.executed_once %}
+                                                <strong>{% trans "nonRecurring" %}</strong>
+                                            {% else %}
+                                                <strong>{% trans "repetitive" %}</strong>
+                                            {% endif %}
+                                            <br/>
+                                            <span class="text-muted">{% trans "Executions" %}:
+                                                {{ schedule.get_total_execution_count }}</span>
+                                        </summary>
+                                        <div class="collapse-content">
+                                            <ul>
+                                                {% if schedule.executed_once %}
+                                                    {% if schedule.start_time %}
+                                                        <li>
+                                                            <span>{% trans "onceAfter" %}</span>
+                                                            <span class="font-weight-bold">{{ schedule.start_time|duration }}</span>
+                                                        </li>
+                                                    {% else %}
+                                                        <li>{% trans "immediately" %}</li>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <li>
+                                                        <span>{% trans "startAfter" %}: </span>
+                                                        <span class="font-weight-bold">{{ schedule.start_time|duration }}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span>{% trans "FrequencyEvery" %}: </span>
+                                                        <span class="font-weight-bold">{{ schedule.wait_time|duration }}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span>{% trans "end" %}: </span>
+                                                        <span class="font-weight-bold">{{ schedule.end_time|duration }}</span>
+                                                    </li>
+                                                {% endif %}
+                                            </ul>
+                                        </div>
+                                    </details>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-8">
+                        <h2>{% trans "process_steps" %}</h2>
+                        {% if process.get_process_steps %}
+                            <ol>
+                                {% for step in process.get_process_steps %}
+                                    <li class="ml-10">{{ step.text }}</li>
+                                    <br/>
+                                {% endfor %}
+                            </ol>
+                        {% else %}
+                            <b>{% trans "noProcessSteps" %}</b>
+                        {% endif %}
+                    </div>
                 </div>
-                {% endif %}
             </div>
-            <div class="col-lg-8">
-                <h2>{% trans "process_steps" %}</h2>
-                {% if process.get_process_steps %}
-                <ol>
-                    {% for step in process.get_process_steps %}
-                    <li class="ml-10">{{ step.text }}</li>
-                    <br />
-                    {% endfor %}
-                </ol>
-                {% else %}
-                <b>{% trans "noProcessSteps" %}</b>
-                {% endif %}
-            </div>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor%}
-</div>
 
 {% endblock %}
 
 {% block footer %}
 
 
-<div class="dropdown dropup with-arrow">
-    <button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true" aria-expanded="false">
-        <i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
-    </button>
-    <div class="dropdown-menu " aria-labelledby="...">
-        <a href="execute" style="width:100%" class="btn btn-success mb-10">{% trans "executeRecipe" %}</a>
-        <a href="export" style="width:100%" class="btn btn-primary mb-10">{% trans "exportRecipe" %}</a>
-        <button style="width:100%" class="btn btn-primary mb-10" type="button"
-            onclick="location.href='edit'">{% trans "editRecipe" %}</button>
-        <a href="delete" style="width:100%" class="btn btn-danger mb-10"
-            onclick="return confirm('{% trans "deleteConfirmation" %}')">{% trans "deleteRecipe" %}</a>
+    <div class="dropdown dropup with-arrow">
+        <button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true" aria-expanded="false">
+            <i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
+        </button>
+        <div class="dropdown-menu " aria-labelledby="...">
+            <a href="execute" style="width:100%" class="btn btn-success mb-10">{% trans "executeRecipe" %}</a>
+            <a href="export" style="width:100%" class="btn btn-primary mb-10">{% trans "exportRecipe" %}</a>
+            <button style="width:100%" class="btn btn-primary mb-10" type="button"
+                    onclick="location.href='edit'">{% trans "editRecipe" %}</button>
+            <a href="delete" style="width:100%" class="btn btn-danger mb-10"
+               onclick="return confirm('{% trans "deleteConfirmation" %}')">{% trans "deleteRecipe" %}</a>
+        </div>
     </div>
-</div>
 
 {% endblock %}

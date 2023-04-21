@@ -3,12 +3,12 @@
 {% load i18n %}
 
 {% block content %}
-<h1>Qr-Codes</h1>
+    <h1>Qr-Codes</h1>
 
-{% for qrcode in qrcodes %}
-<a href={{qrcode.id}}>
-    {{qrcode.name}}
-</a>
-{% endfor %}
+    {% for qrcode in qrcodes %}
+        <a href={{ qrcode.id }}>
+            {{ qrcode.name }}
+        </a>
+    {% endfor %}
 
 {% endblock content %}

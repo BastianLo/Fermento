@@ -3,7 +3,7 @@ create-superuser () {
     local username="$1"
     local email="$2"
     local password="$3"
-    cat <<EOF | python Fermento/manage.py shell
+    cat <<EOF | python manage.py shell
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -17,7 +17,7 @@ EOF
 service nginx start
 
 # Collect static files and run migrations
-python Fermento/manage.py collectstatic --noinput && python Fermento/manage.py migrate
+python manage.py collectstatic --noinput && python manage.py migrate
 
 create-superuser ${USERNAME} ${EMAIL} ${PASSWORD}
 django-admin compilemessages > /dev/null 2>&1

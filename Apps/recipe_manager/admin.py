@@ -1,17 +1,18 @@
 from django.contrib import admin
-
-# Register your models here.
+from image_cropping import ImageCroppingMixin
 
 from .models import *
-from image_cropping import ImageCroppingMixin
+
+
+# Register your models here.
 
 class MyModelAdmin(ImageCroppingMixin, admin.ModelAdmin):
     pass
 
-#admin.site.register(recipe)
-admin.site.register(recipe_ingredient)
-admin.site.register(process_step)
-admin.site.register(process)
-admin.site.register(process_schedule)
-admin.site.register(utensils)
-admin.site.register(recipe, MyModelAdmin)
+
+admin.site.register(RecipeIngredient)
+admin.site.register(ProcessStep)
+admin.site.register(Process)
+admin.site.register(ProcessSchedule)
+admin.site.register(Utensils)
+admin.site.register(Recipe, MyModelAdmin)

@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path("", RedirectView.as_view(url='recipe')),
-    path("recipe/", views.index, name="recipeindex"),
+    path("recipe/", views.index, name="recipe_index"),
     path("recipe/<int:recipe_id>/", views.recipe_by_id, name="recipe_by_id"),
     path("recipe/<int:recipe_id>/delete", views.delete_recipe_by_id, name="delete_recipe_by_id"),
     path("recipe/<int:recipe_id>/edit", views.edit_recipe_by_id, name="edit_recipe_by_id"),

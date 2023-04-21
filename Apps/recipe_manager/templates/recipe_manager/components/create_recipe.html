@@ -3,78 +3,78 @@
 {% load i18n %}
 
 {% block header %}
-{% block edit_block %}
-{% endblock edit_block %}
-<script src="{% url 'javascript-catalog' %}"></script>
-<script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
-<script type="text/javascript" defer src="{% static 'custom/js/create_recipe.js' %}"></script>
+    {% block edit_block %}
+    {% endblock edit_block %}
+    <script src="{% url 'javascript-catalog' %}"></script>
+    <script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
+    <script type="text/javascript" defer src="{% static 'custom/js/create_recipe.js' %}"></script>
 
-<link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
 
 
 {% endblock %}
 
 
 {% block content %}
-<h1 style="text-align: center">{% trans "createNewRecipe" %}</h1>
-<div class="card">
-    <h2>{% trans "basicInformations" %}</h2>
-    <form id="create-recipe-form" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+    <h1 style="text-align: center">{% trans "createNewRecipe" %}</h1>
+    <div class="card">
+        <h2>{% trans "basicInformations" %}</h2>
+        <form id="create-recipe-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <div class="form-group">
-            <label for="name">{% trans "Name" %}</label>
-            <input type="text" class="form-control" id="name" name="name">
+            <div class="form-group">
+                <label for="name">{% trans "Name" %}</label>
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
+
+            <div class="form-group">
+                <label for="description">{% trans "description" %}</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+
+            <div class="form-group">
+                <input type="file" class="form-control-file" id="image" name="image">
+            </div>
+
+            <div class="form-group">
+                <label for="difficulty">{% trans "difficulty" %}</label>
+                <select class="form-control" id="difficulty" name="difficulty">
+                    <option value="undefined">Undefined</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="rating">{% trans "rating" %}</label>
+                <select class="form-control" id="rating" name="rating">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+        </form>
+    </div>
+    <div>
+
+        <h2 style="text-align: center">{% trans "Processes" %}</h2>
+
+        <div class="form-group" id="processes">
+
         </div>
 
-        <div class="form-group">
-            <label for="description">{% trans "description" %}</label>
-            <textarea class="form-control" id="description" name="description"></textarea>
-        </div>
-
-        <div class="form-group">
-            <input type="file" class="form-control-file" id="image" name="image">
-        </div>
-
-        <div class="form-group">
-            <label for="difficulty">{% trans "difficulty" %}</label>
-            <select class="form-control" id="difficulty" name="difficulty">
-                <option value="undefined">Undefined</option>
-                <option value="easy">Easy</option>
-                <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="rating">{% trans "rating" %}</label>
-            <select class="form-control" id="rating" name="rating">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-        </div>
-
-    </form>
-</div>
-<div>
-
-    <h2 style="text-align: center">{% trans "Processes" %}</h2>
-
-    <div class="form-group" id="processes">
+        <button class="btn btn-primary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
 
     </div>
-
-    <button class="btn btn-primary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
-
-</div>
-<br />
+    <br/>
 
 {% endblock %}
 
 {% block footer %}
-<button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "save" %}</button>
-<a href="" class="btn btn-danger" onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
+    <button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "save" %}</button>
+    <a href="" class="btn btn-danger" onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
 
 {% endblock footer %}
