@@ -21,6 +21,7 @@ class Recipe(models.Model):
 
     id = models.AutoField(primary_key=True)
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='recipe_user', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
     image = ImageCropField(upload_to='images')
@@ -93,7 +94,7 @@ class Process(models.Model):
         return ProcessSchedule.objects.filter(related_process=self)
 
     def get_time_until_finish(self):
-        return max([max(x.end_time, x.start_time) for x in self.get_process_schedule()])
+        return max([max(x.end_time, x.start_time) for x in self.get_process_schedule()], default=timedelta(seconds=0))
 
     def __str__(self) -> str:
         return f"Process_{self.id}_{self.name}_{self.related_recipe}"
