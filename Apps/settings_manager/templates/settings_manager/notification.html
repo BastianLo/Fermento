@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+    <h1 class="text-center">{% trans "Notification" %}</h1>
+    <form action="save" method="post">
+    {% csrf_token %}
+    <div class="card">
+        <h2 class="card-title">
+            Pushover
+        </h2>
+        <div class="custom-switch">
+            <input type="checkbox" id="switch-1" name="pushover_enabled"
+                   {% if settings.pushover_enabled %}checked{% endif %}/>
+            <label for="switch-1">{% trans "Active" %}</label>
+        </div>
+        <details class="collapse-panel w-400 mw-full mt-20">
+            <!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
+            <summary class="collapse-header">
+                {% trans "Credentials" %}
+            </summary>
+            <div class="collapse-content">
+                <div class="form-group">
+                    <label for="pushover_user_key">User Token</label>
+                    <input value="{{ settings.pushover_user_token }}" name="pushover_user_key" type="text"
+                           class="form-control" id="pushover_user_key" placeholder="User Token">
+                </div>
+                <div class="form-group">
+                    <label for="pushover_app_key">App Token</label>
+                    <input value="{{ settings.pushover_app_token }}" name="pushover_app_key" type="text"
+                           class="form-control" id="pushover_app_key" placeholder="App Token">
+                </div>
+
+            </div>
+        </details>
+    </div>
+{% endblock content %}
+
+{% block footer %}
+    <p><input class="btn btn-primary" type="submit" value={% trans "save" %}></p>
+    </form>
+{% endblock footer %}
