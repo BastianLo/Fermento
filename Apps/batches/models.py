@@ -24,6 +24,8 @@ class Batch(models.Model):
     def get_progress_percentage(self):
         duration = self.related_recipe.time_until_complete()
         progress_duration = timezone.now() - self.start_date
+        if duration == timedelta(seconds=0):
+            return 100
         return min(100, round(progress_duration / duration * 100))
 
     def get_end_date(self):
