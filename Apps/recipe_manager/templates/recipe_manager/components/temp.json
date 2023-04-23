@@ -1,0 +1,61 @@
+{
+  "model": "recipe_manager.recipe",
+  "pk": 51,
+  "fields": {
+    "owner": 1,
+    "created_at": "2023-04-21T12:28:10.636Z",
+    "name": "Rest Recipe",
+    "description": "Done with rest api",
+    "image": "images/image_98c59e2e-fbbd-43bc-9358-08d91ef6873b.jpg",
+    "cropping": "0,85,512,427",
+    "difficulty": "easy",
+    "rating": 3
+  },
+  "processes": [
+    {
+      "model": "recipe_manager.process",
+      "pk": 67,
+      "fields": {
+        "owner": 1,
+        "name": "Vorbereitung",
+        "work_duration": "00:00:00",
+        "wait_duration": "00:00:00",
+        "related_recipe": 51
+      },
+      "ingredients": "[{\"model\": \"recipe_manager.recipeingredient\", \"pk\": 51, \"fields\": {\"owner\": 1, \"name\": \"Wasser\", \"amount\": \"1000.0\", \"unit\": \"ml\", \"related_process\": 67}}, {\"model\": \"recipe_manager.recipeingredient\", \"pk\": 52, \"fields\": {\"owner\": 1, \"name\": \"Schwarzer/grüner Tee\", \"amount\": \"4.0\", \"unit\": \"Beutel\", \"related_process\": 67}}, {\"model\": \"recipe_manager.recipeingredient\", \"pk\": 53, \"fields\": {\"owner\": 1, \"name\": \"Zucker\", \"amount\": \"100.0\", \"unit\": \"g\", \"related_process\": 67}}, {\"model\": \"recipe_manager.recipeingredient\", \"pk\": 54, \"fields\": {\"owner\": 1, \"name\": \"Ansetzflüssigkeit\", \"amount\": \"100.0\", \"unit\": \"ml\", \"related_process\": 67}}, {\"model\": \"recipe_manager.recipeingredient\", \"pk\": 55, \"fields\": {\"owner\": 1, \"name\": \"Kombucha-Pilz\", \"amount\": \"1.0\", \"unit\": \"Stk\", \"related_process\": 67}}]",
+      "process_steps": "[{\"model\": \"recipe_manager.processstep\", \"pk\": 47, \"fields\": {\"owner\": 1, \"index\": 0, \"text\": \"Kochen Sie die gewünschte Menge Wasser auf. Fügen Sie pro Liter rund 4 Beutel Tee hinzu und lassen Sie ihn 15 Minuten ziehen.\", \"related_process\": 67}}, {\"model\": \"recipe_manager.processstep\", \"pk\": 48, \"fields\": {\"owner\": 1, \"index\": 1, \"text\": \"Lösen Sie pro Liter 90 bis 100 g Zucker im fertigen Tee vollständig auf.\", \"related_process\": 67}}, {\"model\": \"recipe_manager.processstep\", \"pk\": 49, \"fields\": {\"owner\": 1, \"index\": 2, \"text\": \"Lassen Sie den Tee auf Zimmertemperatur abkühlen und stellen Sie ein sauberes Gärgefäß bereit.\", \"related_process\": 67}}, {\"model\": \"recipe_manager.processstep\", \"pk\": 50, \"fields\": {\"owner\": 1, \"index\": 3, \"text\": \"Geben Sie den Kombucha Pilz  zusammen mit dem Kombucha-Getränk als Ansatzflüssigkeit (mindestens 100 ml pro Liter) in das Gärgefäß und füllen Sie es mit dem abgekühlten Tee auf.\", \"related_process\": 67}}, {\"model\": \"recipe_manager.processstep\", \"pk\": 51, \"fields\": {\"owner\": 1, \"index\": 4, \"text\": \"Verschließen Sie das Gärgefäß mit einem Abdecktuch und einem Verschlußspanner (z. B. Gummiring).\", \"related_process\": 67}}, {\"model\": \"recipe_manager.processstep\", \"pk\": 52, \"fields\": {\"owner\": 1, \"index\": 5, \"text\": \"Gärgefäß an einen warmen Platz stellen (mind. 21 Grad) \", \"related_process\": 67}}]",
+      "utils": "[{\"model\": \"recipe_manager.utensils\", \"pk\": 15, \"fields\": {\"related_process\": 67, \"name\": \"Ein 2 Liter Glas\", \"owner\": 1}}]",
+      "schedule": "[{\"model\": \"recipe_manager.processschedule\", \"pk\": 13, \"fields\": {\"owner\": 1, \"related_process\": 67, \"executed_once\": true, \"start_time\": \"00:00:00\", \"end_time\": \"00:00:00\", \"wait_time\": \"00:00:00\"}}]"
+    },
+    {
+      "model": "recipe_manager.process",
+      "pk": 68,
+      "fields": {
+        "owner": 1,
+        "name": "Umrühren",
+        "work_duration": "00:00:00",
+        "wait_duration": "00:00:00",
+        "related_recipe": 51
+      },
+      "ingredients": "[]",
+      "process_steps": "[{\"model\": \"recipe_manager.processstep\", \"pk\": 53, \"fields\": {\"owner\": 1, \"index\": 0, \"text\": \"Den Kombucha täglich mit einem (nicht-Metall)-Löffel umrühren, damit sich die Nährstoffe im Kombucha gleichmäßig verteilen.\", \"related_process\": 68}}]",
+      "utils": "[{\"model\": \"recipe_manager.utensils\", \"pk\": 16, \"fields\": {\"related_process\": 68, \"name\": \"Löffel\", \"owner\": 1}}]",
+      "schedule": "[{\"model\": \"recipe_manager.processschedule\", \"pk\": 14, \"fields\": {\"owner\": 1, \"related_process\": 68, \"executed_once\": false, \"start_time\": \"00:00:00\", \"end_time\": \"10 00:00:00\", \"wait_time\": \"1 00:00:00\"}}]"
+    },
+    {
+      "model": "recipe_manager.process",
+      "pk": 69,
+      "fields": {
+        "owner": 1,
+        "name": "Abfüllen",
+        "work_duration": "00:00:00",
+        "wait_duration": "00:00:00",
+        "related_recipe": 51
+      },
+      "ingredients": "[]",
+      "process_steps": "[{\"model\": \"recipe_manager.processstep\", \"pk\": 54, \"fields\": {\"owner\": 1, \"index\": 0, \"text\": \"Den Kombucha abfüllen und trinken. Im Idealfall etwa 10-20% des Kombuchas aufbewahren. Dieser dient als Ansetzflüssigkeit für den nächsten Kombucha\", \"related_process\": 69}}]",
+      "utils": "[]",
+      "schedule": "[{\"model\": \"recipe_manager.processschedule\", \"pk\": 15, \"fields\": {\"owner\": 1, \"related_process\": 69, \"executed_once\": true, \"start_time\": \"10 00:00:00\", \"end_time\": \"00:00:00\", \"wait_time\": \"00:00:00\"}}]"
+    }
+  ]
+},

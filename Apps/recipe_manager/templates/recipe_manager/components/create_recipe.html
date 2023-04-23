@@ -3,79 +3,205 @@
 {% load i18n %}
 
 {% block header %}
-    {% block edit_block %}
-    {% endblock edit_block %}
-    <script src="{% url 'javascript-catalog' %}"></script>
-    <script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
-    <script type="text/javascript" defer src="{% static 'custom/js/create_recipe.js' %}"></script>
+	{% block edit_block %}
+	{% endblock edit_block %}
+	<script src="{% url 'javascript-catalog' %}"></script>
+	<script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
 
+	<script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('as', {
+                {% if recipe_json %}
+                    recipe: {{ recipe_json|safe }},
+                {% else %}
+                    recipe: {},
+                {% endif %}
+            })
+        })
+	</script>
 
 {% endblock %}
 
 
 {% block content %}
-    <h1 style="text-align: center">{% trans "createNewRecipe" %}</h1>
-    <div class="card">
-        <h2>{% trans "basicInformations" %}</h2>
-        <form id="create-recipe-form" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+	<div x-init="$store.as.recipe.fields = $store.as.recipe.fields || {}">
+		<h1 style="text-align: center">{% trans "createNewRecipe" %}</h1>
+		<div x-data class="card">
+			<h2>{% trans "basicInformations" %}</h2>
+			<form id="create-recipe-form" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<button type="button" @click="console.log($store.as.recipe)">abc</button>
 
-            <div class="form-group">
-                <label for="name">{% trans "Name" %}</label>
-                <input type="text" class="form-control" id="name" name="name">
-            </div>
+				<div class="form-group">
+					<label for="name">{% trans "Name" %}</label>
+					<input x-model="$store.as.recipe.fields.name" type="text" class="form-control" id="name"
+						   name="name">
+				</div>
 
-            <div class="form-group">
-                <label for="description">{% trans "description" %}</label>
-                <textarea class="form-control" id="description" name="description"></textarea>
-            </div>
+				<div class="form-group">
+					<label for="description">{% trans "description" %}</label>
+					<textarea x-model="$store.as.recipe.fields.description" class="form-control" id="description"
+							  name="description"></textarea>
+				</div>
 
-            <div class="form-group">
-                <input type="file" class="form-control-file" id="image" name="image">
-            </div>
+				<div class="form-group">
+					<input type="file" @change="$store.as.recipe.fields.image = $event.target.files[0]"
+						   class="form-control-file" id="image" name="image">
+				</div>
 
-            <div class="form-group">
-                <label for="difficulty">{% trans "difficulty" %}</label>
-                <select class="form-control" id="difficulty" name="difficulty">
-                    <option value="undefined">Undefined</option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="rating">{% trans "rating" %}</label>
-                <select class="form-control" id="rating" name="rating">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
+				<div class="form-group">
+					<label for="difficulty">{% trans "difficulty" %}</label>
+					<select x-model="$store.as.recipe.fields.difficulty" class="form-control" id="difficulty"
+							name="difficulty">
+						<option value="undefined">Undefined</option>
+						<option value="easy">Easy</option>
+						<option value="medium">Medium</option>
+						<option value="hard">Hard</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="rating">{% trans "rating" %}</label>
+					<select x-model="$store.as.recipe.fields.rating" class="form-control" id="rating" name="rating">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select>
+				</div>
+			</form>
+		</div>
+		<h2 style="text-align: center">{% trans "Processes" %}</h2>
+		<div class="form-group" id="processes">
+			<template x-for="process in $store.as.recipe.processes">
+				<div class="card">
+					<label>
+						{% trans "name" %}
+						<input x-model="process.fields.name" value="${name}"
+							   type="text"
+							   class="form-control"/>
+					</label>
+					<label>
+						{% trans "work_duration" %}
+						<input class="form-control" type="text"
+							   x-model="process.fields.work_duration"></input>
+					</label>
+					<label>
+						{% trans "wait_duration" %}
+						<input class="form-control"
+							   type="text"
+							   x-model="process.fields.wait_duration">
+						</input>
+					</label>
 
-        </form>
-    </div>
-    <div>
+					<h3>{% trans "processSteps" %}</h3>
+					<table class="table sortable">
+						<thead>
+						<tr>
+							<th style="width:90%">{% trans "description" %}</th>
+							<th></th>
+							<th></th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+						<template x-for="processStep in process.process_steps">
+							<tr>
+								<td><textarea class="form-control" x-model="processStep.fields.text"></textarea>
+								</td>
+								<td draggable="true" class="dragicon" ondragstart="dragit(event)"
+									ondragover="dragover(event)" style="cursor:pointer">&#9776;
+								</td>
+								<td>
+									<button class="btn btn-danger" type="button"
+											@click="process.process_steps.splice(process.process_steps.indexOf(processStep), 1)">
+										{% trans "delete" %}
+									</button>
+								</td>
+							</tr>
+						</template>
+						</tbody>
+					</table>
+					<br/>
+					<button class="btn btn-primary" type="button"
+							@click="process.process_steps.push({fields:{ index:process.process_steps.length}})">
+						{% trans "addProcessStep" %}
+					</button>
+					<br/><br/><br/>
+					<h3>${gettext("ingredients")}</h3>
+					<table class="table sortable">
+						<thead>
+						<tr>
+							<th>${gettext("name")}</th>
+							<th>${gettext("amount")}</th>
+							<th>${gettext("unit")}</th>
+						</tr>
+						</thead>
+						<tbody id="process-ingredients-${numProcesses}">
+						</tbody>
+					</table>
+					<br/>
+					<button class="btn btn-primary" type="button" onclick="addIngredient(${numProcesses})">
+						${gettext("addIngredient")}
+					</button>
+					<br/><br/><br/>
 
-        <h2 style="text-align: center">{% trans "Processes" %}</h2>
+					<h3>${gettext("utils")}</h3>
+					<table class="table sortable">
+						<thead>
+						<tr>
+							<th>${gettext("name")}</th>
+						</tr>
+						</thead>
+						<tbody id="process-utils-${numProcesses}">
+						</tbody>
+					</table>
+					<br/>
+					<button class="btn btn-primary" type="button" onclick="addUtil(${numProcesses})">
+						${gettext("addUtil")}
+					</button>
+					<br/><br/><br/>
 
-        <div class="form-group" id="processes">
+					<h3>${gettext("schedules")}</h3>
+					<div class="table-responsive">
+						<table style="width: 100%" class="table sortable table-responsive">
+							<thead>
+							<tr>
+								<th>${gettext("runOnce")}</th>
+								<th>${gettext("startTime")}</th>
+								<th>${gettext("frequency")}</th>
+								<th>${gettext("endTime")}</th>
+							</tr>
+							</thead>
+							<tbody id="process-schedule-${numProcesses}">
+							</tbody>
+						</table>
+					</div>
+					<br/>
+					<button class="btn btn-primary" type="button" onclick="addSchedule(${numProcesses})">
+						${gettext("addSchedule")}
+					</button>
 
-        </div>
+					<br/><br/><br/><br/>
+					<button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}
+					</button>
+				</div>
+			</template>
+		</div>
 
-        <button class="btn btn-primary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
+		<button class="btn btn-primary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
 
-    </div>
-    <br/>
+	</div>
+	<br/>
+
 
 {% endblock %}
 
 {% block footer %}
-    <button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "save" %}</button>
-    <a href=".." class="btn btn-danger"
-       onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
+	<button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "save" %}</button>
+	<a href=".." class="btn btn-danger"
+	   onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
 
 {% endblock footer %}

@@ -211,17 +211,23 @@ def edit_recipe_get(request, recipe_id):
     template = loader.get_template("recipe_manager/components/edit_recipe.html")
     processes = json.loads(serializers.serialize('json', selected_recipe.get_processes()))
     for i, p in enumerate(processes):
-        processes[i]["ingredients"] = serializers.serialize('json',
-                                                            RecipeIngredient.objects.filter(related_process=p["pk"]))
-        processes[i]["process_steps"] = serializers.serialize('json', ProcessStep.objects.filter(
-            related_process=p["pk"]).order_by("index"))
-        processes[i]["utils"] = serializers.serialize('json', Utensils.objects.filter(related_process=p["pk"]))
-        processes[i]["schedule"] = serializers.serialize('json',
-                                                         ProcessSchedule.objects.filter(related_process=p["pk"]))
+        processes[i]["ingredients"] = json.loads(serializers.serialize('json',
+                                                                       RecipeIngredient.objects.filter(
+                                                                           related_process=p["pk"])))
+        processes[i]["process_steps"] = json.loads(serializers.serialize('json', ProcessStep.objects.filter(
+            related_process=p["pk"]).order_by("index")))
+        processes[i]["utils"] = json.loads(
+            serializers.serialize('json', Utensils.objects.filter(related_process=p["pk"])))
+        processes[i]["schedule"] = json.loads(serializers.serialize('json',
+                                                                    ProcessSchedule.objects.filter(
+                                                                        related_process=p["pk"])))
+    recipe_json = json.loads(serializers.serialize('json', [selected_recipe, ]))[0]
+    recipe_json["processes"] = processes
+    recipe_json = json.dumps(recipe_json, ensure_ascii=False)
     context = {
         "recipe": selected_recipe,
-        "recipe_json": serializers.serialize('json', [selected_recipe, ]),
-        "process_json": processes
+        "recipe_json": recipe_json,
+        # "process_json": processes
     }
     return HttpResponse(template.render(context, request))
 
