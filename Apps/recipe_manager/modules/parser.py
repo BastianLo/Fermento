@@ -3,7 +3,7 @@ import json
 from django.core import serializers
 from django.db import transaction
 
-from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils
+from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils, ProcessSchedule
 
 
 @transaction.atomic
@@ -21,6 +21,7 @@ class RecipeParser:
             self.parse_process_step(process["process_steps"], p)
             self.parse_ingredients(process["ingredients"], p)
             self.parse_utensils(process["utils"], p)
+            self.parse_schedule(process["schedule"], p)
 
     def parse_process_step(self, process_step_json, process_object):
         steps = list(serializers.deserialize('json', json.dumps([step for step in process_step_json])))
@@ -56,3 +57,18 @@ class RecipeParser:
                         Utensils.objects.filter(owner=self.user, related_process=process_object.object)]
         delete_utensils = set(all_utensils) - set([utensil.object.id for utensil in utensils])
         [Utensils.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_utensils]
+
+    def parse_schedule(self, schedule_json, process_object):
+        print(list(
+            serializers.deserialize('json', json.dumps([schedule for schedule in schedule_json], ensure_ascii=False))))
+        schedules = list(
+            serializers.deserialize('json', json.dumps([schedule for schedule in schedule_json], ensure_ascii=False)))
+
+        for schedule in schedules:
+            schedule.object.owner_id = self.user.id
+            schedule.object.related_process = process_object.object
+            schedule.object.save()
+        all_schedules = [schedule.id for schedule in
+                         ProcessSchedule.objects.filter(owner=self.user, related_process=process_object.object)]
+        delete_schedules = set(all_schedules) - set([schedule.object.id for schedule in schedules])
+        [ProcessSchedule.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_schedules]

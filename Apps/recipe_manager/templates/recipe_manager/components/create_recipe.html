@@ -292,7 +292,7 @@
 					</div>
 					<br/>
 					<button class="btn btn-primary" type="button"
-							@click="process.schedule.push({fields:{start_time:'00:00:00', end_time:'00:00:00', wait_time:'00:00:00'}})">
+							@click="process.schedule.push({fields:{start_time:'00:00:00', end_time:'00:00:00', wait_time:'00:00:00', executed_once:false}, model:'recipe_manager.processschedule'})">
 						{% trans "addSchedule" %}
 					</button>
 
