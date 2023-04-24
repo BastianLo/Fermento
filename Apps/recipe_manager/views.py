@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.db import transaction
 from django.http import HttpResponse, Http404
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -17,6 +18,7 @@ from django.template import loader
 from django.utils.dateparse import parse_duration
 
 from .models import Recipe, Process, ProcessSchedule, ProcessStep, Utensils, RecipeIngredient, timedelta
+from .modules.parser import RecipeParser
 
 
 @login_required(login_url='/accounts/login/')
@@ -208,7 +210,7 @@ def edit_recipe_by_id(request, recipe_id):
 def edit_recipe_get(request, recipe_id):
     uid = request.session['_auth_user_id']
     selected_recipe = Recipe.objects.filter(id=recipe_id, owner=uid).first()
-    template = loader.get_template("recipe_manager/components/edit_recipe.html")
+    template = loader.get_template("recipe_manager/components/create_recipe.html")
     processes = json.loads(serializers.serialize('json', selected_recipe.get_processes()))
     for i, p in enumerate(processes):
         processes[i]["ingredients"] = json.loads(serializers.serialize('json',
@@ -326,6 +328,16 @@ def edit_recipe_post(request, recipe_id):
     [batch.create_next_executions() for batch in
      apps.get_model('batches', 'Batch').objects.filter(related_recipe=new_recipe, owner=request.user)]
     return JsonResponse({'status': 'success', 'recipe_id': new_recipe.id})
+
+
+@transaction.atomic
+@login_required(login_url='/accounts/login/')
+def recipe_save(request):
+    data = [json.loads(request.body.decode())]
+    p = RecipeParser()
+    p.parse_recipe(request.user, data)
+    # return None
+    return JsonResponse({'status': 'success', 'recipe_id': 1})
 
 
 @login_required(login_url='/accounts/login/')

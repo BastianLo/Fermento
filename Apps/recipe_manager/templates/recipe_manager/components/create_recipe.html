@@ -6,7 +6,6 @@
 	{% block edit_block %}
 	{% endblock edit_block %}
 	<script src="{% url 'javascript-catalog' %}"></script>
-	<script type="text/javascript" src="{% static 'custom/js/reorder_elements.js' %}"></script>
 
 	<link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
 
@@ -18,6 +17,49 @@
                 {% else %}
                     recipe: {},
                 {% endif %}
+                saveData() {
+                    console.log(this.recipe)
+                    fetch("/recipe_manager/recipe/save/", {
+                        method: "POST",
+                        body: JSON.stringify(this.recipe),
+                        headers: {'X-CSRFToken': this.getCookie('csrftoken'), 'Content-Type': 'application/json'}
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (window.location.href.includes("edit")) {
+                                window.location.href = "../"
+                            } else {
+                                window.location.href = "../" + data["recipe_id"];
+                            }
+                        })
+                        .catch((error) => {
+                            console.error(error);
+                            this.toastDangerAlert(`${gettext("CouldNotCreateRecipe")}`, error);
+                        });
+                },
+                getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                },
+                toastDangerAlert(title, content) {
+                    halfmoon.initStickyAlert({
+                        content: content,
+                        title: title,
+                        alertType: "alert-danger",
+                        fillType: "filled"
+                    });
+                }
             })
         })
 	</script>
@@ -26,14 +68,13 @@
 
 
 {% block content %}
-	<div x-init="$store.as.recipe.fields = $store.as.recipe.fields || {}">
+
+	<div x-init="$store.as.recipe.fields = $store.as.recipe.fields || {}; $store.as.recipe.processes = $store.as.recipe.processes || []">
 		<h1 style="text-align: center">{% trans "createNewRecipe" %}</h1>
 		<div x-data class="card">
 			<h2>{% trans "basicInformations" %}</h2>
 			<form id="create-recipe-form" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
-				<button type="button" @click="console.log($store.as.recipe)">abc</button>
-
 				<div class="form-group">
 					<label for="name">{% trans "Name" %}</label>
 					<input x-model="$store.as.recipe.fields.name" type="text" class="form-control" id="name"
@@ -107,12 +148,20 @@
 						</tr>
 						</thead>
 						<tbody>
-						<template x-for="processStep in process.process_steps">
-							<tr>
+						<template x-for="(processStep, index) in process.process_steps">
+							<tr class="process-step"
+								draggable="true"
+								@dragstart="event.dataTransfer.setData('text/plain', index)"
+								@dragover.prevent
+								@drop="const draggedIndex = event.dataTransfer.getData('text/plain');
+								  const droppedIndex = index;
+								  if (draggedIndex !== droppedIndex) {
+									process.process_steps.splice(droppedIndex, 0, process.process_steps.splice(draggedIndex, 1)[0]);
+								  }
+								">
 								<td><textarea class="form-control" x-model="processStep.fields.text"></textarea>
 								</td>
-								<td draggable="true" class="dragicon" ondragstart="dragit(event)"
-									ondragover="dragover(event)" style="cursor:pointer">&#9776;
+								<td class="dragicon" style="cursor:pointer">&#9776;
 								</td>
 								<td>
 									<button class="btn btn-danger" type="button"
@@ -126,72 +175,131 @@
 					</table>
 					<br/>
 					<button class="btn btn-primary" type="button"
-							@click="process.process_steps.push({fields:{ index:process.process_steps.length}})">
+							@click="process.process_steps.push({fields:{ index:process.process_steps.length}, model:'recipe_manager.processstep'})">
 						{% trans "addProcessStep" %}
 					</button>
 					<br/><br/><br/>
-					<h3>${gettext("ingredients")}</h3>
+					<h3>{% trans "ingredients" %}</h3>
 					<table class="table sortable">
 						<thead>
 						<tr>
-							<th>${gettext("name")}</th>
-							<th>${gettext("amount")}</th>
-							<th>${gettext("unit")}</th>
+							<th>{% trans "name" %}</th>
+							<th>{% trans "amount" %}</th>
+							<th>{% trans "unit" %}</th>
 						</tr>
 						</thead>
-						<tbody id="process-ingredients-${numProcesses}">
+						<tbody>
+						<template x-for="ingredient in process.ingredients">
+							<tr>
+								<th><input type="text" class="form-control" x-model="ingredient.fields.name"></input>
+								</th>
+								<th><input type="number" class="form-control"
+										   x-model="ingredient.fields.amount"></input>
+								</th>
+								<th><input type="text" class="form-control" x-model="ingredient.fields.unit"></input>
+								</th>
+								<td draggable="true" ondragstart="dragit(event)" ondragover="dragover(event)"
+									style="cursor:pointer">&#9776;
+								</td>
+								<td>
+									<button class="btn btn-danger" type="button"
+											@click="process.ingredients.splice(process.ingredients.indexOf(ingredient), 1)">
+										{% trans "delete" %}
+									</button>
+								</td>
+							</tr>
+						</template>
 						</tbody>
 					</table>
 					<br/>
-					<button class="btn btn-primary" type="button" onclick="addIngredient(${numProcesses})">
-						${gettext("addIngredient")}
+					<button class="btn btn-primary" type="button"
+							@click="process.ingredients.push({fields:{}})">
+						{% trans "addIngredient" %}
 					</button>
 					<br/><br/><br/>
 
-					<h3>${gettext("utils")}</h3>
+					<h3>{% trans "utils" %}</h3>
 					<table class="table sortable">
 						<thead>
 						<tr>
-							<th>${gettext("name")}</th>
+							<th>{% trans "name" %}</th>
 						</tr>
 						</thead>
-						<tbody id="process-utils-${numProcesses}">
+						<tbody>
+
+						<template x-for="util in process.utils">
+							<tr>
+								<th><input type="text" class="form-control" x-model="util.fields.name"></input>
+								</th>
+								<td draggable="true" ondragstart="dragit(event)" ondragover="dragover(event)"
+									style="cursor:pointer">&#9776;
+								</td>
+								<td>
+									<button class="btn btn-danger" type="button"
+											@click="process.utils.splice(process.utils.indexOf(util), 1)">
+										{% trans "delete" %}
+									</button>
+								</td>
+							</tr>
+						</template>
 						</tbody>
 					</table>
 					<br/>
-					<button class="btn btn-primary" type="button" onclick="addUtil(${numProcesses})">
-						${gettext("addUtil")}
+					<button class="btn btn-primary" type="button" @click="process.utils.push({fields:{}})">
+						{% trans "addUtil" %}
 					</button>
 					<br/><br/><br/>
 
-					<h3>${gettext("schedules")}</h3>
+					<h3>{% trans "schedules" %}</h3>
 					<div class="table-responsive">
 						<table style="width: 100%" class="table sortable table-responsive">
 							<thead>
 							<tr>
-								<th>${gettext("runOnce")}</th>
-								<th>${gettext("startTime")}</th>
-								<th>${gettext("frequency")}</th>
-								<th>${gettext("endTime")}</th>
+								<th>{% trans "runOnce" %}</th>
+								<th>{% trans "startTime" %}</th>
+								<th>{% trans "frequency" %}</th>
+								<th>{% trans "endTime" %}</th>
 							</tr>
 							</thead>
-							<tbody id="process-schedule-${numProcesses}">
+							<tbody>
+							<template x-for="schedule in process.schedule">
+								<tr>
+
+									<th><input type="checkbox" x-model="schedule.fields.executed_once"></th>
+									<th><input value='${start}' class="form-control" type="text"
+											   x-model="schedule.fields.start_time"></th>
+									<th><input value='${frequency}' class="form-control" type="text"
+											   x-model="schedule.fields.wait_time"></th>
+									<th><input value='${end}' class=" form-control" type="text"
+											   x-model="schedule.fields.end_time">
+									</th>
+									<th>
+										<button class="btn btn-danger" type="button"
+												@click="process.schedule.splice(process.schedule.indexOf(schedule), 1)">
+											{% trans "delete" %}
+										</button>
+									</th>
+								</tr>
+							</template>
 							</tbody>
 						</table>
 					</div>
 					<br/>
-					<button class="btn btn-primary" type="button" onclick="addSchedule(${numProcesses})">
-						${gettext("addSchedule")}
+					<button class="btn btn-primary" type="button"
+							@click="process.schedule.push({fields:{start_time:'00:00:00', end_time:'00:00:00', wait_time:'00:00:00'}})">
+						{% trans "addSchedule" %}
 					</button>
 
 					<br/><br/><br/><br/>
-					<button class="btn btn-danger" type="button" onClick="delete_parent(this)">${gettext("delete")}
+					<button class="btn btn-danger" type="button"
+							@click="$store.as.recipe.processes.splice($store.as.recipe.processes.indexOf(process), 1)">{% trans "delete" %}
 					</button>
 				</div>
 			</template>
 		</div>
 
-		<button class="btn btn-primary" type="button" onclick="addProcess()">{% trans "AddProcess" %}</button>
+		<button class="btn btn-primary" type="button"
+				@click="$store.as.recipe.processes.push({fields: {}, ingredients:[], process_steps: [], utils:[], schedule: []})">{% trans "AddProcess" %}</button>
 
 	</div>
 	<br/>
@@ -200,7 +308,7 @@
 {% endblock %}
 
 {% block footer %}
-	<button type="button" onclick="createRecipe()" class="btn btn-success mr-10">{% trans "save" %}</button>
+	<button type="button" x-data @click="$store.as.saveData()" class="btn btn-success mr-10">{% trans "save" %}</button>
 	<a href=".." class="btn btn-danger"
 	   onclick="return confirm('{% trans "discardChanges" %}?')">{% trans "cancel" %}</a>
 

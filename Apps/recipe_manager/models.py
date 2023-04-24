@@ -155,8 +155,8 @@ class ProcessStep(models.Model):
     text = models.CharField(max_length=1000)
     related_process = models.ForeignKey(Process, on_delete=models.CASCADE)
 
-    class Meta:
-        unique_together = ('related_process', 'index',)
+    # class Meta:
+    #    unique_together = ('related_process', 'index',)
 
     def __str__(self) -> str:
         return f"ProcessStep_{self.id}_{self.index}_{self.related_process}"
