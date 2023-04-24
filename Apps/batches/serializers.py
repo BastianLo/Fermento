@@ -31,6 +31,8 @@ class QrCodePostSerializer(QrCodeBaseSerializer):
 
 ### Execution ###
 class ExecutionBaseSerializer(serializers.ModelSerializer):
+    overdue = serializers.ReadOnlyField(source='is_overdue')
+
     class Meta:
         model = Execution
         exclude = ["owner"]

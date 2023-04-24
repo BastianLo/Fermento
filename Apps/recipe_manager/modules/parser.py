@@ -8,17 +8,22 @@ from django.core import serializers
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import transaction
 
-from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils, ProcessSchedule
+from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils, ProcessSchedule, Process
 
 
 @transaction.atomic
 class RecipeParser:
+    def __init__(self):
+        self.user = None
+        self.recipe = None
+
     def parse_recipe(self, request):
         recipe_json = json.loads(request.POST.dict()["recipe"])
         self.user = request.user
         # del recipe_json["fields"]["image"]
         # del recipe_json["fields"]["cropping"]
         recipe = list(serializers.deserialize('json', json.dumps([recipe_json])))[0]
+        self.recipe = recipe
         recipe.object.owner_id = self.user.id
         if "image" in request.FILES:
             recipe.object.image = downsize_image(request.FILES["image"])
@@ -27,13 +32,20 @@ class RecipeParser:
         return recipe.object
 
     def parse_process(self, process_json):
+        processes = list(serializers.deserialize('json', json.dumps(process_json, ensure_ascii=False)))
         for process in process_json:
             p = list(serializers.deserialize('json', json.dumps([process], ensure_ascii=False)))[0]
-            p.save()
+            p.object.related_recipe_id = self.recipe.object.id
+            p.object.owner_id = self.user.id
             self.parse_process_step(process["process_steps"], p)
             self.parse_ingredients(process["ingredients"], p)
             self.parse_utensils(process["utils"], p)
             self.parse_schedule(process["schedule"], p)
+            p.object.save()
+            processes.append(p)
+        all_processes = [p.id for p in Process.objects.filter(owner=self.user, related_recipe=self.recipe.object)]
+        delete_processes = set(all_processes) - set([process.object.id for process in processes])
+        [Process.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_processes]
 
     def parse_process_step(self, process_step_json, process_object):
         steps = list(serializers.deserialize('json', json.dumps([step for step in process_step_json])))

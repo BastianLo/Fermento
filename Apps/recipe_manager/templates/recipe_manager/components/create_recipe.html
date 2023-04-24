@@ -7,8 +7,6 @@
 	{% endblock edit_block %}
 	<script src="{% url 'javascript-catalog' %}"></script>
 
-	<link rel="stylesheet" type="text/css" href="{% static 'custom/css/reorder_elements.css' %}">
-
 	<script>
         document.addEventListener('alpine:init', () => {
             Alpine.store('as', {
@@ -307,7 +305,7 @@
 		</div>
 
 		<button class="btn btn-primary" type="button"
-				@click="$store.as.recipe.processes.push({fields: {}, ingredients:[], process_steps: [], utils:[], schedule: []})">{% trans "AddProcess" %}</button>
+				@click="$store.as.recipe.processes.push({model: 'recipe_manager.process', fields: {}, ingredients:[], process_steps: [], utils:[], schedule: []})">{% trans "AddProcess" %}</button>
 
 	</div>
 	<br/>

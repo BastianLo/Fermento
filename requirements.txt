@@ -47,3 +47,5 @@ tzdata==2023.3
 tzlocal==4.3
 uritemplate==4.1.1
 urllib3==1.26.15
+
+django-filter~=23.1
