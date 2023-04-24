@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from rest_framework import generics
 from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +21,7 @@ class BatchDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class BatchListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ["id", "name", "description", "start_date", "related_recipe"]
 
     def get_serializer_class(self):
@@ -48,7 +49,7 @@ class QrCodeDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class QrCodeListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = "__all__"
 
     def get_serializer_class(self):
@@ -76,7 +77,7 @@ class ExecutionDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class ExecutionListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = "__all__"
 
     def get_serializer_class(self):
