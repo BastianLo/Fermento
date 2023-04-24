@@ -335,9 +335,12 @@ def edit_recipe_post(request, recipe_id):
 def recipe_save(request):
     data = [json.loads(request.body.decode())]
     p = RecipeParser()
-    p.parse_recipe(request.user, data)
-    # return None
-    return JsonResponse({'status': 'success', 'recipe_id': 1})
+    try:
+        p.parse_recipe(request.user, data)
+        # return None
+        return JsonResponse({'status': 'success', 'recipe_id': 1})
+    except Exception as e:
+        return JsonResponse(status=400, data={'status': 'false', 'message': str(e)})
 
 
 @login_required(login_url='/accounts/login/')

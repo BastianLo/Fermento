@@ -19,23 +19,28 @@
                 {% endif %}
                 saveData() {
                     console.log(this.recipe)
+                    let statusCode;
                     fetch("/recipe_manager/recipe/save/", {
                         method: "POST",
                         body: JSON.stringify(this.recipe),
                         headers: {'X-CSRFToken': this.getCookie('csrftoken'), 'Content-Type': 'application/json'}
                     })
-                        .then((response) => response.json())
+                        .then((response) => {
+                            statusCode = response.status
+                            return response.json()
+                        })
                         .then((data) => {
-                            if (window.location.href.includes("edit")) {
-                                window.location.href = "../"
+                            if (statusCode === 200) {
+                                if (window.location.href.includes("edit")) {
+                                    window.location.href = "../"
+                                } else {
+                                    window.location.href = "../" + data["recipe_id"];
+                                }
                             } else {
-                                window.location.href = "../" + data["recipe_id"];
+                                console.error(data["message"]);
+                                this.toastDangerAlert(`${gettext("CouldNotCreateRecipe")}`, data["message"]);
                             }
                         })
-                        .catch((error) => {
-                            console.error(error);
-                            this.toastDangerAlert(`${gettext("CouldNotCreateRecipe")}`, error);
-                        });
                 },
                 getCookie(name) {
                     let cookieValue = null;
@@ -213,7 +218,7 @@
 					</table>
 					<br/>
 					<button class="btn btn-primary" type="button"
-							@click="process.ingredients.push({fields:{}})">
+							@click="process.ingredients.push({fields:{}, model:'recipe_manager.recipeingredient'})">
 						{% trans "addIngredient" %}
 					</button>
 					<br/><br/><br/>
