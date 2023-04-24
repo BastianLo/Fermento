@@ -1,3 +1,4 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.decorators import permission_classes
 from rest_framework.exceptions import PermissionDenied
@@ -22,6 +23,8 @@ class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class RecipeListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["name", "id", "created_at", "description", "difficulty", "rating"]
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -39,6 +42,9 @@ class RecipeListCreate(generics.ListCreateAPIView):
 @permission_classes([IsAuthenticated])
 class ProcessListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = "__all__"
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -67,6 +73,8 @@ class ProcessDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class ProcessStepListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = "__all__"
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -95,6 +103,8 @@ class ProcessStepDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class ProcessScheduleListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = "__all__"
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -123,6 +133,8 @@ class ProcessScheduleDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class RecipeIngredientListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = "__all__"
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -151,6 +163,8 @@ class RecipeIngredientDetail(generics.RetrieveUpdateDestroyAPIView):
 @permission_classes([IsAuthenticated])
 class UtensilsListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = "__all__"
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

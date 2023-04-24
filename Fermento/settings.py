@@ -10,16 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
-import os
-from dotenv import load_dotenv
 import base64
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -31,7 +31,6 @@ FIELD_ENCRYPTION_KEY = base64.urlsafe_b64encode(SECRET_KEY.encode())
 DEBUG = os.getenv('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -59,6 +58,7 @@ INSTALLED_APPS = [
     'encrypted_model_fields',
     'drf_yasg',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -88,15 +88,14 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-        'libraries': {
-            'datetime': 'Fermento.modules.datetime',
-        }
+            'libraries': {
+                'datetime': 'Fermento.modules.datetime',
+            }
         },
     },
 ]
 
 WSGI_APPLICATION = 'Fermento.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -107,7 +106,6 @@ DATABASES = {
         'NAME': BASE_DIR / "data" / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -127,7 +125,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -139,7 +136,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LANGUAGES = [    ('en', 'English'),    ('de', 'Deutsch')]
+LANGUAGES = [('en', 'English'), ('de', 'Deutsch')]
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'Fermento', 'locale'),
@@ -165,28 +162,32 @@ MEDIA_ROOT = BASE_DIR / 'data' / 'media'
 
 MEDIA_URL = '/media/'
 
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
+
 CSRF_TRUSTED_ORIGINS = [
-    #'http://localhost:6733',
-    #'http://127.0.0.1:6733',
+    # 'http://localhost:6733',
+    # 'http://127.0.0.1:6733',
     os.getenv('APP_URL') if os.getenv('APP_URL') else 'http://127.0.0.1:6733',
 ]
 CORS_ORIGIN_WHITELIST = [
-    #'http://localhost:6733',
-    #'http://127.0.0.1:6733',
+    # 'http://localhost:6733',
+    # 'http://127.0.0.1:6733',
     os.getenv('APP_URL') if os.getenv('APP_URL') else 'http://127.0.0.1:6733',
 ]
 from easy_thumbnails.conf import Settings as thumbnail_settings
-THUMBNAIL_PROCESSORS = (
-    'image_cropping.thumbnail_processors.crop_corners',
-) + thumbnail_settings.THUMBNAIL_PROCESSORS
 
+THUMBNAIL_PROCESSORS = (
+                           'image_cropping.thumbnail_processors.crop_corners',
+                       ) + thumbnail_settings.THUMBNAIL_PROCESSORS
 
 ### Configuration values ###
 SHOW_EMPTY_PROCESS_CATEGORIES = False
 SCHEDULE_UPDATE_INTERVAL = os.getenv("SCHEDULE_UPDATE_INTERVAL") if "SCHEDULE_UPDATE_INTERVAL" in os.environ else 1
 TIME_ZONE = os.getenv("TIMEZONE") if "TIMEZONE" in os.environ else "Europe/Berlin"
 
-#Images
+# Images
 DOWNSIZE_IMAGES = bool(os.getenv("DOWNSIZE_IMAGES")) if "DOWNSIZE_IMAGES" in os.environ else True
 MAX_IMAGE_WIDTH = int(os.getenv("MAX_IMAGE_WIDTH")) if "MAX_IMAGE_WIDTH" in os.environ else 600
 ### End ###
