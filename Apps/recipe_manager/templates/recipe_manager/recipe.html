@@ -32,19 +32,19 @@
                     <div class="content">
                         {% if recipe.difficulty == "easy" %}
                             <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                                 style="font-weight: bold;width:80px" class="badge-group">
+                                 style="font-weight: bold;" class="badge-group">
                                 <span class="bi bi-speedometer2 badge badge-success"></span>
                                 <span class="badge badge-success">{{ recipe.difficulty }}</span>
                             </div>
                         {% elif recipe.difficulty == "medium" %}
                             <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                                 style="font-weight: bold;width:80px" class="badge-group">
+                                 style="font-weight: bold;" class="badge-group">
                                 <span class="bi bi-speedometer2 badge badge-secondary"></span>
                                 <span class="badge badge-secondary">{{ recipe.difficulty }}</span>
                             </div>
                         {% elif recipe.difficulty == "hard" %}
                             <div data-toggle="tooltip" data-title="{% trans "difficulty" %}" data-placement="bottom"
-                                 style="font-weight: bold;width:80px" class="badge-group">
+                                 style="font-weight: bold;" class="badge-group">
                                 <span class="bi bi-speedometer2 badge badge-danger"></span>
                                 <span class="badge badge-danger">{{ recipe.difficulty }}</span>
                             </div>

@@ -1,15 +1,18 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from .views.batch_view import BatchDetail, BatchListCreate, QrCodeDetail, QrCodeListCreate, ExecutionListCreate, \
+    ExecutionDetail
 from .views.recipe_manager_view import *
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Administration Swagger",
+        title="Fermento Swagger",
         default_version='v1',
-        description="API Documentation for Administration",
+        description="API Documentation for Fermento",
         contact=openapi.Contact(url="https://github.com/BastianLo/Fermento"),
         license=openapi.License(name="Apache-2.0 license "),
     ),
@@ -18,16 +21,40 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='swagger/')),
     path('swagger<str:format>', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 
     ### --- Recipe_manager --- ###
     # Recipe views
-    path('RecipeManager/recipe/<int:id>', RecipeDetail.as_view()),
-    path('RecipeManager/recipe/', RecipeListCreate.as_view()),
+    path('recipe/<int:id>', RecipeDetail.as_view()),
+    path('recipe/', RecipeListCreate.as_view()),
     # Process views
-    path('RecipeManager/process/<int:id>', ProcessDetail.as_view()),
-    path('RecipeManager/process/', ProcessListCreate.as_view()),
+    path('process/<int:id>', ProcessDetail.as_view()),
+    path('process/', ProcessListCreate.as_view()),
+    # Process step view
+    path('processstep/<int:id>', ProcessStepDetail.as_view()),
+    path('processstep/', ProcessStepListCreate.as_view()),
+    # Process schedule view
+    path('processschedule/<int:id>', ProcessScheduleDetail.as_view()),
+    path('processschedule/', ProcessScheduleListCreate.as_view()),
+    # Ingredient view
+    path('ingredient/<int:id>', RecipeIngredientDetail.as_view()),
+    path('ingredient/', RecipeIngredientListCreate.as_view()),
+    # Utensil view
+    path('utensil/<int:id>', UtensilsDetail.as_view()),
+    path('utensil/', UtensilsListCreate.as_view()),
+
+    ### --- Batch Manager --- ###
+    # Batch view
+    path('batch/<int:id>', BatchDetail.as_view()),
+    path('batch/', BatchListCreate.as_view()),
+    # QrCode view
+    path('qrcode/<int:id>', QrCodeDetail.as_view()),
+    path('qrcode/', QrCodeListCreate.as_view()),
+    # Execution view
+    path('execution/<int:id>', ExecutionDetail.as_view()),
+    path('execution/', ExecutionListCreate.as_view()),
 
 ]
