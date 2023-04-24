@@ -13,12 +13,17 @@ from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils, 
 
 @transaction.atomic
 class RecipeParser:
+    def __init__(self):
+        self.user = None
+        self.recipe = None
+
     def parse_recipe(self, request):
         recipe_json = json.loads(request.POST.dict()["recipe"])
         self.user = request.user
         # del recipe_json["fields"]["image"]
         # del recipe_json["fields"]["cropping"]
         recipe = list(serializers.deserialize('json', json.dumps([recipe_json])))[0]
+        self.recipe = recipe
         recipe.object.owner_id = self.user.id
         if "image" in request.FILES:
             recipe.object.image = downsize_image(request.FILES["image"])
@@ -28,7 +33,10 @@ class RecipeParser:
 
     def parse_process(self, process_json):
         for process in process_json:
+            print(process_json)
             p = list(serializers.deserialize('json', json.dumps([process], ensure_ascii=False)))[0]
+            p.object.related_recipe_id = self.recipe.object.id
+            p.object.owner_id = self.user.id
             p.save()
             self.parse_process_step(process["process_steps"], p)
             self.parse_ingredients(process["ingredients"], p)
