@@ -1,15 +1,11 @@
 import json
 import math
-import uuid
-from io import BytesIO
 
-from PIL import Image, ExifTags
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import transaction
 from django.http import HttpResponse, Http404
 from django.http import JsonResponse
@@ -333,13 +329,12 @@ def edit_recipe_post(request, recipe_id):
 @transaction.atomic
 @login_required(login_url='/accounts/login/')
 def recipe_save(request):
-    data = [json.loads(request.body.decode())]
     p = RecipeParser()
     try:
-        p.parse_recipe(request.user, data)
-        # return None
-        return JsonResponse({'status': 'success', 'recipe_id': 1})
+        recipe = p.parse_recipe(request)
+        return JsonResponse({'status': 'success', 'recipe_id': recipe.id})
     except Exception as e:
+        raise e
         return JsonResponse(status=400, data={'status': 'false', 'message': str(e)})
 
 
@@ -442,35 +437,3 @@ def _input_to_timedelta(input_string):
     total_seconds += minutes * 60
     total_seconds += seconds
     return total_seconds
-
-
-def downsize_image(image):
-    if not settings.DOWNSIZE_IMAGES:
-        return image
-    image = Image.open(image)
-    base_width = settings.MAX_IMAGE_WIDTH
-    # Rotate the image based on the EXIF orientation tag
-    try:
-        for orientation in ExifTags.TAGS.keys():
-            if ExifTags.TAGS[orientation] == 'Orientation':
-                exif = dict(image._getexif().items())
-                if exif[orientation] == 3:
-                    image = image.rotate(180, expand=True)
-                elif exif[orientation] == 6:
-                    image = image.rotate(270, expand=True)
-                elif exif[orientation] == 8:
-                    image = image.rotate(90, expand=True)
-                break
-    except (AttributeError, KeyError, IndexError):
-        pass
-
-    width_percent = (base_width / float(image.size[0]))
-    hsize = int((float(image.size[1]) * float(width_percent)))
-    image = image.resize((base_width, hsize), Image.Resampling.LANCZOS)
-
-    buffer = BytesIO()
-    image.save(buffer, format="JPEG")
-    buffer.seek(0)
-    image_file = InMemoryUploadedFile(buffer, None, f"image_{uuid.uuid4()}.jpg", "image/jpeg",
-                                      buffer.getbuffer().nbytes, None)
-    return image_file

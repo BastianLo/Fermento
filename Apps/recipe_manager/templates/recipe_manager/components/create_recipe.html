@@ -15,15 +15,17 @@
                 {% if recipe_json %}
                     recipe: {{ recipe_json|safe }},
                 {% else %}
-                    recipe: {},
+                    recipe: {model: "recipe_manager.recipe"},
                 {% endif %}
                 saveData() {
-                    console.log(this.recipe)
+                    let formData = new FormData();
+                    formData.append('recipe', JSON.stringify(this.recipe));
+                    formData.append('image', document.getElementById('image').files[0]);
                     let statusCode;
                     fetch("/recipe_manager/recipe/save/", {
                         method: "POST",
-                        body: JSON.stringify(this.recipe),
-                        headers: {'X-CSRFToken': this.getCookie('csrftoken'), 'Content-Type': 'application/json'}
+                        body: formData,
+                        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
                     })
                         .then((response) => {
                             statusCode = response.status
@@ -93,7 +95,7 @@
 				</div>
 
 				<div class="form-group">
-					<input type="file" @change="$store.as.recipe.fields.image = $event.target.files[0]"
+					<input type="file"
 						   class="form-control-file" id="image" name="image">
 				</div>
 

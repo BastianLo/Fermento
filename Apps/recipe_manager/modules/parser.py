@@ -1,6 +1,11 @@
 import json
+import uuid
+from io import BytesIO
 
+from PIL import Image, ExifTags
+from django.conf import settings
 from django.core import serializers
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db import transaction
 
 from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils, ProcessSchedule
@@ -8,11 +13,18 @@ from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils, 
 
 @transaction.atomic
 class RecipeParser:
-    def parse_recipe(self, user, recipe_json):
-        self.user = user
-        recipe = list(serializers.deserialize('json', json.dumps(recipe_json)))[0]
+    def parse_recipe(self, request):
+        recipe_json = json.loads(request.POST.dict()["recipe"])
+        self.user = request.user
+        # del recipe_json["fields"]["image"]
+        # del recipe_json["fields"]["cropping"]
+        recipe = list(serializers.deserialize('json', json.dumps([recipe_json])))[0]
+        recipe.object.owner_id = self.user.id
+        if "image" in request.FILES:
+            recipe.object.image = downsize_image(request.FILES["image"])
         recipe.object.save()
-        self.parse_process(recipe_json[0]["processes"])
+        self.parse_process(recipe_json["processes"])
+        return recipe.object
 
     def parse_process(self, process_json):
         for process in process_json:
@@ -59,8 +71,6 @@ class RecipeParser:
         [Utensils.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_utensils]
 
     def parse_schedule(self, schedule_json, process_object):
-        print(list(
-            serializers.deserialize('json', json.dumps([schedule for schedule in schedule_json], ensure_ascii=False))))
         schedules = list(
             serializers.deserialize('json', json.dumps([schedule for schedule in schedule_json], ensure_ascii=False)))
 
@@ -72,3 +82,35 @@ class RecipeParser:
                          ProcessSchedule.objects.filter(owner=self.user, related_process=process_object.object)]
         delete_schedules = set(all_schedules) - set([schedule.object.id for schedule in schedules])
         [ProcessSchedule.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_schedules]
+
+
+def downsize_image(image):
+    if not settings.DOWNSIZE_IMAGES:
+        return image
+    image = Image.open(image)
+    base_width = settings.MAX_IMAGE_WIDTH
+    # Rotate the image based on the EXIF orientation tag
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                exif = dict(image._getexif().items())
+                if exif[orientation] == 3:
+                    image = image.rotate(180, expand=True)
+                elif exif[orientation] == 6:
+                    image = image.rotate(270, expand=True)
+                elif exif[orientation] == 8:
+                    image = image.rotate(90, expand=True)
+                break
+    except (AttributeError, KeyError, IndexError):
+        pass
+
+    width_percent = (base_width / float(image.size[0]))
+    hsize = int((float(image.size[1]) * float(width_percent)))
+    image = image.resize((base_width, hsize), Image.Resampling.LANCZOS)
+
+    buffer = BytesIO()
+    image.save(buffer, format="JPEG")
+    buffer.seek(0)
+    image_file = InMemoryUploadedFile(buffer, None, f"image_{uuid.uuid4()}.jpg", "image/jpeg",
+                                      buffer.getbuffer().nbytes, None)
+    return image_file
