@@ -3,7 +3,7 @@ import json
 from django.core import serializers
 from django.db import transaction
 
-from Apps.recipe_manager.models import ProcessStep, RecipeIngredient
+from Apps.recipe_manager.models import ProcessStep, RecipeIngredient, Utensils
 
 
 @transaction.atomic
@@ -20,6 +20,7 @@ class RecipeParser:
             p.save()
             self.parse_process_step(process["process_steps"], p)
             self.parse_ingredients(process["ingredients"], p)
+            self.parse_utensils(process["utils"], p)
 
     def parse_process_step(self, process_step_json, process_object):
         steps = list(serializers.deserialize('json', json.dumps([step for step in process_step_json])))
@@ -43,3 +44,15 @@ class RecipeParser:
                            RecipeIngredient.objects.filter(owner=self.user, related_process=process_object.object)]
         delete_ingredients = set(all_ingredients) - set([ingr.object.id for ingr in ingredients])
         [RecipeIngredient.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_ingredients]
+
+    def parse_utensils(self, utensil_json, process_object):
+        utensils = list(
+            serializers.deserialize('json', json.dumps([step for step in utensil_json], ensure_ascii=False)))
+        for utensil in utensils:
+            utensil.object.owner_id = self.user.id
+            utensil.object.related_process = process_object.object
+            utensil.object.save()
+        all_utensils = [utensil.id for utensil in
+                        Utensils.objects.filter(owner=self.user, related_process=process_object.object)]
+        delete_utensils = set(all_utensils) - set([utensil.object.id for utensil in utensils])
+        [Utensils.objects.filter(owner=self.user, id=ds).first().delete() for ds in delete_utensils]

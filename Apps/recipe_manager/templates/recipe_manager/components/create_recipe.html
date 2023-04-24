@@ -250,7 +250,8 @@
 						</tbody>
 					</table>
 					<br/>
-					<button class="btn btn-primary" type="button" @click="process.utils.push({fields:{}})">
+					<button class="btn btn-primary" type="button"
+							@click="process.utils.push({fields:{}, model:'recipe_manager.utensils'})">
 						{% trans "addUtil" %}
 					</button>
 					<br/><br/><br/>
