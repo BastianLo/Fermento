@@ -37,11 +37,11 @@ class RecipeParser:
             p = list(serializers.deserialize('json', json.dumps([process], ensure_ascii=False)))[0]
             p.object.related_recipe_id = self.recipe.object.id
             p.object.owner_id = self.user.id
+            p.object.save()
             self.parse_process_step(process["process_steps"], p)
             self.parse_ingredients(process["ingredients"], p)
             self.parse_utensils(process["utils"], p)
             self.parse_schedule(process["schedule"], p)
-            p.object.save()
             processes.append(p)
         all_processes = [p.id for p in Process.objects.filter(owner=self.user, related_recipe=self.recipe.object)]
         delete_processes = set(all_processes) - set([process.object.id for process in processes])

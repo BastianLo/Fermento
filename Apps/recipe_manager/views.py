@@ -234,7 +234,6 @@ def recipe_save(request):
         recipe = p.parse_recipe(request)
         return JsonResponse({'status': 'success', 'recipe_id': recipe.id})
     except Exception as e:
-        raise e
         return JsonResponse(status=400, data={'status': 'false', 'message': str(e)})
 
 
