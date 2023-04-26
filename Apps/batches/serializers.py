@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Batch, QrCode, Execution
+from .models import Batch, QrCode, Execution, JournalEntry
 
 
 ### Batch ###
@@ -44,4 +44,17 @@ class ExecutionBaseSerializer(serializers.ModelSerializer):
 class ExecutionPostSerializer(ExecutionBaseSerializer):
     class Meta:
         model = Execution
+        exclude = ExecutionBaseSerializer.Meta.exclude + ["id"]
+
+
+### JournalEntry ###
+class JournalEntryBaseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JournalEntry
+        exclude = ["owner"]
+
+
+class JournalEntryPostSerializer(JournalEntryBaseSerializer):
+    class Meta:
+        model = JournalEntry
         exclude = ExecutionBaseSerializer.Meta.exclude + ["id"]

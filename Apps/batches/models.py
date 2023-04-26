@@ -80,3 +80,13 @@ class Execution(models.Model):
 
     def archive(self):
         self.delete()
+
+
+class JournalEntry(models.Model):
+    id = models.AutoField(primary_key=True)
+    owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='journal_entry_user', on_delete=models.CASCADE)
+    created_datetime = models.DateTimeField()
+    related_batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=2000)
+    image = models.ImageField(upload_to='images')

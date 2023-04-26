@@ -12,11 +12,25 @@
             Alpine.store('as', {
                 batch: {start_date: '', end_date: ''},
                 executions: [],
+                journalEntries: [],
                 executionNames: {},
                 processCache: {},
                 recipe: {},
                 editMode: false,
 
+                async saveJournalEntry(journalEntry) {
+                    let formData = new FormData();
+                    formData.append('journalEntry', JSON.stringify(journalEntry));
+                    formData.append('batchId', this.batch.id);
+                    formData.append('image', document.getElementById('image').files[0]);
+                    console.log(formData)
+                    await fetch("/batches/journalentry/create/", {
+                        method: "POST",
+                        body: formData,
+                        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+                    }).then(window.location.href = '#')
+                    this.journalEntries = await (await fetch('/api/journalentry/?related_batch=' + this.batch.id + '&ordering=created_datetime')).json();
+                },
                 async disableEditMode() {
                     this.editMode = false;
                     this.batch = await (await fetch('/api/batch/' + this.batch.id)).json();
@@ -40,6 +54,7 @@
                     this.batch = await (await fetch('/api/batch/{{ batch.id }}')).json();
                     this.recipe = await (await fetch('/api/recipe/{{ batch.related_recipe.id }}')).json();
                     this.executions = await (await fetch('/api/execution/?related_batch=' + this.batch.id + '&ordering=execution_datetime')).json();
+                    this.journalEntries = await (await fetch('/api/journalentry/?related_batch=' + this.batch.id + '&ordering=created_datetime')).json();
                     for (const execution of this.executions) {
                         if (!this.processCache[execution.related_process]) {
                             const processId = execution.related_process.toString();
@@ -83,6 +98,39 @@
 {% endblock header %}
 
 {% block content %}
+
+	<div class="modal" id="modal-1" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<h5 class="modal-title">{% trans "AddJournalEntry" %}</h5>
+				<form method="post" enctype="multipart/form-data"
+					  x-data="{journalEntry: { name:'My Title', description:'This is a description'}}"
+					  class="w-400 mw-full">
+					{% csrf_token %}
+					<div class="form-group">
+						<label for="batchname" class="required">{% trans "name" %}</label>
+						<input type="text" class="form-control" x-model="journalEntry.name" required="required">
+					</div>
+					<div class="form-group">
+						<label for="description">{% trans "Description" %}</label>
+						<textarea class="form-control" x-model="journalEntry.description"
+						></textarea>
+					</div>
+					<div class="form-group">
+						<input type="file"
+							   class="form-control-file" id="image" name="image">
+					</div>
+					<div class="text-right mt-20">
+						<a href="#" class="btn mr-5" role="button">{% trans "cancel" %}</a>
+						<button @click="await $store.as.saveJournalEntry(journalEntry)" class="btn btn-primary"
+								type="button">{% trans "Save" %}</button>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
 	<div x-data class="card">
 
 		<h1 x-show="!$store.as.editMode" x-text="$store.as.batch.name" class="text-center"></h1>
@@ -171,6 +219,33 @@
 	</div>
 
 
+	<div x-data class="card">
+		<h1 class="text-center">{% trans "journal" %}</h1>
+		<template x-for="journal in $store.as.journalEntries">
+			<div>
+				<h5 x-text="journal.created_datetime"></h5>
+				<div class="row border">
+
+					<div x-data="{ shown: false }" x-intersect="shown = true" class="col-4">
+						<a :href="journal.image">
+							<div x-show="shown" x-transition>
+								<img x-bind:src="shown ? journal.image : 'abc'"
+									 class="img-fluid rounded pt-5 pl-5" style="overflow:hidden">
+							</div>
+						</a>
+					</div>
+					<div class="col-8 pl-10">
+						<h2 x-text="journal.title"></h2>
+						<p x-text="journal.description"></p>
+					</div>
+				</div>
+
+			</div>
+		</template>
+
+
+	</div>
+
 {% endblock content %}
 
 
@@ -186,6 +261,8 @@
 			<div class="dropdown-menu " aria-labelledby="...">
 				<button style="width:100%" class="btn btn-primary mb-10"
 						@click="$store.as.editMode = true">{% trans "edit" %}</button>
+				<a href="#modal-1" style="width:100%" class="btn btn-success mb-10"
+				   type="button">{% trans "AddJournalEntry" %}</a>
 			</div>
 		</div>
 		<button x-show="$store.as.editMode"

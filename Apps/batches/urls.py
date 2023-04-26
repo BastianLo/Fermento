@@ -11,4 +11,6 @@ urlpatterns = [
     path("qrcode/<int:qrcode_id>/", views.qrcode_by_id, name="qrcode_by_id"),
     path("qrcode/<int:qrcode_id>/redirect/", views.redirect_qrcode_by_id, name="redirect_qrcode_by_id"),
     path("calender/", views.calender_overview, name="calender_overview"),
+    path("journalentry/create/", views.create_journal_entry, name="createJournalEntry"),
+
 ]
