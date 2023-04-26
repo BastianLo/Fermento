@@ -10,15 +10,36 @@
 	<script>
         document.addEventListener('alpine:init', () => {
             Alpine.store('as', {
-                batchId: {{ batch.id }},
+                batch: {},
                 executions: [],
                 executionNames: {},
                 processCache: {},
                 recipe: {},
+                editMode: false,
 
+                async disableEditMode() {
+                    this.editMode = false;
+                    this.batch = await (await fetch('/api/batch/' + this.batch.id)).json();
+                },
+                async saveBatch() {
+                    await (await fetch('/api/batch/' + this.batch.id, {
+                        method: 'PATCH',
+                        body: JSON.stringify(this.batch),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this.getCookie('csrftoken'),
+                        },
+                    }).then(async (response) => {
+                        if (response.status === 400)
+                            this.toastDangerAlert(`${gettext("CouldNotUpdateBatch")}`, JSON.stringify(await response.json()))
+                        if (response.status === 200)
+                            await this.disableEditMode();
+                    }))
+                },
                 async init() {
+                    this.batch = await (await fetch('/api/batch/{{ batch.id }}')).json();
                     this.recipe = await (await fetch('/api/recipe/{{ batch.related_recipe.id }}')).json();
-                    this.executions = await (await fetch('/api/execution/?related_batch=' + this.batchId + '&ordering=execution_datetime')).json();
+                    this.executions = await (await fetch('/api/execution/?related_batch=' + this.batch.id + '&ordering=execution_datetime')).json();
                     for (const execution of this.executions) {
                         if (!this.processCache[execution.related_process]) {
                             const processId = execution.related_process.toString();
@@ -30,7 +51,30 @@
                 },
                 async complete(executionId) {
                     let a = await (await fetch('/batches/executions/complete/' + executionId + '/')).json();
-                    this.executions = await (await fetch('/api/execution/?related_batch=' + this.batchId + '&ordering=execution_datetime')).json();
+                    this.executions = await (await fetch('/api/execution/?related_batch=' + this.batch.id + '&ordering=execution_datetime')).json();
+                },
+                getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                },
+                toastDangerAlert(title, content) {
+                    halfmoon.initStickyAlert({
+                        content: content,
+                        title: title,
+                        alertType: "alert-danger",
+                        fillType: "filled"
+                    });
                 }
             })
 
@@ -39,45 +83,11 @@
 {% endblock header %}
 
 {% block content %}
-	<h1>Batch {{ batch.name }}</h1>
+	<div x-data class="card">
 
-	<div class="modal" id="modal-1" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<h5 class="modal-title">{% trans "editBatch" %}</h5>
-				<form action="..." method="..." class="w-400 mw-full">
-					<!-- w-400 = width: 40rem (400px), mw-full = max-width: 100% -->
-					<!-- Input -->
-					<div class="form-group">
-						<label for="batchname" class="required">{% trans "name" %}</label>
-						<input type="text" class="form-control" id="batchname" placeholder="Batch name"
-							   value="{{ batch.name }}" required="required">
-					</div>
-
-					<!-- Textarea -->
-					<div class="form-group">
-						<label for="description">{% trans "Description" %}</label>
-						<textarea placeholder="Description" class="form-control"
-								  id="description">{{ batch.description }}</textarea>
-					</div>
-
-
-					<!-- Submit button -->
-					<div class="text-right mt-20">
-						<!-- text-right = text-align: right, mt-20 = margin-top: 2rem (20px) -->
-						<a href="#" class="btn mr-5" role="button">Close</a>
-						<input type="submit" value="Submit" class="btn btn-primary" role="button"></input>
-					</div>
-				</form>
-
-			</div>
-		</div>
-	</div>
-
-	<div class="card">
-		<h1 class="text-center">
-			{{ batch.name }}
-		</h1>
+		<h1 x-show="!$store.as.editMode" x-text="$store.as.batch.name" class="text-center"></h1>
+		<input x-show="$store.as.editMode" x-model="$store.as.batch.name"
+			   class="form-control text-center font-weight-bold h1">
 
 		<div class="row">
 			<div class="col-2">
@@ -85,43 +95,40 @@
 			<div class="col-8">
 				<div class="progress-group">
 					<div class="progress">
-						<div role="progressbar" style="width: {{ batch.get_progress_percentage }}%;"
-							 aria-valuenow="{{ batch.get_progress_percentage }}" aria-valuemin="0" aria-valuemax="100"
-							 class="progress-bar progress-bar-animated
-                        {% if batch.get_progress_percentage < 20 %} bg-danger
-                        {% elif batch.get_progress_percentage < 40 %} bg-secondary
-                        {% elif batch.get_progress_percentage < 100 %} bg-primary
-                        {% else %} bg-success
-                        {% endif %} "></div>
+						<div role="progressbar" :style="{width: $store.as.batch.progress_percentage + '%'}"
+							 aria-valuenow="$store.as.batch.progress_percentage" aria-valuemin="0" aria-valuemax="100"
+							 class="progress-bar progress-bar-animated"
+							 :class="$store.as.batch.progress_percentage < 20 ? 'bg-danger' : $store.as.batch.progress_percentage < 40 ? 'bg-secondary' : $store.as.batch.progress_percentage < 100 ? 'bg-primary': 'bg-success'"></div>
 					</div>
-					<span class="progress-group-label">{{ batch.get_progress_percentage }}%</span>
+					<span x-text="$store.as.batch.progress_percentage + '%'" class="progress-group-label"></span>
 				</div>
 			</div>
 			<div class="col-2">
 			</div>
 		</div>
 		<div class="content">
-        <span data-toggle="tooltip" data-title="{% trans "StartDate" %}" data-placement="bottom" class="badge-group"
-			  role="group">
-            <span class="badge bi bi-calendar-plus"></span>
-            <span class="badge">{{ batch.start_date }}</span>
-        </span>
+			<span x-show="!$store.as.editMode" data-toggle="tooltip" data-title="{% trans "StartDate" %}"
+				  data-placement="bottom" class="badge-group"
+				  role="group">
+				<span class="badge bi bi-calendar-plus"></span>
+				<span x-text="$store.as.batch.start_date.replace('T', ' ')" class="badge"></span>
+			</span>
+			<input x-show="$store.as.editMode" class="badge" type="datetime-local" x-model="$store.as.batch.start_date">
+
 			<span data-toggle="tooltip" data-title="{% trans "EndDate" %}" data-placement="bottom" class="badge-group"
 				  role="group">
-            <span class="badge bi bi-calendar-check"></span>
-            <span class="badge">{{ batch.get_end_date }}</span>
-        </span>
+				<span class="badge bi bi-calendar-check"></span>
+				<span x-text="$store.as.batch.end_date.replace('T', ' ')" class="badge"></span>
+			</span>
 			<span data-toggle="tooltip" data-title="{% trans "recipe" %}" data-placement="bottom" class="badge-group"
 				  role="group">
-            <a href="/recipe_manager/recipe/{{ batch.related_recipe.id }}"
-			   class="badge badge-primary">{{ batch.related_recipe.name }}</a>
+            <a :href="'/recipe_manager/recipe/' + $store.as.recipe.id"
+			   class="badge badge-primary" x-text="$store.as.recipe.name"></a>
         </span>
 		</div>
-		<div class="border-top">
-			<p>
-				{{ batch.description }}
-			</p>
-			<a href="#modal-1" class="btn" type="button">{% trans "edit" %}</a>
+		<div x-data class="border-top">
+			<p x-show="!$store.as.editMode" x-text="$store.as.batch.description"></p>
+			<textarea class="form-control" x-show="$store.as.editMode" x-model="$store.as.batch.description"></textarea>
 		</div>
 	</div>
 
@@ -169,3 +176,27 @@
 
 
 {% endblock content %}
+
+
+
+{% block footer %}
+
+	<div x-data>
+		<div class="dropdown dropup with-arrow" x-show="!$store.as.editMode">
+			<button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true"
+					aria-expanded="false">
+				<i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
+			</button>
+			<div class="dropdown-menu " aria-labelledby="...">
+				<button style="width:100%" class="btn btn-primary mb-10"
+						@click="$store.as.editMode = true">{% trans "edit" %}</button>
+			</div>
+		</div>
+		<button x-show="$store.as.editMode"
+				@click="await $store.as.saveBatch()"
+				class="btn btn-success mr-10">{% trans "save" %}</button>
+		<button x-show="$store.as.editMode"
+				@click="await $store.as.disableEditMode()"
+				class="btn btn-danger">{% trans "cancel" %}</button>
+	</div>
+{% endblock %}

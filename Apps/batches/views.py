@@ -1,7 +1,9 @@
+import json
 import math
 import os
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -46,6 +48,7 @@ def batch_by_id(request, batch_id):
         raise Http404("Batch does not exist")
     context = {
         "batch": requested_batch,
+        "batch_json": json.loads(serializers.serialize('json', [requested_batch, ]))[0],
     }
     return render(request, "batches/batches/details.html", context)
 

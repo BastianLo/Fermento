@@ -15,7 +15,7 @@ class Batch(models.Model):
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='batch_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    start_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField()
     related_recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
 
     def get_qrcode(self):
@@ -26,7 +26,7 @@ class Batch(models.Model):
         progress_duration = timezone.now() - self.start_date
         if duration == timedelta(seconds=0):
             return 100
-        return min(100, round(progress_duration / duration * 100))
+        return max(min(100, round(progress_duration / duration * 100)), 0)
 
     def get_end_date(self):
         return self.start_date + self.related_recipe.time_until_complete()
@@ -49,6 +49,7 @@ class Batch(models.Model):
 
     def model_created_or_updated(sender, **kwargs):
         the_instance = kwargs['instance']
+        [ex.delete() for ex in Execution.objects.filter(related_batch=the_instance, ) if not ex.is_overdue()]
         the_instance.create_next_executions()
 
 

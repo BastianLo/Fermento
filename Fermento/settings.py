@@ -163,7 +163,8 @@ MEDIA_ROOT = BASE_DIR / 'data' / 'media'
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DATETIME_FORMAT': "%Y-%m-%dT%H:%M",
 }
 
 CSRF_TRUSTED_ORIGINS = [
