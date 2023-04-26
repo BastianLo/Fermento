@@ -5,7 +5,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 from .views.batch_view import BatchDetail, BatchListCreate, QrCodeDetail, QrCodeListCreate, ExecutionListCreate, \
-    ExecutionDetail
+    ExecutionDetail, JournalEntryListCreate, JournalEntryDetail
 from .views.recipe_manager_view import *
 
 schema_view = get_schema_view(
@@ -56,5 +56,8 @@ urlpatterns = [
     # Execution view
     path('execution/<int:id>', ExecutionDetail.as_view()),
     path('execution/', ExecutionListCreate.as_view()),
+    # JournalEntry view
+    path('journalentry/<int:id>', JournalEntryDetail.as_view()),
+    path('journalentry/', JournalEntryListCreate.as_view()),
 
 ]

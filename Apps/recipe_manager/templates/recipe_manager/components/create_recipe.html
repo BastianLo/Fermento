@@ -305,7 +305,7 @@
 		</div>
 
 		<button class="btn btn-primary" type="button"
-				@click="$store.as.recipe.processes.push({model: 'recipe_manager.process', fields: {}, ingredients:[], process_steps: [], utils:[], schedule: []})">{% trans "AddProcess" %}</button>
+				@click="$store.as.recipe.processes.push({model: 'recipe_manager.process', fields: {work_duration:'00:00:00', wait_duration:'00:00:00'}, ingredients:[], process_steps: [], utils:[], schedule: []})">{% trans "AddProcess" %}</button>
 
 	</div>
 	<br/>

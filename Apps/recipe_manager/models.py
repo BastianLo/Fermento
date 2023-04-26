@@ -33,7 +33,8 @@ class Recipe(models.Model):
         return Process.objects.create(owner=self.owner, related_recipe=self, **kwargs)
 
     def create_batch(self, **kwargs):
-        return apps.get_model('batches', 'Batch').objects.create(owner=self.owner, related_recipe=self, **kwargs)
+        return apps.get_model('batches', 'Batch').objects.create(owner=self.owner, related_recipe=self,
+                                                                 start_date=timezone.now(), **kwargs)
 
     def get_description_preview(self):
         char_limit = 100

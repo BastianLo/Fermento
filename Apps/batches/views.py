@@ -1,12 +1,16 @@
+import json
 import math
 import os
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 
-from .models import Batch, QrCode, Execution
+from .models import Batch, QrCode, Execution, JournalEntry
+from ..recipe_manager.modules.parser import downsize_image
 
 
 @login_required(login_url='/accounts/login/')
@@ -46,6 +50,7 @@ def batch_by_id(request, batch_id):
         raise Http404("Batch does not exist")
     context = {
         "batch": requested_batch,
+        "batch_json": json.loads(serializers.serialize('json', [requested_batch, ]))[0],
     }
     return render(request, "batches/batches/details.html", context)
 
@@ -100,3 +105,16 @@ def calender_overview(request):
     context = {
     }
     return render(request, "batches/calender/overview.html", context)
+
+
+@login_required(login_url='/accounts/login/')
+def create_journal_entry(request):
+    json_journal_data = json.loads(request.POST["journalEntry"])
+    journal_entry = JournalEntry.objects.create(created_datetime=timezone.now(), owner=request.user,
+                                                related_batch_id=request.POST["batchId"])
+    journal_entry.title = json_journal_data["name"]
+    journal_entry.description = json_journal_data["description"]
+    if "image" in request.FILES:
+        journal_entry.image = downsize_image(request.FILES["image"])
+    journal_entry.save()
+    return JsonResponse({"status": "test"}, status=200)

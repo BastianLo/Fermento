@@ -68,6 +68,7 @@ def execute_recipe_by_id(request, recipe_id):
     template_recipe = Recipe.objects.filter(id=recipe_id, owner=uid).first()
     batch = template_recipe.create_batch()
     batch.name = "Batch " + str(batch.id)
+    batch.description = "Description"
     batch.save()
     return redirect("/batches/batch/" + str(batch.id))
 
@@ -234,7 +235,6 @@ def recipe_save(request):
         recipe = p.parse_recipe(request)
         return JsonResponse({'status': 'success', 'recipe_id': recipe.id})
     except Exception as e:
-        raise e
         return JsonResponse(status=400, data={'status': 'false', 'message': str(e)})
 
 
