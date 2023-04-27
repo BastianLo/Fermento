@@ -68,7 +68,7 @@ class QrCode(models.Model):
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='qrcode_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    batch = models.OneToOneField(Batch, on_delete=models.DO_NOTHING, null=True, blank=True)
+    batch = models.OneToOneField(Batch, on_delete=models.SET_NULL, null=True, blank=True)
     jar_image = models.ImageField(upload_to='images', blank=True)
 
     def get_url(self):
