@@ -31,6 +31,15 @@
                     }).then(window.location.href = '#')
                     this.journalEntries = await (await fetch('/api/journalentry/?related_batch=' + this.batch.id + '&ordering=created_datetime')).json();
                 },
+                async deleteBatch() {
+                    if (!confirm(`{% trans "ConfirmDelete" %}`))
+                        return;
+                    await fetch("/api/batch/" + this.batch.id, {
+                        method: "DELETE",
+                        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+                    })
+                    window.location.href = "../"
+                },
                 async assignJar(jar) {
                     //remove old jar
                     oldJar = (await (await fetch('/api/qrcode?batch=' + this.batch.id)).json());
@@ -326,10 +335,12 @@
 				<i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
 			</button>
 			<div class="dropdown-menu " aria-labelledby="...">
-				<button style="width:100%" class="btn btn-primary mb-10"
-						@click="$store.as.editMode = true">{% trans "edit" %}</button>
 				<a href="#modal-1" style="width:100%" class="btn btn-success mb-10"
 				   type="button">{% trans "AddJournalEntry" %}</a>
+				<button style="width:100%" class="btn btn-primary mb-10"
+						@click="$store.as.editMode = true">{% trans "edit" %}</button>
+				<button style="width:100%" class="btn btn-danger mb-10"
+						@click="$store.as.deleteBatch()">{% trans "delete" %}</button>
 			</div>
 		</div>
 		<button x-show="$store.as.editMode"
