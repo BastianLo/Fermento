@@ -87,7 +87,7 @@ def qrcode_by_id(request, qrcode_id):
     context = {
         "qrcode": requested_qrcode,
         "redirect_url": (app_url + "/batches/qrcode/" + str(
-            requested_qrcode.id) + "/redirect") if requested_qrcode.batch else ""
+            requested_qrcode.id) + "/redirect")
     }
     return render(request, "batches/qrcodes/details.html", context)
 

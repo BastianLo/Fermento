@@ -44,11 +44,9 @@
 				</div>
 			</div>
 		</div>
-		<template x-if="$store.as.jar.batch">
-			<div class="card" style="width: 100%;text-align:center;">
-				<h1>Qr-Code</h1>
-				{% qr_from_text redirect_url size="4" image_format="png" error_correction="Q" border=1 %}
-			</div>
-		</template>
+		<div class="card" style="width: 100%;text-align:center;">
+			<h1>Qr-Code</h1>
+			{% qr_from_text redirect_url size="4" image_format="png" error_correction="Q" border=1 %}
+		</div>
 	</div>
 {% endblock content %}
