@@ -1,6 +1,9 @@
+import os
+
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.conf import settings
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from notifiers import get_notifier
 
 from Apps.batches.models import Execution
@@ -23,14 +26,22 @@ def check_scheduled_tasks():
 
 def send_notifications(execution):
     notification_settings = SettingsNotification.objects.get(user=execution.owner)
+    notofication_data = {
+        "title": execution.related_process.name,
+        "description": _("Batch") + ": " + execution.related_batch.name + " " + _("HasANewTask"),
+        "url": os.getenv("APP_URL") + "/batches/batch/" + str(execution.related_batch.id)
+    }
     if notification_settings.pushover_enabled:
-        send_notification_pushover(execution)
+        send_notification_pushover(execution, notofication_data)
     execution.notification_sent = True
     execution.save()
 
 
-def send_notification_pushover(execution):
+def send_notification_pushover(execution, data):
     notification_settings = SettingsNotification.objects.get(user=execution.owner)
     p = get_notifier('pushover')
-    p.notify(user=notification_settings.pushover_user_token, token=notification_settings.pushover_app_token,
-             message='test')
+    p.notify(user=notification_settings.pushover_user_token,
+             token=notification_settings.pushover_app_token,
+             title=data["title"],
+             message=data["description"],
+             url=data["url"])
