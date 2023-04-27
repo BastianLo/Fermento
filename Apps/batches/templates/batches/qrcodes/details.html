@@ -13,6 +13,9 @@
                 editMode: false,
 
                 async init() {
+                    if (window.location.href.includes("edit=true")) {
+                        this.editMode = true
+                    }
                     this.jar = await (await fetch('/api/qrcode/{{ qrcode.id }}')).json();
                 },
                 async deleteJar() {
@@ -45,6 +48,10 @@
                     }))
                 },
                 async disableEditMode() {
+                    if (window.location.href.includes("?")) {
+                        window.location.href = window.location.href.split("?")[0];
+                        return;
+                    }
                     this.editMode = false;
                     this.jar = await (await fetch('/api/qrcode/{{ qrcode.id }}')).json();
                 },
@@ -83,7 +90,7 @@
 			<a x-show="!$store.as.editMode" :href="$store.as.jar.jar_image">
 				<img class="img-fluid rounded" style="overflow: hidden;"
 					 :src="$store.as.jar.jar_image"
-					 alt="Recipe Image"/>
+					 alt="Jar Image"/>
 			</a>
 			<input x-show="$store.as.editMode" type="file"
 				   class="form-control-file" id="image" name="image">

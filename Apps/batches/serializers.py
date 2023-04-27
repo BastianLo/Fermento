@@ -30,9 +30,11 @@ class QrCodeBaseSerializer(serializers.ModelSerializer):
 
 
 class QrCodePostSerializer(QrCodeBaseSerializer):
+    id = serializers.ReadOnlyField()
+
     class Meta:
         model = QrCode
-        exclude = QrCodeBaseSerializer.Meta.exclude + ["id"]
+        exclude = QrCodeBaseSerializer.Meta.exclude
 
 
 ### Execution ###

@@ -11,7 +11,37 @@
 
                 async init() {
                     this.batches = await (await fetch('/api/batch/')).json();
-                    this.jars = await (await fetch('/api/qrcode')).json();
+                    this.jars = await (await fetch('/api/qrcode/')).json();
+                },
+                async createJar() {
+                    let jar = await (await fetch('/api/qrcode/', {
+                        method: "POST",
+                        body: JSON.stringify({
+                            name: "Jar Name",
+                            description: "Jar Description",
+                        }),
+                        headers: {
+                            'X-CSRFToken': this.getCookie('csrftoken'),
+                            "Content-Type": "application/json",
+                        }
+                    })).json();
+                    window.location.href = jar.id + "?edit=true"
+                    console.log(jar)
+                },
+                getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
                 },
             })
 
@@ -45,3 +75,20 @@
 
 
 {% endblock content %}
+
+
+{% block footer %}
+
+	<div x-data class="dropdown dropup with-arrow">
+		<button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true" aria-expanded="false">
+			<i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
+		</button>
+		<div class="dropdown-menu " aria-labelledby="...">
+			<button style="width:100%" class="btn btn-primary mb-10" @click="$store.as.createJar()" type="button">
+				{% trans "createJar" %}
+			</button>
+		</div>
+	</div>
+
+
+{% endblock footer %}
