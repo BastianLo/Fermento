@@ -11,7 +11,7 @@
 [![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/BastianLo/Fermento/issues)
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/BastianLo/Fermento/pulls)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](/LICENSE)
-
+![CI Pipeline](https://github.com/BastianLo/Fermento/actions/workflows/docker-image.yml/badge.svg)
 </div>
 
 ---
