@@ -31,6 +31,51 @@
                     }).then(window.location.href = '#')
                     this.journalEntries = await (await fetch('/api/journalentry/?related_batch=' + this.batch.id + '&ordering=created_datetime')).json();
                 },
+                async assignJar(jar) {
+                    //remove old jar
+                    oldJar = (await (await fetch('/api/qrcode?batch=' + this.batch.id)).json());
+                    if (oldJar.length !== 0) {
+                        oldJar = oldJar[0]
+                        oldJar.batch = null;
+                        delete oldJar.jar_image
+                        await (await fetch('/api/qrcode/' + oldJar.id, {
+                            method: 'PATCH',
+                            body: JSON.stringify(oldJar),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': this.getCookie('csrftoken'),
+                            },
+                        }).then(async (response) => {
+                            if (response.status === 400)
+                                this.toastDangerAlert(`${gettext("CouldNotUpdateJar")}`, JSON.stringify(await response.json()))
+                            if (response.status === 200)
+                                console.log("success")
+                        }))
+                    }
+
+                    if (!jar) {
+                        this.batch = await (await fetch('/api/batch/{{ batch.id }}')).json();
+                        return;
+                    }
+
+                    //assign new jar
+                    delete jar.jar_image
+                    jar.batch = this.batch.id
+                    await (await fetch('/api/qrcode/' + jar.id, {
+                        method: 'PATCH',
+                        body: JSON.stringify(jar),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': this.getCookie('csrftoken'),
+                        },
+                    }).then(async (response) => {
+                        if (response.status === 400)
+                            this.toastDangerAlert(`${gettext("CouldNotUpdateJar")}`, JSON.stringify(await response.json()))
+                        if (response.status === 200)
+                            console.log("success")
+                        this.batch = await (await fetch('/api/batch/{{ batch.id }}')).json();
+                    }))
+                },
                 async disableEditMode() {
                     this.editMode = false;
                     this.batch = await (await fetch('/api/batch/' + this.batch.id)).json();
@@ -90,7 +135,7 @@
                         alertType: "alert-danger",
                         fillType: "filled"
                     });
-                }
+                },
             })
 
         })
@@ -172,9 +217,31 @@
 				  role="group">
             <a :href="'/recipe_manager/recipe/' + $store.as.recipe.id"
 			   class="badge badge-primary" x-text="$store.as.recipe.name"></a>
-        </span>
+        	</span>
 		</div>
 		<div x-data class="border-top">
+			<div x-data="{jars:[]}" x-init="jars = await (await fetch('/api/qrcode?batch__isnull=true')).json()"
+				 class="dropdown with-arrow mt-10">
+				<button @click="jars = await (await fetch('/api/qrcode?batch__isnull=true')).json()" class="btn"
+						data-toggle="dropdown"
+						type="button" aria-haspopup="true"
+						aria-expanded="false"
+						x-text="$store.as.batch.jar_name ? $store.as.batch.jar_name : '{% trans "noJar" %}'"
+				>
+					<i class="bi bi-caret-down ml-5" aria-hidden="true"></i>
+				</button>
+				<div class="dropdown-menu" aria-labelledby="...">
+					<div class="dropdown-content">
+						<template x-for="jar in jars">
+							<button @click="$store.as.assignJar(jar)" x-text="jar.name"
+									class="btn btn-block mb-5"
+									type="button"></button>
+						</template>
+						<button @click="$store.as.assignJar(null)" class="btn btn-block mb-5"
+								type="button">{% trans "noJar" %}</button>
+					</div>
+				</div>
+			</div>
 			<p x-show="!$store.as.editMode" x-text="$store.as.batch.description"></p>
 			<textarea class="form-control" x-show="$store.as.editMode" x-model="$store.as.batch.description"></textarea>
 		</div>

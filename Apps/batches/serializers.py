@@ -7,6 +7,7 @@ from .models import Batch, QrCode, Execution, JournalEntry
 class BatchBaseSerializer(serializers.ModelSerializer):
     progress_percentage = serializers.ReadOnlyField(source='get_progress_percentage')
     end_date = serializers.DateTimeField(read_only=True, source='get_end_date')
+    jar_name = serializers.ReadOnlyField(source='get_jar_name')
 
     class Meta:
         model = Batch
@@ -21,6 +22,8 @@ class BatchPostSerializer(BatchBaseSerializer):
 
 ### QrCode ###
 class QrCodeBaseSerializer(serializers.ModelSerializer):
+    batch_name = serializers.ReadOnlyField(source='get_batch_name')
+
     class Meta:
         model = QrCode
         exclude = ["owner"]
