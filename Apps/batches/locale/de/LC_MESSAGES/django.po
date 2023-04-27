@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-19 11:20+0200\n"
+"POT-Creation-Date: 2023-04-27 20:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,45 +18,99 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: templates/batches/batches/details.html:14
-msgid "NextTasks"
-msgstr "Nächste Aufgaben"
+#: batches/templates/batches/batches/details.html:150
+#: batches/templates/batches/batches/details.html:332
+msgid "AddJournalEntry"
+msgstr "Tagebucheintrag hinzufügen"
 
-#: templates/batches/batches/details.html:23
-msgid "execution"
-msgstr "Ausführung"
+#: batches/templates/batches/batches/details.html:156
+msgid "name"
+msgstr "Name"
 
-#: templates/batches/batches/details.html:25
-msgid "overdue"
-msgstr "Überfällig"
+#: batches/templates/batches/batches/details.html:160
+msgid "Description"
+msgstr "Beschreibung"
 
-#: templates/batches/batches/details.html:29
-msgid "done"
-msgstr "Erledigt"
+#: batches/templates/batches/batches/details.html:169
+#: batches/templates/batches/batches/details.html:340
+msgid "cancel"
+msgstr "Abbrechen"
 
-#: templates/batches/batches/overview.html:9
-msgid "allBatches"
-msgstr "Alle Chargen"
+#: batches/templates/batches/batches/details.html:171
+#: batches/templates/batches/batches/details.html:337
+msgid "Save"
+msgstr "Speichern"
 
-#: templates/batches/batches/overview.html:24
+#: batches/templates/batches/batches/details.html:203
+msgid "StartDate"
+msgstr "Start"
+
+#: batches/templates/batches/batches/details.html:211
+msgid "EndDate"
+msgstr "Ende"
+
+#: batches/templates/batches/batches/details.html:216
+#: batches/templates/batches/batches/overview.html:25
 msgid "recipe"
 msgstr "Rezept"
 
-#: templates/batches/batches/overview.html:43
+#: batches/templates/batches/batches/details.html:229
+#: batches/templates/batches/batches/details.html:241
+msgid "noJar"
+msgstr "Kein Gefäß"
+
+#: batches/templates/batches/batches/details.html:253
+msgid "NextTasks"
+msgstr "Nächste Aufgaben"
+
+#: batches/templates/batches/batches/details.html:271
+msgid "overdue"
+msgstr "Überfällig"
+
+#: batches/templates/batches/batches/details.html:277
+msgid "done"
+msgstr "Erledigt"
+
+#: batches/templates/batches/batches/details.html:290
+msgid "journal"
+msgstr "Tagebuch"
+
+#: batches/templates/batches/batches/details.html:326
+msgid "actions"
+msgstr "Aufgaben"
+
+#: batches/templates/batches/batches/details.html:330
+msgid "edit"
+msgstr "Bearbeiten"
+
+#: batches/templates/batches/batches/overview.html:9
+msgid "allBatches"
+msgstr "Alle Chargen"
+
+#: batches/templates/batches/batches/overview.html:45
 msgid "overdueTasks"
 msgstr "Überfällige Aufgaben"
 
-#: templates/batches/batches/overview.html:45
+#: batches/templates/batches/batches/overview.html:47
 msgid "BatchFinished"
 msgstr "Fertig"
 
-#: templates/batches/batches/overview.html:47
+#: batches/templates/batches/batches/overview.html:49
 msgid "noOverdueTasks"
 msgstr "Keine überfälligen Aufgaben"
 
-#: templates/batches/batches/overview.html:55
+#: batches/templates/batches/batches/overview.html:57
 msgid "noBatchesExist"
 msgstr "Es wurden noch keine Chargen erstellt!"
+
+#: batches/templates/batches/qrcodes/details.html:39
+#: batches/templates/batches/qrcodes/overview.html:38
+msgid "Batch"
+msgstr "Chargen"
+
+#: batches/templates/batches/qrcodes/overview.html:23
+msgid "jars"
+msgstr "Gefäße"
 
 #~ msgid "readMore"
 #~ msgstr "Mehr lesen"

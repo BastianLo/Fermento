@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-18 00:34+0200\n"
+"POT-Creation-Date: 2023-04-27 20:13+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,6 +30,6 @@ msgstr "Active"
 msgid "Credentials"
 msgstr "Credentials"
 
-#: settings_manager/templates/settings_manager/notification.html:39
+#: settings_manager/templates/settings_manager/notification.html:41
 msgid "save"
 msgstr "Save"
