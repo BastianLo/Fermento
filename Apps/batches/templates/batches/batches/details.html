@@ -229,7 +229,7 @@
 					<div x-data="{ shown: false }" x-intersect="shown = true" class="col-4">
 						<a :href="journal.image">
 							<div x-show="shown" x-transition>
-								<img x-bind:src="shown ? journal.image : 'abc'"
+								<img x-bind:src="shown ? journal.image : ''"
 									 class="img-fluid rounded pt-5 pl-5" style="overflow:hidden">
 							</div>
 						</a>
