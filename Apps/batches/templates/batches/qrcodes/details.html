@@ -10,9 +10,73 @@
         document.addEventListener('alpine:init', () => {
             Alpine.store('as', {
                 jar: {},
+                editMode: false,
 
                 async init() {
+                    if (window.location.href.includes("edit=true")) {
+                        this.editMode = true
+                    }
                     this.jar = await (await fetch('/api/qrcode/{{ qrcode.id }}')).json();
+                },
+                async deleteJar() {
+                    if (!confirm(`{% trans "ConfirmDelete" %}`))
+                        return;
+                    await fetch("/api/qrcode/" + this.jar.id, {
+                        method: "DELETE",
+                        headers: {'X-CSRFToken': this.getCookie('csrftoken')}
+                    })
+                    window.location.href = "../"
+                },
+                async saveJar() {
+                    delete this.jar.jar_image;
+                    let formData = new FormData();
+                    formData.append('jarData', JSON.stringify(this.jar));
+                    formData.append('jarId', this.jar.id);
+                    formData.append('image', document.getElementById('image').files[0]);
+                    document.getElementById('image').value = '';
+                    await (await fetch('/batches/qrcode/save/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': this.getCookie('csrftoken'),
+                        },
+                    }).then(async (response) => {
+                        if (response.status === 400)
+                            this.toastDangerAlert(`Error`, JSON.stringify(await response.json()))
+                        if (response.status === 200)
+                            await this.disableEditMode();
+                    }))
+                },
+                async disableEditMode() {
+                    if (window.location.href.includes("?")) {
+                        window.location.href = window.location.href.split("?")[0];
+                        return;
+                    }
+                    this.editMode = false;
+                    this.jar = await (await fetch('/api/qrcode/{{ qrcode.id }}')).json();
+                },
+                getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                },
+                toastDangerAlert(title, content) {
+                    halfmoon.initStickyAlert({
+                        content: content,
+                        title: title,
+                        alertType: "alert-danger",
+                        fillType: "filled"
+                    });
                 },
             })
 
@@ -23,15 +87,19 @@
 {% block content %}
 	<div x-data class="row row-eq-spacing-lg">
 		<div class="col-lg-4">
-			<a :href="$store.as.jar.jar_image">
-				<img class="img-fluid rounded" style="overflow: hidden;" :src="$store.as.jar.jar_image"
-					 alt="Recipe Image"/>
+			<a x-show="!$store.as.editMode" :href="$store.as.jar.jar_image">
+				<img class="img-fluid rounded" style="overflow: hidden;"
+					 :src="$store.as.jar.jar_image"
+					 alt="Jar Image"/>
 			</a>
+			<input x-show="$store.as.editMode" type="file"
+				   class="form-control-file" id="image" name="image">
 		</div>
 		<div class="col-lg-8">
 			<div class="card">
-				<h1 x-text="$store.as.jar.name" class="text-center">
-				</h1>
+				<h1 x-show="!$store.as.editMode" x-text="$store.as.jar.name" class="text-center"></h1>
+				<input x-show="$store.as.editMode" x-model="$store.as.jar.name"
+					   class="form-control text-center font-weight-bold h1">
 				<div class="content">
 					<template x-if="$store.as.jar.batch">
 						<a :href=" $store.as.jar.batch ? ('/batches/batch/' + $store.as.jar.batch) : ''"
@@ -40,15 +108,39 @@
 					</template>
 				</div>
 				<div class="border-top">
-					<p x-text="$store.as.jar.description"></p>
+					<p x-show="!$store.as.editMode" x-text="$store.as.jar.description"></p>
+					<textarea class="form-control" x-show="$store.as.editMode"
+							  x-model="$store.as.jar.description"></textarea>
+
 				</div>
 			</div>
 		</div>
-		<template x-if="$store.as.jar.batch">
-			<div class="card" style="width: 100%;text-align:center;">
-				<h1>Qr-Code</h1>
-				{% qr_from_text redirect_url size="4" image_format="png" error_correction="Q" border=1 %}
-			</div>
-		</template>
+		<div class="card" style="width: 100%;text-align:center;">
+			<h1>Qr-Code</h1>
+			{% qr_from_text redirect_url size="4" image_format="png" error_correction="Q" border=1 %}
+		</div>
 	</div>
 {% endblock content %}
+
+{% block footer %}
+	<div x-data>
+		<div class="dropdown dropup with-arrow" x-show="!$store.as.editMode">
+			<button class="btn" data-toggle="dropdown" type="button" id="..." aria-haspopup="true"
+					aria-expanded="false">
+				<i class="bi bi-caret-up" aria-hidden="true"></i> {% trans "actions" %}
+			</button>
+			<div class="dropdown-menu " aria-labelledby="...">
+				<button style="width:100%" class="btn btn-primary mb-10"
+						@click="$store.as.editMode = true">{% trans "edit" %}</button>
+				<button style="width:100%" class="btn btn-danger mb-10"
+						@click="$store.as.deleteJar()">{% trans "delete" %}</button>
+			</div>
+		</div>
+		<button x-show="$store.as.editMode"
+				@click="await $store.as.saveJar()"
+				class="btn btn-success mr-10">{% trans "Save" %}</button>
+		<button x-show="$store.as.editMode"
+				@click="await $store.as.disableEditMode()"
+				class="btn btn-danger">{% trans "cancel" %}</button>
+	</div>
+{% endblock %}

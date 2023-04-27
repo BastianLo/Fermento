@@ -87,7 +87,7 @@ def qrcode_by_id(request, qrcode_id):
     context = {
         "qrcode": requested_qrcode,
         "redirect_url": (app_url + "/batches/qrcode/" + str(
-            requested_qrcode.id) + "/redirect") if requested_qrcode.batch else ""
+            requested_qrcode.id) + "/redirect")
     }
     return render(request, "batches/qrcodes/details.html", context)
 
@@ -118,4 +118,17 @@ def create_journal_entry(request):
     if "image" in request.FILES:
         journal_entry.image = downsize_image(request.FILES["image"])
     journal_entry.save()
+    return JsonResponse({"status": "test"}, status=200)
+
+
+@login_required(login_url='/accounts/login/')
+def save_jar(request):
+    json_request = request.POST
+    json_jar_data = json.loads(json_request["jarData"])
+    qrCode = QrCode.objects.filter(owner=request.user, id=json_request["jarId"]).first()
+    qrCode.name = json_jar_data["name"]
+    qrCode.description = json_jar_data["description"]
+    if "image" in request.FILES:
+        qrCode.jar_image = downsize_image(request.FILES["image"])
+    qrCode.save()
     return JsonResponse({"status": "test"}, status=200)

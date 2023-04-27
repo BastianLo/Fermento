@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 20:15+0200\n"
+"POT-Creation-Date: 2023-04-27 21:41+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,70 +18,88 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: batches/templates/batches/batches/details.html:150
-#: batches/templates/batches/batches/details.html:332
+#: batches/scheduler/scheduler.py:31
+#: batches/templates/batches/qrcodes/details.html:39
+#: batches/templates/batches/qrcodes/overview.html:38
+msgid "Batch"
+msgstr "Batch"
+
+#: batches/scheduler/scheduler.py:31
+msgid "HasANewTask"
+msgstr "Has a new task"
+
+#: batches/templates/batches/batches/details.html:35
+msgid "ConfirmDelete"
+msgstr "Confirm deletion"
+
+#: batches/templates/batches/batches/details.html:159
+#: batches/templates/batches/batches/details.html:339
 msgid "AddJournalEntry"
 msgstr "Add journal entry"
 
-#: batches/templates/batches/batches/details.html:156
+#: batches/templates/batches/batches/details.html:165
 msgid "name"
 msgstr "Name"
 
-#: batches/templates/batches/batches/details.html:160
+#: batches/templates/batches/batches/details.html:169
 msgid "Description"
 msgstr "Description"
 
-#: batches/templates/batches/batches/details.html:169
-#: batches/templates/batches/batches/details.html:340
+#: batches/templates/batches/batches/details.html:178
+#: batches/templates/batches/batches/details.html:351
 msgid "cancel"
 msgstr "Cancel"
 
-#: batches/templates/batches/batches/details.html:171
-#: batches/templates/batches/batches/details.html:337
+#: batches/templates/batches/batches/details.html:180
+#: batches/templates/batches/batches/details.html:348
 msgid "Save"
 msgstr "Save"
 
-#: batches/templates/batches/batches/details.html:203
+#: batches/templates/batches/batches/details.html:212
 msgid "StartDate"
 msgstr "Start date"
 
-#: batches/templates/batches/batches/details.html:211
+#: batches/templates/batches/batches/details.html:220
 msgid "EndDate"
 msgstr "End date"
 
-#: batches/templates/batches/batches/details.html:216
+#: batches/templates/batches/batches/details.html:225
 #: batches/templates/batches/batches/overview.html:25
 msgid "recipe"
 msgstr "Recipe"
 
-#: batches/templates/batches/batches/details.html:229
-#: batches/templates/batches/batches/details.html:241
+#: batches/templates/batches/batches/details.html:238
+#: batches/templates/batches/batches/details.html:250
 msgid "noJar"
 msgstr "No jar"
 
-#: batches/templates/batches/batches/details.html:253
+#: batches/templates/batches/batches/details.html:262
 msgid "NextTasks"
 msgstr "Next Tasks"
 
-#: batches/templates/batches/batches/details.html:271
+#: batches/templates/batches/batches/details.html:280
 msgid "overdue"
 msgstr "Overdue"
 
-#: batches/templates/batches/batches/details.html:277
+#: batches/templates/batches/batches/details.html:286
 msgid "done"
 msgstr "Done"
 
-#: batches/templates/batches/batches/details.html:290
+#: batches/templates/batches/batches/details.html:299
 msgid "journal"
 msgstr "Journal"
 
-#: batches/templates/batches/batches/details.html:326
+#: batches/templates/batches/batches/details.html:335
 msgid "actions"
 msgstr "Actions"
 
-#: batches/templates/batches/batches/details.html:330
+#: batches/templates/batches/batches/details.html:341
 msgid "edit"
 msgstr "Edit"
+
+#: batches/templates/batches/batches/details.html:343
+msgid "delete"
+msgstr "Delete"
 
 #: batches/templates/batches/batches/overview.html:9
 msgid "allBatches"
@@ -102,11 +120,6 @@ msgstr "No overdue tasks"
 #: batches/templates/batches/batches/overview.html:57
 msgid "noBatchesExist"
 msgstr "No batches have been created yet!"
-
-#: batches/templates/batches/qrcodes/details.html:39
-#: batches/templates/batches/qrcodes/overview.html:38
-msgid "Batch"
-msgstr "Batch"
 
 #: batches/templates/batches/qrcodes/overview.html:23
 msgid "jars"
