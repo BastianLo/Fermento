@@ -2,13 +2,46 @@
 {% load static %}
 {% load i18n %}
 
-{% block content %}
-    <h1>Qr-Codes</h1>
+{% block header %}
 
-    {% for qrcode in qrcodes %}
-        <a href={{ qrcode.id }}>
-            {{ qrcode.name }}
-        </a>
-    {% endfor %}
+	<script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('as', {
+                jars: [],
+
+                async init() {
+                    this.batches = await (await fetch('/api/batch/')).json();
+                    this.jars = await (await fetch('/api/qrcode')).json();
+                },
+            })
+
+        })
+	</script>
+{% endblock %}
+
+{% block content %}
+	<h1>{% trans "jars" %}</h1>
+	<div x-data class="row">
+		<template x-for="jar in $store.as.jars">
+			<div class="col-lg-4 col-md-6 col-sm-12 mb-30">
+				<div style="cursor: pointer;" @click="location.href=jar.id" class="card">
+					<div class="card-img-top">
+						<img class="img-fluid rounded"
+							 :src="jar.jar_image"
+							 style="width: 300px; height: 200px; object-fit: cover;overflow: hidden;"
+							 alt="">
+					</div>
+					<div class="card-body">
+						<h5 class="card-title" x-text="jar.name"></h5>
+						<a :href=" jar.batch ? ('/batches/batch/' + jar.batch) : ''"
+						   class="card-text"
+						   x-text="`{% trans 'Batch' %}` + ': ' + (jar.batch_name ? jar.batch_name : '')"></a>
+						<p x-text="jar.description"></p>
+					</div>
+				</div>
+			</div>
+		</template>
+	</div>
+
 
 {% endblock content %}

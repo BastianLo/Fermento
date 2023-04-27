@@ -86,7 +86,8 @@ def qrcode_by_id(request, qrcode_id):
     app_url = os.getenv("APP_URL") if "APP_URL" in os.environ else "127.0.0.1"
     context = {
         "qrcode": requested_qrcode,
-        "redirect_url": app_url + "/batches/qrcode/" + str(requested_qrcode.batch.id) + "/redirect"
+        "redirect_url": (app_url + "/batches/qrcode/" + str(
+            requested_qrcode.batch.id) + "/redirect") if requested_qrcode.batch else ""
     }
     return render(request, "batches/qrcodes/details.html", context)
 

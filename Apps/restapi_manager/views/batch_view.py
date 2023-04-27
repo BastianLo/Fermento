@@ -51,7 +51,13 @@ class QrCodeDetail(generics.RetrieveUpdateDestroyAPIView):
 class QrCodeListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
-    filterset_fields = "__all__"
+
+    filterset_fields = {
+        "name": ["exact"],
+        "description": ["exact"],
+        "batch": ["exact", "isnull"],
+        "id": ["exact"],
+    }
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

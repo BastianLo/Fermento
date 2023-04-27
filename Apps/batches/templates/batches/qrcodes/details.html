@@ -4,7 +4,51 @@
 {% load qr_code %}
 
 
+{% block header %}
+
+	<script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('as', {
+                jar: {},
+
+                async init() {
+                    this.jar = await (await fetch('/api/qrcode/{{ qrcode.id }}')).json();
+                },
+            })
+
+        })
+	</script>
+{% endblock %}
+
 {% block content %}
-    <h1>Qrcode {{ qrcode.name }}</h1>
-    {% qr_from_text redirect_url size="10" image_format="png" error_correction="Q" border=1 %}
+	<div x-data class="row row-eq-spacing-lg">
+		<div class="col-lg-4">
+			<a :href="$store.as.jar.jar_image">
+				<img class="img-fluid rounded" style="overflow: hidden;" :src="$store.as.jar.jar_image"
+					 alt="Recipe Image"/>
+			</a>
+		</div>
+		<div class="col-lg-8">
+			<div class="card">
+				<h1 x-text="$store.as.jar.name" class="text-center">
+				</h1>
+				<div class="content">
+					<template x-if="$store.as.jar.batch">
+						<a :href=" $store.as.jar.batch ? ('/batches/batch/' + $store.as.jar.batch) : ''"
+						   class="badge"
+						   x-text="`{% trans 'Batch' %}` + ': ' + ($store.as.jar.batch_name ? $store.as.jar.batch_name : '')"></a>
+					</template>
+				</div>
+				<div class="border-top">
+					<p x-text="$store.as.jar.description"></p>
+				</div>
+			</div>
+		</div>
+		<template x-if="$store.as.jar.batch">
+			<div class="card" style="width: 100%;text-align:center;">
+				<h1>Qr-Code</h1>
+				{% qr_from_text redirect_url size="4" image_format="png" error_correction="Q" border=1 %}
+			</div>
+		</template>
+	</div>
 {% endblock content %}

@@ -21,6 +21,13 @@ class Batch(models.Model):
     def get_qrcode(self):
         return QrCode.objects.filter(batch=self).first()
 
+    def get_jar_name(self):
+        jar = QrCode.objects.filter(batch=self).first()
+        if jar:
+            return jar.name
+        else:
+            return None
+
     def get_progress_percentage(self):
         duration = self.related_recipe.time_until_complete()
         progress_duration = timezone.now() - self.start_date
@@ -61,10 +68,17 @@ class QrCode(models.Model):
     owner = models.ForeignKey(USER_FOREIGN_KEY, related_name='qrcode_user', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=2000)
-    batch = models.OneToOneField(Batch, on_delete=models.CASCADE, null=True)
+    batch = models.OneToOneField(Batch, on_delete=models.CASCADE, null=True, blank=True)
+    jar_image = models.ImageField(upload_to='images', blank=True)
 
     def get_url(self):
         return os.getenv("APP_URL") + "/batches/batch/" + str(self.batch.id)
+
+    def get_batch_name(self):
+        if self.batch:
+            return self.batch.name
+        else:
+            return None
 
 
 class Execution(models.Model):

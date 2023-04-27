@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-16 19:22+0000\n"
+"POT-Creation-Date: 2023-04-27 20:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,55 +18,59 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Fermento/modules/datetime.py:18
+#: modules/datetime.py:18
 msgid "day"
 msgstr "Day"
 
-#: Fermento/modules/datetime.py:18
+#: modules/datetime.py:18
 msgid "days"
 msgstr "Days"
 
-#: Fermento/modules/datetime.py:19
+#: modules/datetime.py:19
 msgid "hour"
 msgstr "Hour"
 
-#: Fermento/modules/datetime.py:19
+#: modules/datetime.py:19
 msgid "hours"
 msgstr "Hours"
 
-#: Fermento/modules/datetime.py:20
+#: modules/datetime.py:20
 msgid "minute"
 msgstr "Minute"
 
-#: Fermento/modules/datetime.py:20
+#: modules/datetime.py:20
 msgid "minutes"
 msgstr "Minutes"
 
-#: Fermento/templates/base.html:70
+#: templates/base.html:70
 msgid "recipeManagerSidebarTitle"
 msgstr "Recipe Manager"
 
-#: Fermento/templates/base.html:73
+#: templates/base.html:73
 msgid "recipeSidebarTitle"
 msgstr "Recipes"
 
-#: Fermento/templates/base.html:74
+#: templates/base.html:74
 msgid "recipeVariationSidebarTitle"
 msgstr "Recipe-Variations"
 
-#: Fermento/templates/base.html:76 Fermento/templates/base.html:78
+#: templates/base.html:76 templates/base.html:79
 msgid "batchSidebarTitle"
 msgstr "Batches"
 
-#: Fermento/templates/base.html:79
+#: templates/base.html:81
 msgid "batchCalenderSidebarTitle"
 msgstr "Calender"
 
-#: Fermento/templates/base.html:82
+#: templates/base.html:82
+msgid "Jars"
+msgstr "Jars"
+
+#: templates/base.html:84
 msgid "settingsSidebarTitle"
 msgstr "Settings"
 
-#: Fermento/templates/base.html:84
+#: templates/base.html:87
 msgid "notificationSidebarTitle"
 msgstr "Notifications"
 
