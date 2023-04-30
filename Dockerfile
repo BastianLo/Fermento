@@ -18,6 +18,17 @@ COPY . /Fermento/
 # Set the working directory to /Fermento
 WORKDIR /Fermento
 
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
+RUN apt-get install -y nodejs
+# Copy the Vue.js app to the /client directory in the container
+COPY client /client
+
+# Install Node.js dependencies and build the Vue.js app
+RUN cd /client && npm install && npm run build
+
+# Copy the built Vue.js app to the Django static files directory
+RUN cp -r /client/dist/* /Fermento/static/
+
 # Upgrade pip
 RUN pip install --upgrade pip
 
