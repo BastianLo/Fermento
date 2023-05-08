@@ -1,5 +1,8 @@
 <template>
   <q-layout view="hHh lpR fFf" class="bg-grey-1">
+    <q-dialog v-model="showLoginDialog">
+      <login-form></login-form>
+    </q-dialog>
     <q-header elevated class="bg-white text-grey-8 q-py-xs" height-hint="58">
       <q-toolbar>
         <q-btn
@@ -27,12 +30,7 @@
 
         <div class="q-gutter-sm row items-center no-wrap">
           <language-switcher></language-switcher>
-          <q-btn round flat>
-            <q-avatar size="26px">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-            </q-avatar>
-            <q-tooltip>Account</q-tooltip>
-          </q-btn>
+          <login-icon></login-icon>
         </div>
       </q-toolbar>
     </q-header>
@@ -80,6 +78,9 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import LanguageSwitcher from 'components/common/languageSwitcher.vue';
+import LoginIcon from 'components/common/loginIcon.vue';
+
+const showLoginDialog = ref(false);
 
 let leftDrawerOpen = ref(false);
 let links1 = ref([
