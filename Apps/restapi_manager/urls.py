@@ -4,6 +4,7 @@ from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
+from .views.authentification_view import api_login, ObtainTokenPairView
 from .views.batch_view import BatchDetail, BatchListCreate, QrCodeDetail, QrCodeListCreate, ExecutionListCreate, \
     ExecutionDetail, JournalEntryListCreate, JournalEntryDetail
 from .views.recipe_manager_view import *
@@ -25,6 +26,10 @@ urlpatterns = [
     path('swagger<str:format>', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
+    ### --- API Authentification --- ###
+    path('auth/login/', api_login, name='api_login'),
+    path('auth/token/', ObtainTokenPairView.as_view(), name='token_obtain_pair'),
 
     ### --- Recipe_manager --- ###
     # Recipe views
