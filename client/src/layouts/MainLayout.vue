@@ -26,6 +26,7 @@
         <q-space />
 
         <div class="q-gutter-sm row items-center no-wrap">
+          <language-switcher></language-switcher>
           <q-btn round flat>
             <q-avatar size="26px">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
@@ -78,6 +79,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
+import LanguageSwitcher from 'components/common/languageSwitcher.vue';
 
 let leftDrawerOpen = ref(false);
 let links1 = ref([
