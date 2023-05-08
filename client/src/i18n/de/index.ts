@@ -16,5 +16,9 @@ export default {
       confirm: 'Bestätigen',
       cancel: 'Abbrechen',
     },
+    homepage: 'Startseite',
+  },
+  recipe: {
+    label: 'Rezepte',
   },
 };

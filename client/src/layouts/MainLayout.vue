@@ -1,8 +1,5 @@
 <template>
   <q-layout view="hHh lpR fFf" class="bg-grey-1">
-    <q-dialog v-model="showLoginDialog">
-      <login-form></login-form>
-    </q-dialog>
     <q-header elevated class="bg-white text-grey-8 q-py-xs" height-hint="58">
       <q-toolbar>
         <q-btn
@@ -19,9 +16,7 @@
             <q-img src="~assets/fermentation.png" />
           </q-icon>
 
-          <q-toolbar-title shrink class="text-weight-bold">
-            Fermento
-          </q-toolbar-title>
+          <q-toolbar-title class="text-weight-bold"> Fermento</q-toolbar-title>
         </q-btn>
 
         <q-space />
@@ -44,7 +39,13 @@
     >
       <q-scroll-area class="fit">
         <q-list padding>
-          <q-item v-for="link in links1" :key="link.text" v-ripple clickable>
+          <q-item
+            v-for="link in links1"
+            :key="link.text"
+            @click="router.push(link.location)"
+            v-ripple
+            clickable
+          >
             <q-item-section avatar>
               <q-icon color="grey" :name="link.icon" />
             </q-item-section>
@@ -79,20 +80,25 @@
 import { ref } from 'vue';
 import LanguageSwitcher from 'components/common/languageSwitcher.vue';
 import LoginIcon from 'components/common/loginIcon.vue';
+import { useRouter } from 'vue-router';
 
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n({ useScope: 'global' });
+const router = useRouter();
 const showLoginDialog = ref(false);
 
 let leftDrawerOpen = ref(false);
 let links1 = ref([
-  { icon: 'home', text: 'Home' },
-  { icon: 'restaurant_menu', text: 'Trending' },
-  { icon: 'subscriptions', text: 'Subscriptions' },
+  { icon: 'home', text: t('common.homepage'), location: '/' },
+  { icon: 'restaurant_menu', text: t('recipe.label'), location: '/recipe' },
+  { icon: 'subscriptions', text: 'Subscriptions', location: '' },
 ]);
 let links2 = ref([
-  { icon: 'folder', text: 'Library' },
-  { icon: 'restore', text: 'History' },
-  { icon: 'watch_later', text: 'Watch later' },
-  { icon: 'thumb_up_alt', text: 'Liked videos' },
+  { icon: 'folder', text: 'Library', location: '' },
+  { icon: 'restore', text: 'History', location: '' },
+  { icon: 'watch_later', text: 'Watch later', location: '' },
+  { icon: 'thumb_up_alt', text: 'Liked videos', location: '' },
 ]);
 
 function toggleLeftDrawer() {
