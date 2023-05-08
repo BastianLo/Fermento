@@ -7,7 +7,7 @@ from .models import Recipe, Process, ProcessStep, ProcessSchedule, RecipeIngredi
 class RecipeBaseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
-        exclude = ["cropping", "image", "owner"]
+        exclude = ["cropping", "owner"]
 
 
 class RecipePostSerializer(RecipeBaseSerializer):
