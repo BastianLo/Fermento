@@ -34,7 +34,7 @@
 
       <q-card-section class="q-pt-none">
         <div
-          v-text="product.description.toString().substring(0, 50)"
+          v-text="product.description.toString().substring(0, 80)"
           class="text-caption text-grey"
         ></div>
       </q-card-section>
