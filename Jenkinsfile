@@ -20,7 +20,8 @@ pipeline {
                 script {
                     sh 'docker login --username=$DOCKERHUB_COMMON_CREDS_USR --password=$DOCKERHUB_COMMON_CREDS_PSW'
                     sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:$BUILD_ID'
-                    echo env.BRANCH_NAME
+                    echo env.GIT_BRANCH
+                    echo GIT_BRANCH
                     if (env.BRANCH_NAME == 'main') {
                         sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
                     }
