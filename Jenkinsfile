@@ -11,6 +11,7 @@ pipeline {
         stage('Building image') {
             steps {
                 script {
+                    sh "echo ${GIT_BRANCH#*/}"
                     sh 'docker build -t bastianlo/fermento:$BUILD_ID -t bastianlo/fermento:latest -t fermento:${BUILD_ID} .'
                 }
             }
@@ -26,7 +27,7 @@ pipeline {
                         echo 'Build is master branch!'
                         sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
                     }
-                    sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${GIT_BRANCH_LOCAL}"
+                    sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${GIT_BRANCH#*/}"
                     sh 'docker push bastianlo/fermento --all-tags'
                 }
             }
