@@ -8,8 +8,16 @@
       flat
       bordered
     >
-      <q-img :src="product.image" class="recipe-image" />
-
+      <router-link
+        :to="{
+          name: 'RecipeSingle',
+          params: {
+            id: product.id,
+          },
+        }"
+      >
+        <q-img :src="product.image" class="recipe-image" />
+      </router-link>
       <q-card-section>
         <div class="row no-wrap items-center">
           <div class="col text-h6 ellipsis" v-text="product.name"></div>

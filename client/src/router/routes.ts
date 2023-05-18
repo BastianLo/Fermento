@@ -6,12 +6,26 @@ const routes: RouteRecordRaw[] = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       {
-        path: '',
-        component: () => import('pages/IndexPage.vue'),
+        path: 'RecipeManager',
+        children: [
+          {
+            path: 'recipe',
+            name: 'RecipeOverview',
+            component: () =>
+              import('pages/RecipeManager/recipeOverviewPage.vue'),
+            children: [],
+          },
+          {
+            path: 'recipe/:id',
+            name: 'RecipeSingle',
+            component: () =>
+              import('pages/RecipeManager/recipeDetailsPage.vue'),
+          },
+        ],
       },
       {
-        path: 'recipe',
-        component: () => import('pages/recipeOverviewPage.vue'),
+        path: '',
+        component: () => import('pages/IndexPage.vue'),
       },
     ],
   },

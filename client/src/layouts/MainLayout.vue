@@ -86,12 +86,15 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n({ useScope: 'global' });
 const router = useRouter();
-const showLoginDialog = ref(false);
 
 let leftDrawerOpen = ref(false);
 let links1 = ref([
   { icon: 'home', text: t('common.homepage'), location: '/' },
-  { icon: 'restaurant_menu', text: t('recipe.label'), location: '/recipe' },
+  {
+    icon: 'restaurant_menu',
+    text: t('recipe.label'),
+    location: '/RecipeManager/recipe',
+  },
   { icon: 'subscriptions', text: 'Subscriptions', location: '' },
 ]);
 let links2 = ref([
