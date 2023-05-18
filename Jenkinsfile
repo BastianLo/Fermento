@@ -22,7 +22,7 @@ pipeline {
                     sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:$BUILD_ID'
                     echo env.GIT_BRANCH
                     echo GIT_BRANCH
-                    if (env.BRANCH_NAME == 'main') {
+                    if (GIT_BRANCH == 'main') {
                         sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
                     }
                     sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${env.BRANCH_NAME}"
