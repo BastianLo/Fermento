@@ -22,7 +22,8 @@ pipeline {
                     sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:$BUILD_ID'
                     echo env.GIT_BRANCH
                     echo GIT_BRANCH
-                    if (GIT_BRANCH == 'main') {
+                    if (GIT_BRANCH == 'origin/main') {
+                        echo 'Build is master branch!'
                         sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
                     }
                     sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${env.BRANCH_NAME}"
