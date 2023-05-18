@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         DOCKERHUB_COMMON_CREDS = credentials('jenkins-dockerhub-common-creds')
+        GIT_BRANCH_SHORT = GIT_BRANCH.split('/')[1]
     }
     stages {
         stage('Building image') {
@@ -26,7 +27,7 @@ pipeline {
                         echo 'Build is master branch!'
                         sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
                     }
-                    sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${GIT_BRANCH}"
+                    sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${GIT_BRANCH_SHORT}"
                     sh 'docker push bastianlo/fermento --all-tags'
                 }
             }
