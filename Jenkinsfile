@@ -11,7 +11,6 @@ pipeline {
         stage('Building image') {
             steps {
                 script {
-                    sh "echo ${GIT_BRANCH.replaceFirst(/^.*\//, '')}"
                     sh 'docker build -t bastianlo/fermento:$BUILD_ID -t bastianlo/fermento:latest -t fermento:${BUILD_ID} .'
                 }
             }
@@ -20,7 +19,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker login --username=$DOCKERHUB_COMMON_CREDS_USR --password=$DOCKERHUB_COMMON_CREDS_PSW'
-                    sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:$BUILD_ID'
+                    //sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:$BUILD_ID'
                     echo env.GIT_BRANCH
                     echo GIT_BRANCH
                     if (GIT_BRANCH == 'origin/main') {
