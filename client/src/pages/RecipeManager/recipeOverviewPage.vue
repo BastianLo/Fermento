@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { useRecipeStore } from 'stores/recipe';
+import { useRecipeStore } from 'stores/recipe.ts';
 
 const store = useRecipeStore();
 
