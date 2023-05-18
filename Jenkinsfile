@@ -26,7 +26,7 @@ pipeline {
                         echo 'Build is master branch!'
                         sh 'docker tag fermento:$BUILD_ID bastianlo/fermento:latest'
                     }
-                    sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${env.BRANCH_NAME}"
+                    sh "docker tag fermento:$BUILD_ID bastianlo/fermento:${GIT_BRANCH}"
                     sh 'docker push bastianlo/fermento --all-tags'
                 }
             }
