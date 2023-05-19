@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 20:18+0200\n"
+"POT-Creation-Date: 2023-05-19 14:14+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,6 +41,14 @@ msgstr "Minute"
 #: modules/datetime.py:20
 msgid "minutes"
 msgstr "Minuten"
+
+#: templates/404.html:6
+msgid "NotFound"
+msgstr "Seite nicht gefunden!"
+
+#: templates/404.html:7
+msgid "BackHomepage"
+msgstr "Zurück zur Startseite"
 
 #: templates/base.html:70
 msgid "recipeManagerSidebarTitle"
